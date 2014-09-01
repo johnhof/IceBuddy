@@ -81,22 +81,6 @@ module.exports = function (grunt) {
           }
         }
       },
-      test: {
-        options: {
-          port: 9001,
-          middleware: function (connect) {
-            return [
-              connect.static('.tmp'),
-              connect.static('test'),
-              connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
-              ),
-              connect.static(appConfig.app)
-            ];
-          }
-        }
-      },
       dist: {
         options: {
           open: true,
@@ -249,8 +233,8 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif}',
+          cwd: '<%= yeoman.app %>',
+          src: '**/*.{png,jpg,jpeg,gif}',
           dest: '<%= yeoman.dist %>/images'
         }]
       }
@@ -310,10 +294,12 @@ module.exports = function (grunt) {
     copy: {
       dist: {
 
-    cwd: '<%= yeoman.app %>',  // set working folder / root to copy
-    src: '**/*',           // copy all files and subfolders
-    dest: '<%= yeoman.dist %>',    // destination folder
-    expand: true           // required when using cwd
+  // files: [{
+  //   cwd: '<%= yeoman.app %>',  // set working folder / root to copy
+  //   src: '**/*',           // copy all files and subfolders
+  //   dest: '<%= yeoman.dist %>',    // destination folder
+  //   expand: true 
+  // }]          // required when using cwd
 
         files: [{
           expand: true,
@@ -321,12 +307,9 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
           src: [
-            '*.{ico,png,txt}',
             '.htaccess',
-            '*.html',
-            'views/{,*/}*.html',
-            'images/{,*/}*.{webp}',
-            'fonts/*'
+            '**/*.{html,js,png,jpg,jpeg,gif}',
+            'shared_assets/fonts/*'
           ]
         }, {
           expand: true,
@@ -337,9 +320,9 @@ module.exports = function (grunt) {
       },
       styles: {
         expand: true,
-        cwd: '<%= yeoman.app %>/styles',
+        cwd: '<%= yeoman.app %>',
         dest: '.tmp/styles/',
-        src: '{,*/}*.css'
+        src: '**/*.css'
       }
     },
 
@@ -357,14 +340,6 @@ module.exports = function (grunt) {
         'svgmin'
       ]
     },
-
-    // Test settings
-    karma: {
-      unit: {
-        configFile: 'test/karma.conf.js',
-        singleRun: true
-      }
-    }
   });
 
 
@@ -388,14 +363,6 @@ module.exports = function (grunt) {
     grunt.task.run(['serve:' + target]);
   });
 
-  grunt.registerTask('test', [
-    'clean:server',
-    'concurrent:test',
-    'autoprefixer',
-    'connect:test',
-    'karma'
-  ]);
-
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
@@ -413,8 +380,7 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
-  grunt.registerTask('default', [\
-    'test',
+  grunt.registerTask('default', [
     'build'
   ]);
 };
