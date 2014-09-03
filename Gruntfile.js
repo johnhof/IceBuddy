@@ -21,6 +21,13 @@ module.exports = function (grunt) {
     // Project settings
     yeoman: appConfig,
 
+
+    /***************************************************************************************************
+    *
+    *  Watching tasks
+    *
+    ****************************************************************************************************/
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -51,6 +58,14 @@ module.exports = function (grunt) {
         ]
       }
     },
+
+
+    /***************************************************************************************************
+    *
+    *  Server cleaning, compiling, and initialization tasks
+    *
+    ****************************************************************************************************/
+
 
     // The actual grunt server settings
     connect: {
@@ -161,13 +176,21 @@ module.exports = function (grunt) {
     filerev: {
       dist: {
         src: [
-          '<%= yeoman.dist %>/scripts/{,*/}*.js',
-          '<%= yeoman.dist %>/styles/{,*/}*.css',
-          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.dist %>/scripts/*.js',
+          '<%= yeoman.dist %>/styles/*.css',
+          '<%= yeoman.dist %>/images/*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
       }
     },
+
+
+    /***************************************************************************************************
+    *
+    *  Minifying tasks
+    *
+    ****************************************************************************************************/
+
 
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
@@ -190,8 +213,8 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      html: ['<%= yeoman.dist %>/views/*.html'],
+      css: ['<%= yeoman.dist %>/styles/*.css'],
       options: {
         assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images']
       }
@@ -231,7 +254,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['**/*.html'],
+          src: ['views/*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -254,14 +277,23 @@ module.exports = function (grunt) {
     // Replace Google CDN references
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/*.html']
+        html: ['<%= yeoman.dist %>/**/*.html']
       }
     },
+
+
+    /***************************************************************************************************
+    *
+    *  Copying tasks
+    *
+    ****************************************************************************************************/
+
 
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
         files: [
+          // Miscellaneous
           {
             expand: true,
             dot: true,
@@ -270,19 +302,44 @@ module.exports = function (grunt) {
             dest: '<%= yeoman.dist %>',
             src: [
               '.htaccess',
-              '**/*.{html,js,png,jpg,jpeg,gif}',
               'shared_assets/fonts/*'
             ]
           }, 
+
+          // Scripts
+          {
+            expand: true,
+            dot: true,
+            flatten: true,
+            cwd: '<%= yeoman.app %>',
+            dest: '<%= yeoman.dist %>/scripts',
+            src: [
+              '**/*.js',
+            ]
+          },
+
+          // Views
+          {
+            expand: true,
+            dot: true,
+            flatten: true,
+            cwd: '<%= yeoman.app %>',
+            dest: '<%= yeoman.dist %>/views',
+            src: [
+              '**/*.html',
+            ]
+          },
+
+          // Images
           {
             expand: true,
             cwd: '.tmp/images',
-            dest: '<%= yeoman.dist %>',
+            dest: '<%= yeoman.dist %>/images',
             src: [
               'generated/*'
             ]
           }
-        ],
+        ]
       },
       styles: {
         expand: true,
@@ -291,6 +348,12 @@ module.exports = function (grunt) {
         src: '**/*.css'
       }
     },
+
+    /***************************************************************************************************
+    *
+    *  Concurrency tasks
+    *
+    ****************************************************************************************************/
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
@@ -307,6 +370,13 @@ module.exports = function (grunt) {
       ]
     },
   });
+
+
+  /***************************************************************************************************
+  *
+  *  Task registration
+  *
+  ****************************************************************************************************/
 
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
@@ -330,7 +400,9 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-    'clean:dist',
+    // 'clean:server',
+    // 'concurrent:server',
+    // 'clean:dist',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
