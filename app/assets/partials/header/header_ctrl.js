@@ -1,0 +1,1 @@
+simpleApp.controller('HeaderCtrl', ['$scope', function ($scope) {}]);

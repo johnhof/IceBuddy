@@ -259,14 +259,12 @@ module.exports = function (grunt) {
     *
     ****************************************************************************************************/
 
-
+    // *Important* - js files must be concatenated in order of dependency
     concat: {
-        options: {
-            separator: "\n\n"
-        },
         dist: {
-            src: '<%= server.app %>/**/*.js',
-            dest: '<%= server.dist %>/scripts/main.js'
+          files: {
+          '<%= server.dist %>/scripts/main.js': ['<%= server.app %>/core/app.js', '<%= server.app %>/**/*.js']
+          }
         }
     },
 

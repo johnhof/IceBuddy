@@ -1,1 +1,1 @@
-myApp.controller('HomeCtrl', ['$scope', function ($scope) {}]);
+simpleApp.controller('HomeCtrl', ['$scope', function ($scope) {}]);
