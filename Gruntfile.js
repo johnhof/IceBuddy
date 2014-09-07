@@ -41,10 +41,11 @@ module.exports = function (grunt) {
       },
       compass: {
         files: ['<%= server.app %>/**/*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer']
+        tasks: ['build']
       },
       gruntfile: {
-        files: ['Gruntfile.js']
+        files: ['Gruntfile.js'],
+        tasks: ['build']
       },
       livereload: {
         options: {
@@ -81,9 +82,10 @@ module.exports = function (grunt) {
               connect.static('.tmp'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                connect.static('./bower_components'),
+                appConfig.dist + '/'
               ),
-              connect.static(appConfig.app)
+              connect.static(appConfig.dist)
             ];
           }
         }
@@ -220,17 +222,32 @@ module.exports = function (grunt) {
             dest: '.tmp/styles'
           }, 
 
-          // html
+          // index
           {
             expand: true,
             dot: true,
             flatten: true,
-            cwd: '<%= server.app %>',
-            dest: '<%= server.dist %>/views',
-            src: [
-              '**/*.html',
-            ]
+            src: '<%= server.app %>/core/index.html',
+            dest: '<%= server.dist %>'
           }, 
+
+          // views
+          {
+            expand: true,
+            dot: true,
+            flatten: true,
+            src: '<%= server.app %>/components/**/*.html',
+            dest: '<%= server.dist %>/views'
+          }, 
+
+          // partials
+          {
+            expand: true,
+            dot: true,
+            flatten: true,
+            src:'<%= server.app %>/assets/partials/**/*.html',
+            dest: '<%= server.dist %>/partials'
+          }
         ]
       }
     },
@@ -396,6 +413,7 @@ module.exports = function (grunt) {
     grunt.task.run(['serve:' + target]);
   });
 
+
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
@@ -408,7 +426,7 @@ module.exports = function (grunt) {
     'compass',
     'cssmin',
     'uglify',
-    'filerev',
+    // 'filerev', --- this shit is mucking up css/js serving. fix it later
     'usemin',
     'htmlmin',
     'clean:tmp',
