@@ -5,7 +5,7 @@ var components = {};
 
 
 // Header component
-components.header : {
+components.header = {
   mobile : function ($this, x, y) {
     $this.hide();
   },
@@ -17,4 +17,5 @@ components.header : {
 //
 // execute the contour constructor
 //
+
 new contour(null, components);

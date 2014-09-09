@@ -19,70 +19,87 @@ var contour = function (initStates, components) {
   // Globals
   //
   this.date     = null;
-  this.breakPt  = 800; // break to mobile at 800px
-  this.$window  = $(window)
-  this._states  = { // default to break at 800
-    '0'          : 'mobile',
-    this.breakPt : 'desktop'
-  };
+  this.breakPt  = 700; // break to mobile at 800px
+  var $window   = $(window);
+  var _state     = null
+
+  var STATES  = {}; // default to break at 800
+  STATES['mobile']  = 0;
+  STATES['desktop'] = this.breakPt;
 
   //
   // Config variables
   //
-  this.states = initStates || _states;
+  var _states = this.states =  initStates || STATES;
 
-  this.updateState();
-  this.registerListeners();
+
+  // push each state into an array for sorting
+  var sortable = [];
+  for (var state in _states) { sortable.push([state, _states[state]]); }
+  sortable.sort(function (a, b) { return b[1] - a[1]; });//perform sort by value
+  _states = {};
+  for (var state in sortable) {  _states[sortable[state][0]] = sortable[state][1]; } // reconstruct array to be sorted
+  this.states = _states;
+
+  updateState();
+  registerListeners();
 
 
   //
-  // register any listeners required for functionality
+  // END -- initializing
   //
-  this.registerListeners = function (states) {
-    this.states = states || this.states;
 
-
-    // start by listening for a resize
-    $(window).on('resize', function(event){
-
-      // if the state differs from teh cached value, update it and re-render the elements
-      if (this.state !== this.getState()) {
-        this.updateState();
-        this.render(this.state, $window.width(), $window.height();
-      }
-    });
-  };
 
   //
   // state variables
   //
-  this.getState    = function () { return this.states[this.$window.width()] }
-  this.updateState = function() { this.state = this.getState(); }
+  this.getState = getState;
+  function getState () {
+    for(var state in _states) {
+      if ($window.width() > _states[state]) { return state; }
+    }
+  }
+  this.updateState = updateState;
+  function updateState () { _state = getState(); }
 
+  //
+  // register any listeners required for functionality
+  //
+  this.registerListeners = registerListeners;
+  function registerListeners () {
+    // start by listening for a resize
+    $(window).on('resize', function(event){
+      // if the state differs from teh cached value, update it and re-render the elements
+      if (_state !== getState()) {
+        updateState();
+        render(_state, $window.width(), $window.height());
+      }
+    });
+  };
 
   // render the given state for each manager
-  this.render = function (renderState, x, y) {
+  this.render = render;
+  function render (renderState, x, y) {
     renderState = renderState || this.getState();
-
-    for (manager in this.managers) {
-      this.manager.render(state, x, y);
-    }
-  },
+    for (var component in _components) { _components[component].render(_state, x, y); }
+  }
 
   //
   // component manipulators
   //
 
-  this.components = {};
-  this.register = function (component, handlers) {
+  var _components = this.components = {};
+  this.register = register;
+  function register (component, handlers) {
     // add the component to the list of managers and store its handlers
-    this.component[component] = {
+    _components[component] = {
       handlers : handlers,
 
       // render the states for a given component
       render : function (state) {
         // if the state exists for the component, and the state is a handler, execute the handler, giving it an instance of itself
-        if (handlers[state] && handlers[state] === 'function') { handlers[state]($('.' + component)); }
+        if (handlers[state] && typeof handlers[state] === 'function') { 
+          handlers[state]($('.' + component)); }
       }
     }
   }
@@ -92,29 +109,27 @@ var contour = function (initStates, components) {
   //  Registering components
   //
 
+
   // default components
   if (!(components === false && components.noDefaults)) { 
     // if all defaults are included
     if (!(components.exclude && components.include)) {
-      this.component = new _ctComponents();
+      _components = new _ctComponents();
 
     // if only specific defaults are included
     } else if (components.include  && components.include.length) {
       components = new _ctComponents();
-      for (included in components.include) { this.components = components[included]; } // loop over and cache the desired componentd
+      for (var included in components.include) { _components = components[included]; } // loop over and cache the desired componentd
 
     // if defaults are excluded
     } else if (components.exclude && components.exclude.length) {
-      this.component = new _ctComponents();
-      for (included in components.include) { delete components[included]; } // loop over and delete the desired components
+      _components = new _ctComponents();
+      for (var included in components.include) { delete components[included]; } // loop over and delete the desired components
     }
   }
 
   // user specified components
-  for (component in components) { this.register(component.name, component); }
-
-  console.log('------ components ------');
-  console.log(this.components);   
+  for (var component in components) { register(component, components[component]); }
 }
 
 
@@ -123,4 +138,4 @@ var contour = function (initStates, components) {
 //
 //   A set of default components which can be overwritten, manipulated, etc
 //
-_ctComponents = function () {};
+var _ctComponents = function () { return {};};

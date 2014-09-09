@@ -35,6 +35,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= server.app %>/**/*.js'],
+        tasks: ['build'],
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
@@ -423,9 +424,9 @@ module.exports = function (grunt) {
     'cdnify',
     'compass',
     'cssmin',
-    'uglify',
+    // 'uglify',
     // 'filerev', --- this shit is mucking up css/js serving. fix it later
-    'usemin',
+    // 'usemin',
     'htmlmin',
     'clean:tmp',
   ]);
