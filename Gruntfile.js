@@ -14,6 +14,51 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+  // cache options for reuse
+  var opts = {
+    copy : {
+      misc : {
+        expand: true,
+        dot: true,
+        flatten: true,
+        cwd: '<%= server.app %>',
+        dest: '<%= server.dist %>/fonts',
+        src: [
+          '.htaccess',
+          'assets/fonts/*'
+        ]
+      },
+      sass : {
+        expand: true,
+        dot: true,
+        flatten: true,
+        src: '<%= server.app %>/**/*.{sass,scss}',
+        dest: '.tmp/styles'
+      }, 
+      index : {
+        expand: true,
+        dot: true,
+        flatten: true,
+        src: '<%= server.app %>/core/index.html',
+        dest: '<%= server.dist %>'
+      }, 
+      views : {
+        expand: true,
+        dot: true,
+        flatten: true,
+        src: '<%= server.app %>/components/**/*.html',
+        dest: '<%= server.dist %>/views'
+      }, 
+      partials : {
+        expand: true,
+        dot: true,
+        flatten: true,
+        src:'<%= server.app %>/assets/partials/**/*.html',
+        dest: '<%= server.dist %>/partials'
+      }
+    }
+  }
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -35,14 +80,21 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= server.app %>/**/*.js'],
-        tasks: ['build'],
+        tasks: ['build-js'],
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
       },
-      compass: {
+      css: {
         files: ['<%= server.app %>/**/*.{scss,sass}'],
-        tasks: ['build']
+        tasks: ['build-stylus']
+      },
+      views: {
+        files: ['<%= server.app %>/**/*.html'],
+        tasks: ['build-html'],
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        }
       },
       gruntfile: {
         files: ['Gruntfile.js'],
@@ -54,7 +106,7 @@ module.exports = function (grunt) {
         },
         files: [
           '<%= server.app %>/**/*.html',
-          'dist/styles/**/*.css',
+          'dist/styles/*.css',
           '<%= server.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
@@ -110,10 +162,28 @@ module.exports = function (grunt) {
           ]
         }]
       },
-       tmp: {
+      tmp: {
         files: [{
           dot: true,
           src: '.tmp'
+        }]
+      },
+      js: {
+        files: [{
+          dot: true,
+          src: '<%= server.dist %>/**/*.js'
+        }]
+      },
+      css: {
+        files: [{
+          dot: true,
+          src: '<%= server.dist %>/**/*/css'
+        }]
+      },
+      html: {
+        files: [{
+          dot: true,
+          src: '<%= server.dist %>/**/*.html'
         }]
       }
     },
@@ -126,9 +196,7 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= server.dist %>',
-          src: 'styles/*.css',
-          dest: '<%= server.dist %>/styles/'
+          src: '<%= server.dist %>/styles/*.css'
         }]
       }
     },
@@ -152,7 +220,7 @@ module.exports = function (grunt) {
     compass: {
       options: {
         sassDir: '.tmp/styles',
-        cssDir: '<%= server.dist %>/styles',
+        cssDir: '.tmp/styles',
         generatedImagesDir: '<%= server.dist %>/images',
         imagesDir: '<%= server.app %>',
         javascriptsDir: '<%= server.app %>',
@@ -197,60 +265,26 @@ module.exports = function (grunt) {
     ****************************************************************************************************/
 
 
-    // Copies remaining files to places other tasks can use
     copy: {
       dist: {
         files: [
-          // Miscellaneous
-          {
-            expand: true,
-            dot: true,
-            flatten: true,
-            cwd: '<%= server.app %>',
-            dest: '<%= server.dist %>',
-            src: [
-              '.htaccess',
-              'shared_assets/fonts/*'
-            ]
-          }, 
-
-          // sass
-          {
-            expand: true,
-            dot: true,
-            flatten: true,
-            src: '<%= server.app %>/**/*.{sass,scss}',
-            dest: '.tmp/styles'
-          }, 
-
-          // index
-          {
-            expand: true,
-            dot: true,
-            flatten: true,
-            src: '<%= server.app %>/core/index.html',
-            dest: '<%= server.dist %>'
-          }, 
-
-          // views
-          {
-            expand: true,
-            dot: true,
-            flatten: true,
-            src: '<%= server.app %>/components/**/*.html',
-            dest: '<%= server.dist %>/views'
-          }, 
-
-          // partials
-          {
-            expand: true,
-            dot: true,
-            flatten: true,
-            src:'<%= server.app %>/assets/partials/**/*.html',
-            dest: '<%= server.dist %>/partials'
-          }
+         opts.copy.misc,
+         opts.copy.sass,
+         opts.copy.index,
+         opts.copy.views,
+         opts.copy.partials
         ]
-      }
+      },
+      css : {
+        files: [opts.copy.sass]
+      },
+      html : {
+        files: [
+         opts.copy.index,
+         opts.copy.views,
+         opts.copy.partials
+        ]      
+      },
     },
 
 
@@ -262,11 +296,16 @@ module.exports = function (grunt) {
 
     // *Important* - js files must be concatenated in order of dependency
     concat: {
-        dist: {
-          files: {
+      js: {
+        files: {
           '<%= server.dist %>/scripts/main.js': ['<%= server.app %>/core/app.js', '<%= server.app %>/**/*.js']
-          }
         }
+      },
+      css: {
+        files: {
+          '<%= server.dist %>/styles/main.css': ['.tmp/**/main.css', '.tmp/**/*.css']
+        }
+      }
     },
 
     // Reads HTML for usemin blocks to enable smart builds that automatically
@@ -418,11 +457,12 @@ module.exports = function (grunt) {
     'wiredep',
     'copy:dist',
     'useminPrepare',
-    'concat',
-    'autoprefixer',
+    'concat:js',
     'ngmin',
     'cdnify',
     'compass',
+    'concat:css',
+    'autoprefixer',
     'cssmin',
     // 'uglify',
     // 'filerev', --- this shit is mucking up css/js serving. fix it later
@@ -430,6 +470,34 @@ module.exports = function (grunt) {
     'htmlmin',
     'clean:tmp',
   ]);
+
+  grunt.registerTask('build-js', [
+    'clean:js',
+    'concat:js',
+    'ngmin',
+    'clean:tmp',
+  ]);
+
+  grunt.registerTask('build-stylus', [
+    'clean:css',
+    'copy:css',
+    'compass',
+    'concat:css',
+    'autoprefixer',
+    'cssmin',
+    'clean:tmp',
+  ]);
+
+
+  grunt.registerTask('build-html', [
+    'clean:html',
+    'copy:html',
+    'useminPrepare',
+    'cdnify',
+    'htmlmin',
+    'clean:tmp',
+  ]);
+
 
   grunt.registerTask('default', [
     'build'
