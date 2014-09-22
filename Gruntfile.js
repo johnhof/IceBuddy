@@ -17,16 +17,19 @@ module.exports = function (grunt) {
   // cache options for reuse
   var opts = {
     copy : {
-      misc : {
+      fonts : {
         expand: true,
         dot: true,
         flatten: true,
-        cwd: '<%= server.app %>',
         dest: '<%= server.dist %>/fonts',
-        src: [
-          '.htaccess',
-          'assets/fonts/*'
-        ]
+        src: '<%= server.app %>/assets/fonts/**/*'
+      },
+      images : {
+        expand: true,
+        dot: true,
+        flatten: true,
+        dest: '<%= server.dist %>/images',
+        src: '<%= server.app %>/assets/images/**/*'
       },
       sass : {
         expand: true,
@@ -95,6 +98,14 @@ module.exports = function (grunt) {
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
+      },
+      images : {
+        files: ['<%= server.app %>/assets/images/**/*'],
+        tasks: ['copy:images']
+      },
+      fonts : {
+        files: ['<%= server.app %>/assets/fonts/**/*'],
+        tasks: ['copy:fonts']
       },
       gruntfile: {
         files: ['Gruntfile.js'],
@@ -268,12 +279,19 @@ module.exports = function (grunt) {
     copy: {
       dist: {
         files: [
-         opts.copy.misc,
+         opts.copy.images,
+         opts.copy.fonts,
          opts.copy.sass,
          opts.copy.index,
          opts.copy.views,
          opts.copy.partials
         ]
+      },
+      images: {
+        files: [opts.copy.images]
+      },
+      fonts: {
+        files: [opts.copy.fonts]
       },
       css : {
         files: [opts.copy.sass]

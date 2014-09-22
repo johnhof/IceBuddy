@@ -1,0 +1,101 @@
+@mixin centerText() {
+  text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-35%);
+}
+
+#nav-header {
+  position: absolute;
+  background: black;
+  height: 50px;
+  text-align: center;
+  width: 100%;
+  font-size:22px;
+  display: inline-block;
+  font-family: 'SeasideResort';
+  font-family: 'Lobster';
+  // font-family: 'Acknowledgement';
+  // font-family: 'Aldo';
+  // font-family: 'Tusj';
+
+  a {
+    background: black;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.5s ease;
+    display: inline-block;
+    height: 100%;
+    padding-left:10px;
+    padding-right: 10px;
+    margin-left:5%;
+    margin-right: 5%;
+
+    &:hover {
+      background-color: #608AA5;
+    } 
+
+    div {
+      @include centerText();
+    }
+
+    &.logo {
+      margin: 0;
+      padding: 0;
+      width: 75px;
+      margin-left: -25px;
+
+      &:hover {
+        background-color: black;
+      } 
+
+
+      img {
+        margin-left: -3px;
+        background: black;
+        height: 50px;
+        width: 50px;
+        padding-bottom: 10px;
+        padding-top: 5px;
+        z-index: 10;
+        position: fixed;
+      }
+
+
+      .hex-border {
+        top: 0;
+        width: 0;
+        height:75px;
+        position: fixed;
+        border-bottom: 25px solid transparent;
+
+        &.right { 
+          border-left: 35px solid black;  
+          margin-left: 84px;
+        }
+        &.left { 
+          border-right: 35px solid black; 
+        }
+      }
+    }
+  }
+
+  .container {
+    display: inline-block;
+    width: 40%;
+
+    &.right {
+      float: right;
+      height:100%;
+
+      a { float: left; }
+    }
+
+    &.left {
+      float: left;
+      height:100%;
+
+      a { float: right; }
+    }
+  }
+}
