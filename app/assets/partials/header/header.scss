@@ -5,7 +5,7 @@
   transform: translateY(-35%);
 }
 
-#nav-header {
+#ct-nav-header {
   position: absolute;
   background: black;
   height: 50px;
@@ -23,7 +23,6 @@
     background: black;
     color: white;
     text-decoration: none;
-    transition: background-color 0.5s ease;
     display: inline-block;
     height: 100%;
     padding-left:10px;
@@ -43,7 +42,7 @@
       margin: 0;
       padding: 0;
       width: 75px;
-      margin-left: -25px;
+      margin-left: -50px;
 
       &:hover {
         background-color: black;
@@ -96,6 +95,25 @@
       height:100%;
 
       a { float: right; }
+    }
+  }
+
+
+  //
+  // Mobile specific
+  //
+  
+  #hamburger {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    background-image: url('../images/hamburger.png');
+    filter: invert(100%);
+
+    &.open {
+      background-image: url('../images/')
     }
   }
 }
