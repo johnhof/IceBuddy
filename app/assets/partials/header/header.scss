@@ -82,6 +82,7 @@
   .container {
     display: inline-block;
     width: 40%;
+    overflow: hidden;
 
     &.right {
       float: right;
@@ -111,9 +112,5 @@
     height: 50px;
     background-image: url('../images/hamburger.png');
     filter: invert(100%);
-
-    &.open {
-      background-image: url('../images/')
-    }
   }
 }
