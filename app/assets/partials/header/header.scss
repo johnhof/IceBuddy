@@ -5,7 +5,7 @@
   transform: translateY(-35%);
 }
 
-#ct-nav-header {
+div[nav-bar] {
   position: absolute;
   background: black;
   height: 50px;
@@ -84,18 +84,18 @@
     width: 40%;
     overflow: hidden;
 
-    &.right {
-      float: right;
-      height:100%;
-
-      a { float: left; }
-    }
-
-    &.left {
+    &:first-of-type {
       float: left;
       height:100%;
 
       a { float: right; }
+    }
+
+    &:last-of-type{
+      float: right;
+      height:100%;
+
+      a { float: left; }
     }
   }
 

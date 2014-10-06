@@ -1,12 +1,10 @@
 'use strict';
-/**
- * @ngdoc overview
- * @name tmpApp
- * @description
- * # tmpApp
- *
- * Main module of the application.
- */
+
+
+//
+// App setup
+//
+
 
 var simpleApp = angular.module('simpleApp', [
 

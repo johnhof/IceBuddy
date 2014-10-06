@@ -316,7 +316,10 @@ module.exports = function (grunt) {
     concat: {
       js: {
         files: {
-          '<%= server.dist %>/scripts/main.js': ['<%= server.app %>/core/app.js', '<%= server.app %>/**/*.js']
+          '<%= server.dist %>/scripts/main.js': ['<%= server.app %>/core/app.js', 
+                                                  '<%= server.app %>/core/app_config.js', 
+                                                  '<%= server.app %>/core/angular_helpers.js', 
+                                                  '<%= server.app %>/**/*.js']
         }
       },
       css: {
@@ -426,10 +429,10 @@ module.exports = function (grunt) {
     // minify compiled CSS
     cssmin: {
       my_target: {
-        files: [{
-          expand: true,
-          src: '<%= server.dist %>/styles/*.css',
-        }]
+        // files: [{
+        //   expand: true,
+        //   src: '<%= server.dist %>/styles/*.css',
+        // }]
       }
     },
 
