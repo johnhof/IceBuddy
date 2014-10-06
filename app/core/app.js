@@ -1,9 +1,9 @@
-'use strict';
-
-
 //
 // App setup
 //
+
+
+'use strict';
 
 
 var simpleApp = angular.module('simpleApp', [
