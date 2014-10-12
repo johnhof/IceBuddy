@@ -27,5 +27,9 @@ simpleApp.helpers.onPageBreak = function ($scope, $window, handlers) {
     if (currentWindow !== oldWindow && typeof handlers[currentWindow] === 'function') { handlers[currentWindow](); }
   });
 
+  // fire the appropriate handler
+  handlers[simpleApp.helpers.getPageBreak(win.width())]();
+
+  // bind the handlers
   win.bind('resize', function() { $scope.$apply(); });
 }
