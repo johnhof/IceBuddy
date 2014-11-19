@@ -1,0 +1,156 @@
+@import 'variables';
+
+
+//
+// mixins
+//
+@mixin centerText() {
+  text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-35%);
+}
+
+
+//
+// general styling
+//
+div[nav-bar] {
+  position: absolute;
+  background: black;
+  height: 50px;
+  text-align: center;
+  width: 100%;
+  font-size:22px;
+  display: inline-block;
+  font-family: 'SeasideResort';
+  font-family: 'Lobster';
+  // font-family: 'Acknowledgement';
+  // font-family: 'Aldo';
+  // font-family: 'Tusj';
+
+  a {
+    background: black;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    height: 100%;
+    padding-left:10px;
+    padding-right: 10px;
+    margin-left:5%;
+    margin-right: 5%;
+
+    &:hover {
+      background-color: #608AA5;
+    } 
+
+    div {
+      @include centerText();
+    }
+
+    &.logo {
+      margin: 0;
+      padding: 0;
+      width: 75px;
+      margin-left: -50px;
+
+      &:hover {
+        background-color: black;
+      } 
+
+
+      img {
+        margin-left: -3px;
+        background: black;
+        height: 50px;
+        width: 50px;
+        padding-bottom: 10px;
+        padding-top: 5px;
+        z-index: 10;
+        position: fixed;
+      }
+
+
+      .hex-border {
+        top: 0;
+        width: 0;
+        height:75px;
+        position: fixed;
+        border-bottom: 25px solid transparent;
+
+        &.right { 
+          border-left: 35px solid black;  
+          margin-left: 84px;
+        }
+        &.left { 
+          border-right: 35px solid black; 
+        }
+      }
+    }
+  }
+
+  .container {
+    display: inline-block;
+    width: 40%;
+    overflow: hidden;
+    background-color: black;
+
+    &:first-of-type {
+      float: left;
+      height:100%;
+
+      a { float: right; }
+    }
+
+    &:last-of-type{
+      float: right;
+      height:100%;
+
+      a { float: left; }
+    }
+  }
+
+
+  //
+  // Mobile specific
+  //
+  [slider-open] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 34px;
+    background-image: url('../images/hamburger.png');
+    filter: invert(80%);
+    background-size: 100%;
+    margin: 8px;
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: $m-d-break) {
+    .container {
+      position: absolute;
+      width: 200px;
+      top: 0;
+      left: 0;
+      background: black;
+      z-index: 30;
+
+      transition: 1s;
+      -webkit-animation: slide 0.5s forwards;
+      -webkit-animation-delay: 2s;
+      animation: slide 0.5s forwards;
+      animation-delay: 2s;
+
+      a {
+        display: block;
+        width: 100%;
+        height: 50px;
+        margin:0;
+        padding:0;
+      }
+    }
+  }
+
+
+}
