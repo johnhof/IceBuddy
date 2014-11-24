@@ -24,3 +24,15 @@
 @font-face {
   @include loadFont('Tusj', 'ttf');
 }
+
+@font-face {
+  @include loadFont('SinkinSans', 'otf');
+}
+
+@font-face {
+  @include loadFont('Cantarell', 'tff');
+}
+
+@font-face {
+  @include loadFont('Exo', 'otf');
+}

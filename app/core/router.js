@@ -4,17 +4,16 @@ simpleApp.config(['$routeProvider', function ($routeProvider) {
 
     // Home
     when('/', {
-      templateUrl: 'views/home.html',
-      controller: 'HomeCtrl'
+      templateUrl : 'views/home.html',
+      controller  : 'HomeCtrl'
     }).
-    when('/:example', {
-      templateUrl: 'views/home.html',
-      controller: 'HomeCtrl'
+    when('/example', {
+      templateUrl : 'views/404.html',
     }).
     
     // 404
     otherwise({
-      redirectTo: 'views/404.html'
+      templateUrl : 'views/404.html',
     });
 
   }

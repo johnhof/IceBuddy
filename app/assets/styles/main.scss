@@ -1,5 +1,25 @@
+@import 'variables';
+
 html, body {
   padding: 0;
   margin: 0;
-  background: grey;
+  background: rgb(240, 240, 240);;
+  
+
+  // font-family: 'SeasideResort';
+  // font-family: 'Lobster';
+  // font-family: 'Acknowledgement';
+  // font-family: 'Aldo';
+  // font-family: 'Tusj';
+  // font-family: 'Exo';
+  // font-family: 'Cantarell';
+  font-family: 'SinkinSans';
 } 
+
+html {
+  height: 100%;
+}
+
+#main-content {
+  margin-top: 50px;
+}
