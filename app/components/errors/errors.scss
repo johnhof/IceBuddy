@@ -1,0 +1,17 @@
+#error-container {
+  padding: 20px;
+  text-align: center;
+  
+  .frown {
+    width: 100%;
+    font-size: 90px;
+    margin-top: 20px;
+    letter-spacing: 10px;
+    
+
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+  }
+}
