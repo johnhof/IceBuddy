@@ -77,7 +77,7 @@ A collection of minified files made accessible to the client. This is where the 
 To Run
 ======
 
-App:
+App
 * npm install
 * `grunt serve`
   * the grunt file will watch for changes to restart the server
