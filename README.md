@@ -13,23 +13,22 @@ Structure
 **API**
 
 ```
-api
 
--- api.js // base script
+api.js // base script
 
--- config.json // configuration data
+config.json // configuration data
 
--- routes.js // route->controller mapping
+routes.js // route->controller mapping
 
 >> lib // helpers, shared assets
 
 >> components // models and controllers
 
->>>> example
+  >>>> example
 
------- example_ctrl.js (C)
+  ------ example_ctrl.js (C)
 
------- example_model.js (M)
+  ------ example_model.js (M)
 
 ```
 
