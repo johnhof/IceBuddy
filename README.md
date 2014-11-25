@@ -91,4 +91,4 @@ API
 
 **Coming soon**
 
-`grunt serve` will start both the API and App servers watching both for hcanges to restart each independantly
+`grunt serve` will start both the API and App servers watching both for changes to restart each independantly
