@@ -1,10 +1,16 @@
 @import 'variables';
 
+
+//
+// Universal Styles
+//
+
+
 html, body {
   padding: 0;
   margin: 0;
-  background: rgb(240, 240, 240);
   letter-spacing: 1px;
+  background :none;
   
 
   // font-family: 'SeasideResort';
@@ -18,9 +24,36 @@ html, body {
 } 
 
 html {
+  background: rgb(240, 240, 240);
   height: 100%;
+  background: url('../images/ice.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 #main-content {
+  margin: auto;
   margin-top: 50px;
+  padding: 10px;  
+  
+  @media screen and (min-width: 800px) { width: 80%; }
+  @media screen and (max-width: 700px) { width: 85%; }
+  @media screen and (max-width: 800px) { width: 90%; }
+  @media screen and (max-width: 600px) { width: 100%; }
 }
+
+#background-filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(245, 246, 247, 0.83);
+  z-index: -1;
+}
+
+//
+//
+//

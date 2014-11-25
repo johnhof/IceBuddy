@@ -1,0 +1,6 @@
+{
+  "port" : 4000,
+  "serverSettings" : {
+    "name" : "IceBuddy"
+  }
+}

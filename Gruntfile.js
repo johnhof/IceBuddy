@@ -10,8 +10,9 @@ module.exports = function (grunt) {
 
   // Configurable paths for the application
   var appConfig = {
-    app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    app  : require('./bower.json').appPath || 'app',
+    api  : require('./bower.json').apiPath || 'api',
+    dist : 'dist'
   };
 
   // cache options for reuse
@@ -120,7 +121,14 @@ module.exports = function (grunt) {
           'dist/styles/*.css',
           '<%= server.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
         ]
-      }
+      }, 
+      // api: {
+      //   files: ['<%= server.api %>/**/*.js', '<%= server.api %>/**/*.json'],
+      //   tasks: ['run-api'],
+      //   options: {
+      //     livereload: '<%= connect.options.livereload %>'
+      //   }
+      // },
     },
 
 
@@ -455,11 +463,16 @@ module.exports = function (grunt) {
   ****************************************************************************************************/
 
 
-  grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
+  grunt.registerTask('serve', 'Starting servers: ', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
 
+    grunt.task.run(['app:' + target]);
+    grunt.task.run(['api:' + target]);
+  });
+
+  grunt.registerTask('app', 'Starting API server...', function (target) {
     grunt.task.run([
       'build',
       'connect:livereload',
@@ -467,9 +480,13 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function (target) {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve:' + target]);
+  grunt.registerTask('api', 'Compiling and Starting App server...', function (target) {
+    require('./api/api'); // require the API to run the startup script
+    
+    // grunt.task.run([
+    //   'run-api',
+    //   'watch'
+    // ]);
   });
 
 
@@ -523,4 +540,8 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     'build'
   ]);
+
+  // grunt.regiseterTask('run-api', 'Start the API', function () {
+  //   require('./api/api'); // require the API to run the startup script
+  // });
 };

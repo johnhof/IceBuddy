@@ -26,7 +26,10 @@
     "grunt-wiredep": "~1.8.0",
     "jshint-stylish": "^0.2.0",
     "load-grunt-tasks": "^0.4.0",
-    "time-grunt": "^0.3.1"
+    "time-grunt": "^0.3.1",
+    "restify": "~2.8.3",
+    "mongoose": "~3.8.19",
+    "lodash": "~2.4.1"
   },
   "engines": {
     "node": ">=0.10.0"
