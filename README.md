@@ -83,7 +83,7 @@ App
   * the grunt file will watch for changes to restart the server
 
 API
-* FORM THE ROOT DIRECTORY
+* FROM THE ROOT DIRECTORY
 * npm install
 * `nodemon ./api/api.js`
   * Working on integrating this into the grunt file. as it stands, `grunt api` will run the server but not deliver data (not sure why)
