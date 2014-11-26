@@ -89,3 +89,7 @@ API
 * `npm install nodemon -g`
 * `grunt api` -> http://localhost:8000
   * nodemon will restart the server for js changes
+
+
+**Coming Soon**
+* command line options
