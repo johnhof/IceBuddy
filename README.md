@@ -4,7 +4,7 @@ IceBuddy
 Web service to compile and deliver local ice times (skate/stick time/pickup)
 
 
-**Build from:** https://github.com/johnhof/simple_skeleton
+**Built from:** https://github.com/johnhof/simple_skeleton
 
 
 Structure
@@ -72,23 +72,24 @@ routes.js // route->controller mapping
 
 **Dist**
 
-A collection of minified files made accessible to the client. This is where the actual app runs. The App dir is for dev only
+A collection of minified files made accessible to the client. This is where the actual Angular app runs. The App dir is for dev only
 
 To Run
 ======
 
+General
+ * Requires MongoDB and Node
+ * Clone and npm install
+
 App
-* npm install
-* `grunt serve`
-  * the grunt file will watch for changes to restart the server
+* `grunt app` -> http://localhost:9000 
+  * grunt will recompile portions of the server on save depending on the file type (eg: re-minify js)
 
 API
-* FROM THE ROOT DIRECTORY
-* npm install
-* `nodemon ./api/api.js`
-  * Working on integrating this into the grunt file. as it stands, `grunt api` will run the server but not deliver data (not sure why)
+* `npm install nodemon -g`
+* `grunt api` -> http://localhost:8000
+  * nodemon will restart the server for js changes
 
 
-**Coming soon**
-
-`grunt serve` will start both the API and App servers watching both for changes to restart each independantly
+**Coming Soon**
+* command line options
