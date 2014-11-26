@@ -1,5 +1,4 @@
 
-
 module.exports = function accountController (api) {
   return {
     //

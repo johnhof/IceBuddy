@@ -1,4 +1,4 @@
-
+var Times = require('./times_model');
 
 module.exports = function timesController (api) {
   return {

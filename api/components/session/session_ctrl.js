@@ -1,4 +1,4 @@
-
+var Account = require('../account/account_model');
 
 module.exports = function sessionController (api) {
   return {
@@ -8,6 +8,7 @@ module.exports = function sessionController (api) {
     //
     create : function (req, res, next) {
       return next();
+
     },
 
 

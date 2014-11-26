@@ -1,4 +1,4 @@
-
+var Stats = require('./stats_model');
 
 module.exports = function statsController (api) {
   return {

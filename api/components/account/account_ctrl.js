@@ -1,4 +1,4 @@
-
+var Account  = require('./account_model');
 
 module.exports = function accountController (api) {
   return {

@@ -5,8 +5,12 @@ module.exports = function (grunt) {
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
+
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
+  
+  // run shell commands asyncronously
+  grunt.loadNpmTasks('grunt-shell-spawn');
 
   // Configurable paths for the application
   var appConfig = {
@@ -122,13 +126,13 @@ module.exports = function (grunt) {
           '<%= server.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }, 
-      // api: {
-      //   files: ['<%= server.api %>/**/*.js', '<%= server.api %>/**/*.json'],
-      //   tasks: ['run-api'],
-      //   options: {
-      //     livereload: '<%= connect.options.livereload %>'
-      //   }
-      // },
+      api: {
+        files: ['<%= server.api %>/**/*.js', '<%= server.api %>/**/*.json'],
+        tasks: ['run-api'],
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        }
+      },
     },
 
 
@@ -452,7 +456,22 @@ module.exports = function (grunt) {
     ****************************************************************************************************/
 
     // Run some tasks in parallel to speed up the build process
-    concurrent: {}
+    concurrent: {},
+
+    shell: {
+      mongo : {
+        command: 'mongod',
+        options: {
+          async: true
+        }
+      },
+      api : {
+        command: 'nodemon ./api/api.js',
+        options: {
+          async: true
+        }
+      }
+    }
   });
 
 
@@ -461,16 +480,6 @@ module.exports = function (grunt) {
   *  Task registration
   *
   ****************************************************************************************************/
-
-
-  grunt.registerTask('serve', 'Starting servers: ', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
-    }
-
-    grunt.task.run(['app:' + target]);
-    grunt.task.run(['api:' + target]);
-  });
 
   grunt.registerTask('app', 'Starting API server...', function (target) {
     grunt.task.run([
@@ -481,12 +490,11 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('api', 'Compiling and Starting App server...', function (target) {
-    require('./api/api'); // require the API to run the startup script
-    
-    // grunt.task.run([
-    //   'run-api',
-    //   'watch'
-    // ]);
+    grunt.task.run([
+      'shell:mongo',
+      'shell:api',
+      'watch'
+    ]);
   });
 
 
@@ -540,8 +548,4 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     'build'
   ]);
-
-  // grunt.regiseterTask('run-api', 'Start the API', function () {
-  //   require('./api/api'); // require the API to run the startup script
-  // });
 };

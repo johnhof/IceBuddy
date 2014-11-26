@@ -32,6 +32,8 @@ if (!config || config._error) {
 var api = restify.createServer(config.serverSettings);
 
 api.use(restify.bodyParser());
+api.use(restify.dateParser());
+api.use(restify.queryParser());
 api.config = config;
 
 
@@ -39,9 +41,9 @@ api.config = config;
 // MongoDB setup (globals)
 //
 
+// db = mongoose.connect({/* Mongoose Auth */})
+Schema = mongoose.Schema;
 
-// db = mongoose.connect({/* Mongoose Auth */}),
-// Schema = mongoose.Schema;
 
 
 //
