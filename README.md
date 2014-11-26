@@ -77,13 +77,13 @@ A collection of minified files made accessible to the client. This is where the 
 To Run
 ======
 
-App:
+App
 * npm install
 * `grunt serve`
   * the grunt file will watch for changes to restart the server
 
 API
-* FORM THE ROOT DIRECTORY
+* FROM THE ROOT DIRECTORY
 * npm install
 * `nodemon ./api/api.js`
   * Working on integrating this into the grunt file. as it stands, `grunt api` will run the server but not deliver data (not sure why)
@@ -91,4 +91,4 @@ API
 
 **Coming soon**
 
-`grunt serve` will start both the API and App servers watching both for hcanges to restart each independantly
+`grunt serve` will start both the API and App servers watching both for changes to restart each independantly
