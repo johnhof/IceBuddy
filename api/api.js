@@ -54,7 +54,7 @@ routes.register(api);
 //
 // Register error handler
 //
-// expect {error : 'string', details : 'object'}
+// expect {error : 'string', status : 'status code', details : 'object'}
 api.use(errorHandler);
 
 //
