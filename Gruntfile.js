@@ -125,14 +125,7 @@ module.exports = function (grunt) {
           'dist/styles/*.css',
           '<%= server.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
         ]
-      }, 
-      api: {
-        files: ['<%= server.api %>/**/*.js', '<%= server.api %>/**/*.json'],
-        tasks: ['run-api'],
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        }
-      },
+      }
     },
 
 
@@ -207,6 +200,20 @@ module.exports = function (grunt) {
         files: [{
           dot: true,
           src: '<%= server.dist %>/**/*.html'
+        }]
+      },
+      modules: {
+        files: [{
+          src: [
+            './node_modules',
+            './bower_components'
+          ]
+        }]        
+      },
+      compiled : {
+        files: [{
+          dot: true,
+          src: ['./.sass*', './dist', './tmp']
         }]
       }
     },
@@ -460,13 +467,19 @@ module.exports = function (grunt) {
 
     shell: {
       mongo : {
-        command: 'mongod',
+        command: 'sudo mongod',
         options: {
-          async: true
+          async: false
         }
       },
       api : {
         command: 'nodemon ./api/api.js',
+        options: {
+          async: true
+        }
+      },
+      install: {
+        command: 'npm install && bower install',
         options: {
           async: true
         }
@@ -491,7 +504,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('api', 'Compiling and Starting App server...', function (target) {
     grunt.task.run([
-      'shell:mongo',
+      // 'shell:mongo', // Mongo may need to be run separately, it has to start becfore the api, but then run in the background
       'shell:api',
       'watch'
     ]);
@@ -542,10 +555,5 @@ module.exports = function (grunt) {
     'cdnify',
     'htmlmin',
     'clean:tmp',
-  ]);
-
-
-  grunt.registerTask('default', [
-    'build'
   ]);
 };

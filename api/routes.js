@@ -51,13 +51,15 @@ exports.register = function  (api) {
   //
 
   function init (req, res, next) {
-    res.json = {};
+    res.data = {};
     return next();
   }
 
   function respond (req, res, next) {
-    if (res.json) {
-      res.send(res.json);
+    console.log('responding')
+    if (res.data && Object.keys(res.data).length) {
+      console.log('sending json')
+      res.json(res.data);
     } else {
       res.send(200);
     }

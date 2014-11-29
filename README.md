@@ -79,7 +79,7 @@ To Run
 
 General
  * Requires MongoDB and Node
- * Clone and npm install
+ * Clone and npm/bower install
 
 App
 * `grunt app` -> http://localhost:9000 
@@ -93,3 +93,10 @@ API
 
 **Coming Soon**
 * command line options
+
+Useful grunt commands
+=====================
+
+`grunt clean:compiled` -> removes compiled code (./tmp, ./dist, ./sass_cache)
+
+`grunt clean:modules` ->  removes node modules and bower components

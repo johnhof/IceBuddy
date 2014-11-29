@@ -1,7 +1,12 @@
-var restify  = require('restify');  
-var mongoose = require('mongoose');
-var routes   = require(process.cwd() + '/api/routes');
-var helpers  = require(process.cwd() + '/api/lib/helpers');
+var express      = require('express');  
+var mongoose     = require('mongoose');
+var routes       = require(process.cwd() + '/api/routes');
+var helpers      = require(process.cwd() + '/api/lib/helpers');
+var errorHandler = require(process.cwd() + '/api/lib/error').errorHandler;
+var http         = require('http');
+var json         = require('express-json');
+var bodyParser   = require('body-parser');
+var colors       = require('colors');
 
 
 //
@@ -19,43 +24,62 @@ if (!config || config._error) {
       detials : 'head for the hills'
     }
   };
-  console.error('\nEncountered and error: ' + config._error.summary);
+  console.error(('\nEncountered and error: ' + config._error.summary).red);
   console.error('\nDetails: ' + config._error.details + '\n');
   return;
 }
 
 //
-// RESTify setup
+// express setup
 //
 
 
-var api = restify.createServer(config.serverSettings);
+var api = express();
 
-api.use(restify.bodyParser());
-api.use(restify.dateParser());
-api.use(restify.queryParser());
+api.use(json());
+api.use(bodyParser());
+
+api.set('port', config.port);
+
 api.config = config;
 
 
-//
-// MongoDB setup (globals)
-//
-
-// db = mongoose.connect({/* Mongoose Auth */})
 Schema = mongoose.Schema;
-
-
 
 //
 // Register routes
 //
 routes.register(api);
 
+//
+// Register error handler
+//
+// expect {error : 'string', details : 'object'}
+api.use(errorHandler);
 
 //
-// start listening
+// MongoDB setup (globals)
 //
 
-api.listen(config.port, function() {
-  console.log(api.name + ' listening at ' + (api).url);
+
+mongoose.connection.on("open", function (ref) {
+  console.log("\nConnected to mongo server!\n".green);
+  listen();
 });
+
+mongoose.connection.on("error", function (err) {
+  return console.log("\n!! Could not connect to mongo server !! \n    Try running `[sudo] mongod` in another terminal\n".red);
+});
+
+var dbHost = 'mongodb://localhost/database'
+db = mongoose.connect(dbHost)
+
+
+//
+// Start server when mongo is connected
+//
+function listen () {
+  http.createServer(api).listen(api.get('port'), function(){
+   console.log(('++ API server listening on port ').green + api.get('port') + (' ++\n').green);
+  });
+}

@@ -1,4 +1,5 @@
 var Account  = require('./account_model');
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 
 module.exports = function accountController (api) {
   return {
@@ -7,7 +8,21 @@ module.exports = function accountController (api) {
     // Create
     //
     create : function (req, res, next) {
-      return next();
+      var inputs = req.body;
+      var newAccount = new Account(inputs);
+      newAccount.save(function (error) {
+        if (error) {
+console.log('yay')
+          return next(Err('Validation failed', error));
+        } else {
+console.log('sending')
+          res.data = {
+            success : true,
+            message : 'User ' + inputs.email + 'created'
+          }
+          return next();
+        }
+      });
     },
 
 
@@ -15,7 +30,7 @@ module.exports = function accountController (api) {
     // Read
     //
     read : function (req, res, next) {
-      res.json = {
+      res.data = {
         success: true
       };
       return next();
