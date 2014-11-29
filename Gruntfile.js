@@ -475,7 +475,7 @@ module.exports = function (grunt) {
       api : {
         command: 'nodemon ./api/api.js',
         options: {
-          async: true
+          async: false
         }
       },
       install: {
@@ -506,7 +506,6 @@ module.exports = function (grunt) {
     grunt.task.run([
       // 'shell:mongo', // Mongo may need to be run separately, it has to start becfore the api, but then run in the background
       'shell:api',
-      'watch'
     ]);
   });
 
