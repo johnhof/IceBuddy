@@ -37,7 +37,8 @@ if (!config || config._error) {
 var api = express();
 
 api.use(json());
-api.use(bodyParser());
+api.use(bodyParser.urlencoded({ extended: true }));
+api.use(bodyParser.json());
 
 api.set('port', config.port);
 
@@ -54,6 +55,7 @@ routes.register(api);
 //
 // Register error handler
 //
+
 // expect {error : 'string', status : 'status code', details : 'object'}
 api.use(errorHandler);
 
@@ -79,7 +81,7 @@ db = mongoose.connect(dbHost)
 // Start server when mongo is connected
 //
 function listen () {
-  http.createServer(api).listen(api.get('port'), function(){
+  http.createServer(api).listen(api.get('port'), function() {
    console.log(('++ API server listening on port ').green + api.get('port') + (' ++\n').green);
   });
 }

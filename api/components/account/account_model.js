@@ -1,60 +1,14 @@
-var mongoose = require('mongoose');
-var validate = require('mongoose-validator');
-var valUtils = require(process.cwd() + '/api/lib/validation_utils');
+var regexSet = require(process.cwd() + '/api/lib/regex_set');
+var mongoMan = require(process.cwd() + '/api/lib/mongo_man');
 
-// validator setup
-var regexSet = valUtils.regexSet;
-var val      = valUtils.validations;
-
-//
-// Schema
-//
-
-var accountSchema = new Schema({
-  email : {
-    type     : String, 
-    required : true, 
-    validate : [
-      val.matches('Email', regexSet.email)
-    ]
-  },
-  password : {
-    type     : String, 
-    required : true, 
-    validate : [
-      val.matches('Email', regexSet.password)
-    ]
-  },
-  username : {
-    type     : String, 
-    required : true, 
-    validate : [
-      val.isLength('User name', [3, 50]),
-      val.isAlphaNum('Username')
-    ]
-  },
-  registered : {
-    type     : Date, 
-    required : true
-  },
-  name : {
-    first : {
-      type     : String, 
-      required : true, 
-      validate : [
-        val.isLength('First name', [1, 50]),
-        val.isAlphaNum('First name')
-      ]
-    },
-    last  : {
-      type     : String, 
-      required : true, 
-      validate : [
-        val.isLength('Last name', [1, 50]),
-        val.isAlphaNum('Last name')
-      ]
-    }
+var build = mongoMan.build;
+module.exports = mongoMan.register('account', {
+  email      : build('Email').string().required().isAlphaNum().fin(),
+  password   : build('Password').string().required().matches(regexSet.password).fin(),
+  username   : build('User name').string().required().isAlphaNum().isLength([3, 50]).fin(),
+  registered : build().date().required().fin(),
+  name       : {
+    first : build('First name').string().required().isAlphaNum().isLength([1, 50]).fin(),
+    last  : build('Last name').string().required().isAlphaNum().isLength([1, 50]).fin()
   }
 });
-
-module.exports = mongoose.model('account', accountSchema);

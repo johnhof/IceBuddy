@@ -22,7 +22,7 @@ exports.register = function  (api) {
     if (controller.create) { api.post(route, init, controller.create, respond); }
     if (controller.read) { api.get(route, init, controller.read, respond); }
     if (controller.update) { api.put(route, init, controller.update, respond); }
-    if (controller.destroy) { api.del(route, init, controller.destroy, respond); }
+    if (controller.destroy) { api.delete(route, init, controller.destroy, respond); }
   }
 
   //
@@ -56,9 +56,8 @@ exports.register = function  (api) {
   }
 
   function respond (req, res, next) {
-    console.log('responding')
+ res.setHeader('Content-Type', 'application/json');
     if (res.data && Object.keys(res.data).length) {
-      console.log('sending json')
       res.json(res.data);
     } else {
       res.send(200);

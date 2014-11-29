@@ -10,12 +10,11 @@ module.exports = function accountController (api) {
     create : function (req, res, next) {
       var inputs = req.body;
       var newAccount = new Account(inputs);
+      
       newAccount.save(function (error) {
         if (error) {
-console.log('yay')
           return next(Err('Validation failed', error));
         } else {
-console.log('sending')
           res.data = {
             success : true,
             message : 'User ' + inputs.email + 'created'
