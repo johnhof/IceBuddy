@@ -111,12 +111,12 @@ A few things are done automatically cut down on controller/model/router bloat:
 
 CRUD controllers can be added to the route file with internal helpers. useing `routeCrud('/', controller('home'))` will call `homeCtrl = require(process.cwd() + '/home/home_ctrl')(api)` then map the following routes automatically, **IF** the handler is defined in the controller
 
- * `POST /` -> homeCtrl.create(req, res, next)
- * `GET /` -> homeCtrl.read(req, res, next)
- * `PUT /` -> homeCtrl.update(req, res, next)
- * `DELETE /` -> homeCtrl.destroy(req, res, next)
+ * `POST /` -> `homeCtrl.create(req, res, next)`
+ * `GET /` -> `homeCtrl.read(req, res, next)`
+ * `PUT /` -> `homeCtrl.update(req, res, next)`
+ * `DELETE /` -> `homeCtrl.destroy(req, res, next)`
 
-Sub-controllers can be added in a dot-syntax string `routeCrud('/players/:playerId', controller('players.player'))`
+Sub-controllers can be added in a dot-syntax string `routeCrud('/players/:playerId', controller('players.player'))` -> `require(process.cwd() + '/players/player/player_ctrl.js')(api)`
 
 **Models**
 
