@@ -24,7 +24,7 @@ exports.errorGenerator = function (seed, details, status) {
   return {
     error   : seed || 'Could not process request',
     status  : status || 400,
-    details : details || {}
+    details : details || null
   };
 }
 

@@ -34,7 +34,7 @@ var mongoman = function (title) {
   constructor.buffer   = function () { return constructor.type(Buffer); }
   constructor.boolean  = function () { return constructor.type(Boolean); }
   constructor.mixed    = function () { return constructor.type(Mixed); }
-  constructor.ibjectId = function () { return constructor.type(ObjectId); }
+  constructor.objectId = function () { return constructor.type(ObjectId); }
   constructor.array    = function () { return constructor.type(Array); }
 
   constructor.type = function (type) {
