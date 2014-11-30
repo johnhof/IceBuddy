@@ -45,18 +45,6 @@ api.set('port', config.port);
 api.config = config;
 
 //
-// Register routes
-//
-routes.register(api);
-
-//
-// Register error handler
-//
-
-// expect {error : 'string', status : 'status code', details : 'object'}
-api.use(errorHandler);
-
-//
 // MongoDB setup (globals)
 //
 
@@ -73,6 +61,23 @@ mongoose.connection.on("error", function (err) {
 
 var dbHost = 'mongodb://localhost/database'
 db = mongoose.connect(dbHost)
+
+// register models
+helpers.requireDirContent(process.cwd() + '/api/components', /_model.js/i)
+
+
+//
+// Register routes
+//
+
+routes.register(api);
+
+//
+// Register error handler
+//
+
+// expect {error : 'string', status : 'status code', details : 'object'}
+api.use(errorHandler);
 
 
 //

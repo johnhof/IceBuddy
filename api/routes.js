@@ -5,44 +5,35 @@ var _ = require('lodash');
 //
 
 exports.register = function  (api) {
-  
-  // 
-  // Helpers
-  //
-
-
-
-  function controller (name) {
-    var componentDir = process.cwd() + '/api/components/';
-    return require(componentDir + name + '/' + name + '_ctrl')(api);
-  }
-
-  function mapRoute (route, controller) {
-    // NOTE: this setup is in place to allow injection of middleware before and after the handler
-    if (controller.create) { api.post(route, init, controller.create, respond); }
-    if (controller.read) { api.get(route, init, controller.read, respond); }
-    if (controller.update) { api.put(route, init, controller.update, respond); }
-    if (controller.destroy) { api.delete(route, init, controller.destroy, respond); }
-  }
 
   //
   // Routes
   //
 
+  //
+  // Generic CRUDS routes
+  //
+
   // Home
-  mapRoute('/', controller('home'));
+  routeCrud('/', controller('home'));
+
+  // leagues
+  routeCrud('/leagues', controller('leagues'));
+  routeCrud('/leagues/:leagueId', controller('leagues.league'));
+
+  // Players
+  routeCrud('/players', controller('players'));
+  routeCrud('/players/:playerId', controller('players.player'));
 
   // Session
-  mapRoute('/session', controller('session'));
+  routeCrud('/session', controller('session'));
 
-  // Account
-  mapRoute('/account', controller('account'));
-
-  // Statistics
-  mapRoute('/stats', controller('stats'));
+  // Teams
+  routeCrud('/teams', controller('teams'));
+  routeCrud('/teams/:teamId', controller('teams.team'));
 
   // Times
-  mapRoute('/times', controller('times'));
+  routeCrud('/times', controller('times'));
 
 
 
@@ -50,17 +41,41 @@ exports.register = function  (api) {
   // MiddleWare
   //
 
+
   function init (req, res, next) {
     res.data = {};
     return next();
   }
 
   function respond (req, res, next) {
- res.setHeader('Content-Type', 'application/json');
+   res.setHeader('Content-Type', 'application/json'); // TODO: get this to actually work
     if (res.data && Object.keys(res.data).length) {
       res.json(res.data);
     } else {
       res.send(200);
     }
+  }
+
+
+  // 
+  // Helpers
+  //
+
+
+  function controller (path) {
+    var pathSplit    = path.split('.');
+    var ctrl         = pathSplit[pathSplit.length - 1]
+    var truePath     = pathSplit.join('/')
+    var componentDir = process.cwd() + '/api/components/';
+    return require(componentDir + truePath + '/' + ctrl + '_ctrl')(api);
+  }
+
+  function routeCrud (route, controller) {
+    // NOTE: this setup is in place to allow injection of middleware before and after the handler
+    if (controller.create) { api.post(route, init, controller.create, respond); }
+    if (controller.read) { api.get(route, init, controller.read, respond); }
+    if (controller.update) { api.put(route, init, controller.update, respond); }
+    if (controller.destroy) { api.delete(route, init, controller.destroy, respond); }
+    if (controller.search) { api.get(route, init, controller.search, respond); } // TODO: make this relevant
   }
 }

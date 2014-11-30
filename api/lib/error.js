@@ -33,6 +33,12 @@ exports.errorGenerator = function (seed, details, status) {
 //
 exports.errorHandler = function (error, req, res, next) {
   if (error) {
+
+    // catch and handle raw mongoose errors
+    if (error.message && !error.details) {
+      error = exports.errorGenerator(error);
+    }
+
     res.json(error.status || 500, {
       error   : error.error || 'Could not process request',
       details : error.details || null

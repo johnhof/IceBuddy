@@ -1,4 +1,7 @@
-var Account = require('../account/account_model');
+var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
+
+var Player = Mongoman.model('player');
 
 module.exports = function sessionController (api) {
   return {

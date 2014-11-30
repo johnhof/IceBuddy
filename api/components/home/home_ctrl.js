@@ -5,6 +5,11 @@ module.exports = function accountController (api) {
     // Read
     //
     read : function (req, res, next) {
+      
+      //
+      // generate a feed from variout seed locations
+      //
+
       res.json = {
         success: true
       };

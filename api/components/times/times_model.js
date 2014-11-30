@@ -1,11 +1,9 @@
-var mongoMan = require(process.cwd() + '/api/lib/mongo_man');
+var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 
-var build = mongoMan.build;
-
-module.exports = mongoMan.register('times', {
-  times : build('Times').array().fin(),
-  type  : build('Type').string().fin(),
-  cost  : build('Cost').string().fin(),
-  teams : build('Teams').array().fin(),
-  host  : build('Host').string().fin()
+module.exports = Mongoman.register('times', {
+  times : Mongoman('Times').array().fin(),
+  type  : Mongoman('Type').string().fin(),
+  cost  : Mongoman('Cost').string().fin(),
+  teams : Mongoman('Teams').array().fin(),
+  host  : Mongoman('Host').string().fin()
 });
