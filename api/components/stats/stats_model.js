@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
+var mongoMan = require(process.cwd() + '/api/lib/mongo_man');
 
-var statsSchema = new Schema({
-  username     : String,
+var build = mongoMan.build;
+
+module.exports = mongoMan.register('stats' ,{
+  username     : build('Username').string().fin(),
 });
-
-module.exports = mongoose.model('stats', statsSchema);

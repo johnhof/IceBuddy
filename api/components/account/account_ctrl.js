@@ -12,6 +12,7 @@ module.exports = function accountController (api) {
       var newAccount = new Account(inputs);
       
       newAccount.save(function (error) {
+        console.log(arguments)
         if (error) {
           return next(Err('Validation failed', error));
         } else {

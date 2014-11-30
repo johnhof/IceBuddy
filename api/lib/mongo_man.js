@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var validate = require('mongoose-validator');
 
+var Schema = mongoose.Schema;
+
 exports.build = function (title) {
   var constructor = {
     data : {
@@ -40,6 +42,11 @@ exports.build = function (title) {
     return constructor; 
   }
 
+  constructor.default = function (val) { 
+    constructor.data.default = val;
+    return constructor; 
+  }
+
 
   //
   // Validation
@@ -72,6 +79,7 @@ exports.build = function (title) {
 
   // bind validation object to set
   function bind (valObj) {
+    console.log(validate(valObj))
     constructor.data.validate.push(validate(valObj));
     return constructor;
   }
@@ -90,5 +98,5 @@ exports.build = function (title) {
 }
 
 exports.register = function(name, schema, options) {
-  return mongoose.model('account', new Schema(schema, options || { strict: true }));
+  return mongoose.model(name, new Schema(schema, options || { strict: true }));
 }

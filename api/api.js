@@ -44,9 +44,6 @@ api.set('port', config.port);
 
 api.config = config;
 
-
-Schema = mongoose.Schema;
-
 //
 // Register routes
 //
