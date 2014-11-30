@@ -58,6 +58,11 @@ var mongoman = function (title) {
     return constructor; 
   }
 
+  constructor.enum = function (val) { 
+    constructor.data.enum = val;
+    return constructor; 
+  }
+
 
   //
   // Validation
@@ -117,7 +122,16 @@ mongoman.register = function (name, schema, options) {
 
   // TODO : iterate over every leaf looking for a mongoman constructor and call fin()
 
-  return mongoose.model(name, new Schema(schema, options || { strict: true }));
+  var newSchema = new Schema(schema, options || { strict: true });
+
+  if (options) {
+    if (options.index) {
+      newSchema.index = options.index;
+      delete options.index;
+    }
+  }
+
+  return mongoose.model(name, newSchema);
 }
 
 // get a model
@@ -138,6 +152,9 @@ mongoman.save = function (modelName, inputs, errorHandler, successHandler) {
   })
 }
 
+mongoman.schema = function (schema) {
+  return new mongoose.Schema(schema);
+}
 
 //
 // Export

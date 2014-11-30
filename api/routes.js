@@ -33,7 +33,7 @@ exports.register = function  (api) {
   routeCrud('/teams/:teamId', controller('teams.team'));
 
   // Times
-  routeCrud('/times', controller('times'));
+  routeCrud('/locations', controller('locations'));
 
 
 

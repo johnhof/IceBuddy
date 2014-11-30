@@ -238,4 +238,5 @@ All validations that an error message param as the last argument to override the
 * `Mongoman.register(name, schema, [options])` - register new schema with a raw object (not a `Schema` instance)
 * `Mongoman.model(name)` - wrapper to get a model
 * `Mongoman.save(modelName, inputs, errorHandler, successHandler)` - save an `input` object to `modelName`, validation/DB errors will go to the `errorHandler` (generally `next()`), otherwise, `successHandler` is called 
+* `Mongoman.schema(schemaObj)` - returns a new schema instance of the passed in object
 
