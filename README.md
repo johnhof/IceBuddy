@@ -105,7 +105,7 @@ Useful grunt commands
 Mongoman
 ========
 
-I hate code bloat expecially when its something that we'll need to do over and over again. So I made a wrapper MANage MONgoose/mongo and mongoose-validator. 
+I hate code bloat expecially when its something that we'll need to do over and over again. So I made a wrapper MANage MONGOose/mongo and mongoose-validator. 
 
 Once this is near completion I'd like to make it into a separate module for public use. 
 
