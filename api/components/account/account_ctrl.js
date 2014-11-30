@@ -12,16 +12,14 @@ module.exports = function accountController (api) {
       var newAccount = new Account(inputs);
       
       newAccount.save(function (error) {
-        console.log(arguments)
-        if (error) {
-          return next(Err('Validation failed', error));
-        } else {
-          res.data = {
-            success : true,
-            message : 'User ' + inputs.email + 'created'
-          }
-          return next();
+        if (error) { return next(Err(error)); } 
+
+        res.data = {
+          success : true,
+          message : 'User ' + inputs.email + ' created'
         }
+
+        return next();
       });
     },
 

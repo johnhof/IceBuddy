@@ -65,7 +65,8 @@ exports.build = function (title) {
     return bind({
       validator   : 'isLength',
       passIfEmpty : false,
-      message     : msg || title + ' should be between {MIN} and {MAX} characters'
+      arguments   : val,
+      message     : msg || title + ' should be between ' + val[0] + ' and ' + val[1] + ' characters'
     });
   },
 
@@ -73,13 +74,12 @@ exports.build = function (title) {
     return bind({
       validator : 'matches',
       arguments : regEx,
-      message   : msg ||title + ' invlaid'
+      message   : msg ||title + ' invalid'
     });
   }
 
   // bind validation object to set
   function bind (valObj) {
-    console.log(validate(valObj))
     constructor.data.validate.push(validate(valObj));
     return constructor;
   }

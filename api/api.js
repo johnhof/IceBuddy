@@ -67,7 +67,8 @@ mongoose.connection.on("open", function (ref) {
 });
 
 mongoose.connection.on("error", function (err) {
-  return console.log("\n!! Could not connect to mongo server !! \n    Try running `[sudo] mongod` in another terminal\n".red);
+  console.log("\n!! Could not connect to mongo server !! \n    Try running `[sudo] mongod` in another terminal\n".red);
+  process.kill();
 });
 
 var dbHost = 'mongodb://localhost/database'
