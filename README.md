@@ -120,7 +120,7 @@ Sub-controllers can be added in a dot-syntax string `routeCrud('/players/:player
 
 **Models**
 
-Models are all registered automatically on server startup. The server will crawl through the `/components` directory tree and `require` any js file ending in `_model.js`. if this is not done, the modle will need to be added manually **BEFORE** it is used, or the server will crash.
+Models are all registered automatically on server startup. The server will crawl through the `/components` directory tree and `require` any js file ending in `_model.js`. if this is not done, the model will need to be added manually **BEFORE** it is used, or the server will crash.
 
 **General notes**
 
@@ -177,7 +177,7 @@ APP Specific
 Mongoman
 ========
 
-I hate code bloat expecially when its something that we'll need to do over and over again. So I made a wrapper MANage MONGOose/mongo and mongoose-validator. 
+I hate code bloat especially when its something that we'll need to do over and over again. So I made a wrapper MANage MONGOose/mongo and mongoose-validator. 
 
 Once this is near completion I'd like to make it into a separate module for public use. 
 
