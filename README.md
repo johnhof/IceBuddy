@@ -120,7 +120,7 @@ Sub-controllers can be added in a dot-syntax string `routeCrud('/players/:player
 
 **Models**
 
-Models are all registered automatically on server startup. The server will crawl through the `/components` directory tree and `require` andy js file ending in `_model.js`. if this is not done, the modle will need to be added manually **BEFORE** it is used, or the server will crash.
+Models are all registered automatically on server startup. The server will crawl through the `/components` directory tree and `require` any js file ending in `_model.js`. if this is not done, the modle will need to be added manually **BEFORE** it is used, or the server will crash.
 
 **General notes**
 
