@@ -1,4 +1,5 @@
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var locationParser = require(process.cwd() + '/api/locationParser');
 
 module.exports = function timesController (api) {
   return {
@@ -35,20 +36,19 @@ module.exports = function timesController (api) {
     // Update
     //
     update : function (req, res, next) {
-      // run parser
-      locationParser = null;
+      locationParser(function (result) {
+        Mongoman.save('league', req.body, next, function () {
       
-      // locationParser.parseAll(function (result) {
-      //   Mongoman.save('league', req.body, next, function () {
-      //
-      //     res.data = {
-      //       success : true,
-      //       message : 'User ' + inputs.name + ' created'
-      //     }
-      //
-      //     return next();
-      //   });
-      // })
+          res.data = {
+            success : true,
+            message : 'User ' + inputs.name + ' created'
+          }
+      
+          return next();
+        });
+      }, function (error) {
+        return next();
+      })
     },
 
 
