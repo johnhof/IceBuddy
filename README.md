@@ -102,6 +102,78 @@ Useful grunt commands
 
 `grunt clean:modules` ->  removes node modules and bower components
 
+API Specific
+============
+
+A few things are done automatically cut down on controller/model/router bloat:
+
+**Routing and Controllers**
+
+CRUD controllers can be added to the route file with internal helpers. useing `routeCrud('/', controller('home'))` will call `homeCtrl = require(process.cwd() + '/home/home_ctrl')(api)` then map the following routes automatically, **IF** the handler is defined in the controller
+
+ * `POST /` -> homeCtrl.create(req, res, next)
+ * `GET /` -> homeCtrl.read(req, res, next)
+ * `PUT /` -> homeCtrl.update(req, res, next)
+ * `DELETE /` -> homeCtrl.destroy(req, res, next)
+
+Sub-controllers can be added in a dot-syntax string `routeCrud('/players/:playerId', controller('players.player'))`
+
+**Models**
+
+Models are all registered automatically on server startup. The server will crawl through the `/components` directory tree and `require` andy js file ending in `_model.js`. if this is not done, the modle will need to be added manually **BEFORE** it is used, or the server will crash.
+
+**General notes**
+
+both routes and models can be added in the standard raw mongo/express methods, if you see fit. If thats the case, they need not follow the file structure used for automation.
+
+**Errors**
+
+Custom error handling middleware was added to standardize output. All errors will follow the structure 
+
+```javascript
+{
+  error: 'string',
+  details: []
+}
+```
+
+to generate error on the fly, please use teh error generato  `require(process.cwd() + '/api/lib/error').errorGenerator(error)` which takes an object of the form:
+
+```javascript
+{
+  error   : 'string', // defaults to 'Could not process request'
+  status  : 'status code', // defaults to 400
+  details : [] // defaults to null
+}
+```
+
+which is then handled by the errorhandler middleware which applies defaults and sends the error object. **NOTE:** Raw mongoose errors are accepted in both the error generator and the middleware. They will be processed and groomed into the standard error output. An example converted mongoose validation error is listed below
+
+```javascript
+{
+  "error": "Validation failed",
+  "details": [
+    {
+      "path": "username",
+      "message": "Required"
+    },
+    {
+      "path": "password",
+      "message": "Password invalid"
+    },
+    {
+      "path": "email",
+      "message": "Email invalid"
+    }
+  ]
+}
+```
+
+
+APP Specific
+============
+
+
 Mongoman
 ========
 
