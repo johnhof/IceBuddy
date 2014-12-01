@@ -58,19 +58,20 @@ exports.requireDirContent = function (path, regEx) {
 // returns the an array of directories and an array of files from an directory
 exports.getDirContents = function (path) {
   var results = _.map(fs.readdirSync(path) || [], function (content) {
-        if (!content) return;
+    if (!content) return;
 
-        var match  = content.match(/(.*?)(\..*)$/) || []
-          , result = {
-              name      : match[1] || content,
-              path      : path,
-              extension : match[2] || null,
-              isJs      : /\.js$/.test(content),
-              isFile    : !fs.statSync(path + '/' + (match[1] || content) + (match[2] || '')).isDirectory()
-            };
+    var match  = content.match(/(.*?)(\..*)$/) || []
+    var result = {
+      string    : path + '/' + content,
+      name      : match[1] || content,
+      path      : path,
+      extension : match[2] || null,
+      isJs      : /\.js$/.test(content),
+      isFile    : !fs.statSync(path + '/' + (match[1] || content) + (match[2] || '')).isDirectory()
+    };
 
-        return result;
-      });
+    return result;
+  });
 
   return results;
 }

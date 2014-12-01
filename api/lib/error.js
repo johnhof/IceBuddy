@@ -32,7 +32,7 @@ exports.errorGenerator = function (seed, details, status) {
 // middleware error handler
 //
 exports.errorHandler = function (error, req, res, next) {
-  if (error) {
+  if (error && !error instanceof Error) {
 
     // catch and handle raw mongoose errors
     if (error.message && !error.details) {
@@ -45,6 +45,11 @@ exports.errorHandler = function (error, req, res, next) {
     });
 
   } else {
-    next();
+    res.json(500, {
+      error   : 'Internal server error',
+      details : null
+    });
+
+    throw (error);
   }
 }

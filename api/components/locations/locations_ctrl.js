@@ -25,10 +25,24 @@ module.exports = function timesController (api) {
     // Read
     //
     read : function (req, res, next) {
-      res.json = {
-        success: true
-      };
-      return next();
+      res.data = [];
+      locationParser(function (error, result, callback) {
+        if (error) { return callaback(error); }
+        // Mongoman.save('league', req.body, next, function () {
+      
+        //   res.data = {
+        //     success : true,
+        //     message : 'User ' + inputs.name + ' created'
+        //   }
+      
+        //   return next();
+        // });
+        console.log(result);
+        res.data.push(result)
+        return callback();
+      }, function (error) {
+        return next();
+      })
     },
 
 
@@ -36,16 +50,21 @@ module.exports = function timesController (api) {
     // Update
     //
     update : function (req, res, next) {
-      locationParser(function (result) {
-        Mongoman.save('league', req.body, next, function () {
+      res.data = [];
+      locationParser(function (error, result, callback) {
+        if (error) { return callaback(error); }
+        // Mongoman.save('league', req.body, next, function () {
       
-          res.data = {
-            success : true,
-            message : 'User ' + inputs.name + ' created'
-          }
+        //   res.data = {
+        //     success : true,
+        //     message : 'User ' + inputs.name + ' created'
+        //   }
       
-          return next();
-        });
+        //   return next();
+        // });
+        console.log(result);
+        res.data.push(result)
+        return callback();
       }, function (error) {
         return next();
       })

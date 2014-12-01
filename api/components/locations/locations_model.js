@@ -27,9 +27,15 @@ var timeSet = {
 module.exports = Mongoman.register('times', {
   name  : Mongoman('Name').string().required().fin(),
   times : {
-    skate  : timeSet,
-    stick  : timeSet,
-    pickup : timeSet
+    skate : timeSet,
+    ice : {
+      stick  : timeSet,
+      pickup : timeSet,
+    },
+    roller : {
+      stick  : timeSet,
+      pickup : timeSet,
+    }
   },
   location : {
     type: Mongoman('Type').string().default('Point').required().enum(['Point', 'LineString', 'Polygon']).fin(),

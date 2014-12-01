@@ -1,25 +1,26 @@
-var locations      = require('./locations');
-var customParsers  = require('./customParsers');
-var standardParser = require('./standardParser');
-var async          = require('async');
-var URL            = require('url');
+var locations = require('./locations');
+var parserSet = require('./parsers');
+var async     = require('async');
+var URL       = require('url');
+var _         = require('lodash');
+var regexSet  = require(process.cwd() + '/api/lib/regex_set');
 
 module.exports = function (handler, onComplete) {
   var parsers = _.map(locations, function parse (location) {
-    var url = URL.parse(location);
-
     return function (callback) {
 
       // pass the result to the handler and call the completion callback
-      var trueHandler = function (result) {
-        return handler(result, callback);
+      var trueHandler = function (error, result) {
+        return handler(error, result, callback);
       }
 
+      var domain = location.replace(regexSet.domainName, '');
+
       // map the location to the parser and pass in the handler-wrapper
-      if (customParsers[url.host]) {
-        return customParsers[url.host](url, trueHandler);
+      if (parserSet[domain]) {
+        return parserSet[domain]('www.' + location, trueHandler);
       } else {
-        return standardParser(url, trueHandler);
+        return parserSet.standard('www.' + location, trueHandler);
       }
     }
   })
