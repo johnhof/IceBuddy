@@ -17,7 +17,10 @@ exports.register = function  (api) {
   // Home
   routeCrud('/', controller('home'));
 
-  // leagues
+  // Account
+  routeCrud('/account', controller('account'));
+
+  // Leagues
   routeCrud('/leagues', controller('leagues'));
   routeCrud('/leagues/:leagueId', controller('leagues.league'));
 
@@ -31,9 +34,6 @@ exports.register = function  (api) {
   // Teams
   routeCrud('/teams', controller('teams'));
   routeCrud('/teams/:teamId', controller('teams.team'));
-
-  // Times
-  routeCrud('/locations', controller('locations'));
 
 
 

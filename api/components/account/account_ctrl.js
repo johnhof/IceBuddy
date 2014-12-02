@@ -1,14 +1,24 @@
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
-var locationParser = require(process.cwd() + '/api/locationParser');
 
-module.exports = function timesController (api) {
+var Player = Mongoman.model('player');
+
+module.exports = function accountController (api) {
   return {
 
     //
     // Create
     //
     create : function (req, res, next) {
-      return next();
+      Mongoman.save('player', req.body, next, function () {
+
+        res.data = {
+          success : true,
+          message : 'Player ' + inputs.username + ' created'
+        }
+
+        return next();
+      });
     },
 
 
@@ -16,6 +26,9 @@ module.exports = function timesController (api) {
     // Read
     //
     read : function (req, res, next) {
+      res.data = {
+        success: true
+      };
       return next();
     },
 

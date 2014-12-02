@@ -1,7 +1,7 @@
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 
-var Player = Mongoman.model('player');
+var Account = Mongoman.model('account');
 
 module.exports = function sessionController (api) {
   return {
@@ -10,8 +10,13 @@ module.exports = function sessionController (api) {
     // Create
     //
     create : function (req, res, next) {
-      return next();
-
+      // TODO : add validation
+      Account.findOne({
+        email    : req.body.email,
+        password : req.body.password
+      }, function (error, user) {
+        return next();
+      });
     },
 
 

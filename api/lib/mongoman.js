@@ -18,7 +18,8 @@ var mongoman = function (title) {
   var constructor = {
     data : {
       required : false,
-      validate : []
+      validate : [],
+      index    : {}
     }
   };
 
@@ -61,6 +62,11 @@ var mongoman = function (title) {
   constructor.enum = function (val) { 
     constructor.data.enum = val;
     return constructor; 
+  }
+
+  constructor.unique = function () {
+    constructor.data.index.unique = true;
+    return constructor;
   }
 
 
