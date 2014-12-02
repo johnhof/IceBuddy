@@ -8,16 +8,7 @@ module.exports = function timesController (api) {
     // Create
     //
     create : function (req, res, next) {
-      
-      Mongoman.save('league', req.body, next, function () {
-
-        res.data = {
-          success : true,
-          message : 'User ' + inputs.name + ' created'
-        }
-
-        return next();
-      });
+      return next();
     },
 
 
@@ -25,24 +16,7 @@ module.exports = function timesController (api) {
     // Read
     //
     read : function (req, res, next) {
-      res.data = [];
-      locationParser(function (error, result, callback) {
-        if (error) { return callaback(error); }
-        // Mongoman.save('league', req.body, next, function () {
-      
-        //   res.data = {
-        //     success : true,
-        //     message : 'User ' + inputs.name + ' created'
-        //   }
-      
-        //   return next();
-        // });
-        console.log(result);
-        res.data.push(result)
-        return callback();
-      }, function (error) {
-        return next();
-      })
+      return next();
     },
 
 
@@ -50,24 +24,7 @@ module.exports = function timesController (api) {
     // Update
     //
     update : function (req, res, next) {
-      res.data = [];
-      locationParser(function (error, result, callback) {
-        if (error) { return callaback(error); }
-        // Mongoman.save('league', req.body, next, function () {
-      
-        //   res.data = {
-        //     success : true,
-        //     message : 'User ' + inputs.name + ' created'
-        //   }
-      
-        //   return next();
-        // });
-        console.log(result);
-        res.data.push(result)
-        return callback();
-      }, function (error) {
-        return next();
-      })
+      return next();
     },
 
 

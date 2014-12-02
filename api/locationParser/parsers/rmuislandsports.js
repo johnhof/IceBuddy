@@ -20,8 +20,6 @@ module.exports = function parse (host, next) {
       }, function (error, response, body) {
         var $ = cheerio.load(body);
 
-        require('fs').writeFileSync('/tmp/test1.html', body);
-
         return callback();
       });
     },
