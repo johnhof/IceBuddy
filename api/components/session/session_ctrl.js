@@ -1,5 +1,7 @@
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
+var validate = require(process.cwd() + '/api/lib/validate');
+var Joi      = require('joi');
 
 var Account = Mongoman.model('account');
 
@@ -10,13 +12,18 @@ module.exports = function sessionController (api) {
     // Create
     //
     create : function (req, res, next) {
-      // TODO : add validation
-      Account.findOne({
-        email    : req.body.email,
-        password : req.body.password
-      }, function (error, user) {
-        return next();
-      });
+      validate(req.body, {
+        email    : Joi.email(),
+        password : Joi.password()
+      }, function success (inputs, callback) {
+        Account.findOne(inputs, function (error, user) {
+          console.log(inputs)
+          console.log(arguments)
+          console.log(error)
+          console.log(user)
+          return callback();
+        });
+      }, next);
     },
 
 

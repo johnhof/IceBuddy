@@ -14,7 +14,7 @@ module.exports = function accountController (api) {
 
         res.data = {
           success : true,
-          message : 'Player ' + inputs.username + ' created'
+          message : 'Account ' + req.body.username + ' created'
         }
 
         return next();

@@ -38,12 +38,12 @@ exports.requireDirContent = function (path, regEx) {
     _.each(currentContents, function (content) {
       if (!currentLeaf[content.name]) {
         currentLeaf[content.name] = {};
-      } 
+      }
 
       // if this is is a file, require it as a property of this leaf
       if (content.isJs && regEx.test(content.name + content.extension)) {
         currentLeaf[content.name] = require(content.path + '/' + content.name + content.extension);
-      
+
       // if it's a directory, recurse
       } else if (!content.isFile) {
         subTreeObj(_.clone(currentLeaf[content.name], true), content.path + '/' + content.name);

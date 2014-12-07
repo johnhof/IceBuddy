@@ -1,4 +1,4 @@
-var express      = require('express');  
+var express      = require('express');
 var mongoose     = require('mongoose');
 var routes       = require(process.cwd() + '/api/routes');
 var helpers      = require(process.cwd() + '/api/lib/helpers');
@@ -48,9 +48,8 @@ api.config = config;
 // MongoDB setup (globals)
 //
 
-
 mongoose.connection.on("open", function (ref) {
-  console.log("\nConnected to mongo server!\n".green);
+  console.log("\nConnected to mongo server!\n".blue);
   listen();
 });
 
@@ -79,12 +78,18 @@ routes.register(api);
 // expect {error : 'string', status : 'status code', details : 'object'}
 api.use(errorHandler);
 
+//
+// mixins
+//
+
+require(process.cwd() + '/api/lib/validate');
+
 
 //
 // Start server when mongo is connected
 //
 function listen () {
   http.createServer(api).listen(api.get('port'), function() {
-   console.log(('++ API server listening on port ').green + api.get('port') + (' ++\n').green);
+   console.log(('++++++++ API server listening on port ').green + api.get('port') + (' ++++++++\n').green);
   });
 }
