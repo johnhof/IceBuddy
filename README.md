@@ -147,7 +147,9 @@ to generate error on the fly, please use teh error generato  `require(process.cw
 }
 ```
 
-which is then handled by the errorhandler middleware which applies defaults and sends the error object. **NOTE:** Raw mongoose errors are accepted in both the error generator and the middleware. They will be processed and groomed into the standard error output. An example converted mongoose validation error is listed below
+which is then handled by the errorhandler middleware which applies defaults and sends the error object. 
+
+**NOTE:** Raw mongoose/joi errors are accepted in both the error generator and the middleware. They will be processed and groomed into the standard error output. An example converted mongoose/joi validation error is listed below
 
 ```javascript
 {
