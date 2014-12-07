@@ -1,4 +1,3 @@
-var regexSet = require(process.cwd() + '/api/lib/regex_set');
 var Joi      = require('joi');
 var async    = require('async');
 
@@ -6,7 +5,7 @@ var async    = require('async');
 // Validate function
 //
 
-module.exports = function validate (inputs, schema, middleMan, onComplete) {
+var validate = function validate (inputs, schema, middleMan, onComplete) {
   var defaults = {
     abortEarly    : false, // exit with error at the first failure
     convert       : true, // convert similar types eg. string->int
@@ -25,7 +24,7 @@ module.exports = function validate (inputs, schema, middleMan, onComplete) {
     if (error) {
       return onComplete(error);
     } else if (middleMan) {
-      if (middleMan.length) {
+      if (middleMan instanceof Array) {
         return async.waterfall(middleMan, onComplete)
       } else {
         return middleMan(value, onComplete);
@@ -37,13 +36,29 @@ module.exports = function validate (inputs, schema, middleMan, onComplete) {
 }
 
 //
+// common use regex's
+//
+
+validate.regex = {
+  email      : /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  password   : /^.*(?=.{4,10})(?=.*\d)(?=.*[a-zA-Z]).*$/,
+  domainName : /\.(com|edu|net|org|info|coop|int|co\.uk|org\.uk|ac\.uk|uk)$/
+};
+
+//
+// Export
+//
+
+module.exports = validate;
+
+//
 // Joi mixins
 //
 
 Joi.email = function () {
-  return this.string().required().regex(regexSet.email);
+  return this.string().required().regex(validate.regex.email);
 }
 
 Joi.password = function () {
-  return this.string().required().regex(regexSet.password);
+  return this.string().required().regex(validate.regex.password);
 }

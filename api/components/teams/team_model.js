@@ -1,4 +1,4 @@
-var regexSet = require(process.cwd() + '/api/lib/regex_set');
+var regexSet = require(process.cwd() + '/api/lib/validate').regex;
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 
 module.exports = Mongoman.register('team', {

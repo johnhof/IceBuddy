@@ -17,11 +17,16 @@ module.exports = function sessionController (api) {
         password : Joi.password()
       }, function success (inputs, callback) {
         Account.findOne(inputs, function (error, user) {
-          console.log(inputs)
-          console.log(arguments)
-          console.log(error)
-          console.log(user)
-          return callback();
+          if (!user) {
+            return callback(Err('Login failed. check your credentials and try again'))
+          } else {
+            res.data = {
+              success :true,
+              message : 'now logged in (not really though, we need to implement this)'
+            }
+
+            return callback();
+          }
         });
       }, next);
     },

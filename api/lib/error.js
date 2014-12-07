@@ -75,8 +75,6 @@ exports.errorHandler = function (error, req, res, next) {
     sendErr({
       error   : 'Internal server error'
     });
-console.log(typeof error)
-console.log(error)
     console.log('\n')
     throw (error);
   }
