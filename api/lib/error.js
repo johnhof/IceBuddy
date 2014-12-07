@@ -59,9 +59,9 @@ exports.errorHandler = function (error, req, res, next) {
   if (error instanceof Error && error.name === 'ValidationError') {
     error.type = 'joi'
     error = exports.errorGenerator(error);
-    defaultError(error);
+    return sendErr(error);
 
-  } else if (error && !error instanceof Error) {
+  } else if (error && !(error instanceof Error)) {
 
     // catch and handle raw mongoose errors
     if (error.message && !error.details) {
@@ -69,20 +69,20 @@ exports.errorHandler = function (error, req, res, next) {
       error = exports.errorGenerator(error);
     }
 
-    defaultError(error);
+    return sendErr(error);
 
   } else {
-    res.json(500, {
-      error   : 'Internal server error',
-      details : null
+    sendErr({
+      error   : 'Internal server error'
     });
-
+console.log(typeof error)
+console.log(error)
     console.log('\n')
     throw (error);
   }
 
 
-  function defaultError (err) {
+  function sendErr (err) {
     res.json(err.status || 500, {
       error   : err.error || 'Could not process request',
       details : err.details || null

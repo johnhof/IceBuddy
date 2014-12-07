@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 
 //
 // TODO: make property descripters accessible outside the conscructor function
-//         to allow users to generate custom validation. Then this should be 
+//         to allow users to generate custom validation. Then this should be
 //         broken out into its own module
 //
 
@@ -49,19 +49,19 @@ var mongoman = function (title) {
   //
 
 
-  constructor.required = function (required) { 
+  constructor.required = function (required) {
     constructor.data.required = required === false ? false : true;
-    return constructor; 
+    return constructor;
   }
 
-  constructor.default = function (val) { 
+  constructor.default = function (val) {
     constructor.data.default = val;
-    return constructor; 
+    return constructor;
   }
 
-  constructor.enum = function (val) { 
+  constructor.enum = function (val) {
     constructor.data.enum = val;
-    return constructor; 
+    return constructor;
   }
 
   constructor.unique = function () {
@@ -75,7 +75,7 @@ var mongoman = function (title) {
   //
 
 
-  constructor.isAlphaNum = function (msg) {
+  constructor.alphanum = function (msg) {
     return bind({
       validator   : 'isAlphanumeric',
       passIfEmpty : false,
@@ -106,7 +106,7 @@ var mongoman = function (title) {
     return constructor;
   }
 
-  
+
   //
   // Compiler
   //
@@ -149,11 +149,11 @@ mongoman.save = function (modelName, inputs, errorHandler, successHandler) {
   var Model = mongoman.model(modelName);
   var newModel = new Model(inputs);
 
-  return newModel.save(function (error) {
+  return newModel.save(function (error, result) {
     if (error) {
-      return errorHandler(error);
+      return errorHandler(error, result);
     } else {
-      successHandler();
+      successHandler(result);
     }
   })
 }

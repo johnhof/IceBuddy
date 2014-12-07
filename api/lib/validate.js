@@ -1,5 +1,6 @@
 var regexSet = require(process.cwd() + '/api/lib/regex_set');
 var Joi      = require('joi');
+var async    = require('async');
 
 //
 // Validate function
@@ -23,8 +24,14 @@ module.exports = function validate (inputs, schema, middleMan, onComplete) {
   Joi.validate(inputs, Joi.object().keys(schema), defaults,  function (error, value){
     if (error) {
       return onComplete(error);
+    } else if (middleMan) {
+      if (middleMan.length) {
+        return async.waterfall(middleMan, onComplete)
+      } else {
+        return middleMan(value, onComplete);
+      }
     } else {
-      return middleMan(value, onComplete);
+      return onComplete(new Error);
     }
   });
 }
