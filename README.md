@@ -78,8 +78,10 @@ To Run
 ======
 
 General
- * Requires MongoDB and Node
- * Clone and npm/bower install
+ * Requires MongoDB, Node, Compass (Ruby)
+ * Clone Git Repo
+ * npm install
+ * bower install
 
 App
 * `grunt app` -> http://localhost:9000 
@@ -149,7 +151,7 @@ to generate error on the fly, please use teh error generato  `require(process.cw
 
 which is then handled by the errorhandler middleware which applies defaults and sends the error object. 
 
-**NOTE:** Raw mongoose/joi errors are accepted in both the error generator and the middleware. They will be processed and groomed into the standard error output. An example converted mongoose/joi validation error is listed below
+**NOTE:** Raw mongoose/joi errors are accepted in both the error generator and the middleware. They will be processed and groomed into the standard error output. An example converted mongoose/joi validation error is listed below. The intent is for the APP to match paths to messages in form inputs
 
 ```javascript
 {
@@ -170,6 +172,22 @@ which is then handled by the errorhandler middleware which applies defaults and 
   ]
 }
 ```
+
+**Validation**
+
+There is a wrapper for joi to handle errors for us. simply use
+
+```javascript
+  validate(req.body, {
+    email    : Joi.email(),
+    password : Joi.password()
+  }, handler(trimmedInput, callback) || [array, of, handlers], FinalcallbackAndErrorHandler);
+```
+
+if an arrray is passed in, it will execute an async.waterfall. the validator also adds a few minor Joi mixins, but Joi doesnt support true extension, so use with caution. the validator object also has a property `regex` containing an object of regex's to standardize use. the current supported reges's are below
+
+* `email` - small-ish version of the official regex
+* `password` - accepts letters and at least one number between 4 and 10 characters
 
 
 APP Specific
@@ -231,7 +249,7 @@ module.exports = function accountController (api) {
 
 All validations that an error message param as the last argument to override the default error
 
-* `isAlphaNum([msg])` - must be alpha numberic
+* `alphanum([msg])` - must be alpha numberic
 * `isLength(array, [msg])` - must be between `array[0]` and `array[1]`
 * `matches(regex, [msg])` - must match regex
 
