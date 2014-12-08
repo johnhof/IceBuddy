@@ -67,7 +67,6 @@ exports.errorHandler = function (error, req, res, next) {
     return sendErr(error);
 
   } else {
-    console.log(error)
     if (error.name === 'ValidationError') {
       error.type = 'joi';
       error = exports.errorGenerator(error);
