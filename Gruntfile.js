@@ -8,7 +8,7 @@ module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
-  
+
   // run shell commands asyncronously
   grunt.loadNpmTasks('grunt-shell-spawn');
 
@@ -42,21 +42,21 @@ module.exports = function (grunt) {
         flatten: true,
         src: '<%= server.app %>/**/*.{sass,scss}',
         dest: '.tmp/styles'
-      }, 
+      },
       index : {
         expand: true,
         dot: true,
         flatten: true,
         src: '<%= server.app %>/core/index.html',
         dest: '<%= server.dist %>'
-      }, 
+      },
       views : {
         expand: true,
         dot: true,
         flatten: true,
         src: '<%= server.app %>/components/**/*.html',
         dest: '<%= server.dist %>/views'
-      }, 
+      },
       partials : {
         expand: true,
         dot: true,
@@ -208,7 +208,7 @@ module.exports = function (grunt) {
             './node_modules',
             './bower_components'
           ]
-        }]        
+        }]
       },
       compiled : {
         files: [{
@@ -320,7 +320,7 @@ module.exports = function (grunt) {
          opts.copy.index,
          opts.copy.views,
          opts.copy.partials
-        ]      
+        ]
       },
     },
 
@@ -335,9 +335,9 @@ module.exports = function (grunt) {
     concat: {
       js: {
         files: {
-          '<%= server.dist %>/scripts/main.js': ['<%= server.app %>/core/app.js', 
-                                                  '<%= server.app %>/core/app_config.js', 
-                                                  '<%= server.app %>/core/angular_helpers.js', 
+          '<%= server.dist %>/scripts/main.js': ['<%= server.app %>/core/app.js',
+                                                  '<%= server.app %>/core/app_config.js',
+                                                  '<%= server.app %>/core/angular_helpers.js',
                                                   '<%= server.app %>/**/*.js']
         }
       },

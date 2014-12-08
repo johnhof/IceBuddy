@@ -17,10 +17,8 @@ module.exports = function sessionController (api) {
         email    : Joi.email(),
         password : Joi.password()
       }, function success (inputs, callback) {
-        inputs.password = bcrypt.hashSync(inputs.password);
-        console.log(inputs.password)
-        Account.findOne(inputs, function (error, user) {
-          if (!user) {
+        Account.findOne({email : inputs.email}, function (error, user) {
+          if (!user || !bcrypt.compareSync(inputs.password, user.password)) {
             return callback(Err('Login failed. check your credentials and try again'))
           } else {
             res.data = {

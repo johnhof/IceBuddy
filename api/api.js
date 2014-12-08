@@ -84,7 +84,6 @@ api.use(errorHandler);
 
 require(process.cwd() + '/api/lib/validate');
 
-
 //
 // Start server when mongo is connected
 //
