@@ -78,8 +78,10 @@ To Run
 ======
 
 General
- * Requires MongoDB and Node
- * Clone and npm/bower install
+ * Requires MongoDB, Node, Compass (Ruby)
+ * Clone Git Repo
+ * npm install
+ * bower install
 
 App
 * `grunt app` -> http://localhost:9000 
