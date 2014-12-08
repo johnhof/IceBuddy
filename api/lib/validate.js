@@ -25,6 +25,9 @@ var validate = function validate (inputs, schema, middleMan, onComplete) {
       return onComplete(error);
     } else if (middleMan) {
       if (middleMan instanceof Array) {
+        middleMan.unshift(function (callback) {
+          return callback(null, value)
+        })
         return async.waterfall(middleMan, onComplete)
       } else {
         return middleMan(value, onComplete);

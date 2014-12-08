@@ -2,6 +2,7 @@ var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 var validate = require(process.cwd() + '/api/lib/validate');
 var Joi      = require('joi');
+var bcrypt   = require('bcrypt-nodejs');
 
 var Account = Mongoman.model('account');
 
@@ -16,6 +17,8 @@ module.exports = function sessionController (api) {
         email    : Joi.email(),
         password : Joi.password()
       }, function success (inputs, callback) {
+        inputs.password = bcrypt.hashSync(inputs.password);
+        console.log(inputs.password)
         Account.findOne(inputs, function (error, user) {
           if (!user) {
             return callback(Err('Login failed. check your credentials and try again'))

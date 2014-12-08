@@ -8,7 +8,7 @@ exports.errorGenerator = function (seed, details, status) {
   // allow joi errors to pass in directly
   if ((seed.message && seed._object) || seed.type === 'joi') {
 
-    var existingErrors = {}; // keep trak of existing errors to avoid dupes
+    var existingErrors = {}; // keep track of existing errors to avoid dupes
     details = _.compact(_.map(seed.details, function (err, index) {
       if (existingErrors[err.path]) { return; }
 
@@ -55,28 +55,31 @@ exports.errorGenerator = function (seed, details, status) {
 // middleware error handler
 //
 exports.errorHandler = function (error, req, res, next) {
-  // catch and handle raw joi errors
-  if (error instanceof Error && error.name === 'ValidationError') {
-    error.type = 'joi'
-    error = exports.errorGenerator(error);
-    return sendErr(error);
-
-  } else if (error && !(error instanceof Error)) {
+  if (!(error instanceof Error)) {
 
     // catch and handle raw mongoose errors
     if (error.message && !error.details) {
-      error.type = 'mongoose'
+      error.type = 'mongoose';
       error = exports.errorGenerator(error);
-    }
 
+      // catch and handle raw joi errors
+    } else
     return sendErr(error);
 
   } else {
-    sendErr({
-      error   : 'Internal server error'
-    });
-    console.log('\n')
-    throw (error);
+    console.log(error)
+    if (error.name === 'ValidationError') {
+      error.type = 'joi';
+      error = exports.errorGenerator(error);
+      sendErr(error);
+    } else {
+      sendErr({
+        error   : 'Internal server error'
+      });
+
+      console.log('\n');
+      throw (error);
+    }
   }
 
 

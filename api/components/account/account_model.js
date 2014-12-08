@@ -3,7 +3,7 @@ var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 
 module.exports = Mongoman.register('account', {
   email      : Mongoman('Email').string().required().unique().matches(regexSet.email).fin(),
-  password   : Mongoman('Password').string().required().matches(regexSet.password).fin(),
+  password   : Mongoman('Password').string().required().fin(),
   username   : Mongoman('User name').string().required().unique().alphanum().isLength([3, 50]).fin(), // display name
   registered : Mongoman().date().required().default(Date.now).fin(),
   name       : {

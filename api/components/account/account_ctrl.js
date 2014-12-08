@@ -2,6 +2,7 @@ var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 var validate = require(process.cwd() + '/api/lib/validate');
 var Joi      = require('joi');
+var bcrypt   = require('bcrypt-nodejs');
 
 var Account = Mongoman.model('account');
 
@@ -22,7 +23,7 @@ module.exports = function accountController (api) {
           last  : Joi.string().optional().alphanum().min(1).max(50)
         })
       }, [
-        function getAccount (callback) {
+        function getAccount (result, callback) {
           Account.findOne({
             $or: [
               { email    : inputs.email },
@@ -35,6 +36,8 @@ module.exports = function accountController (api) {
           return callback(result);
         },
         function save (callback) {
+          inputs.password = bcrypt.hashSync(inputs.password);
+        console.log(inputs.password)
           Mongoman.save('account', req.body, callback, function (user) {
             res.data = {
               success : true,
