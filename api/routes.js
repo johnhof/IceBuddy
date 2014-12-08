@@ -1,4 +1,5 @@
-var _ = require('lodash');
+var _       = require('lodash');
+var session = require(process.cwd() + '/api/lib/session');
 
 //
 // Register
@@ -29,6 +30,8 @@ exports.register = function  (api) {
   routeCrud('/players/:playerId', controller('players.player'));
 
   // Session
+  var sessionCtrl = controller('session')
+  api.get('/session', init, session.requireSession, sessionCtrl.read, respond);
   routeCrud('/session', controller('session'));
 
   // Teams
@@ -57,7 +60,7 @@ exports.register = function  (api) {
   }
 
 
-  // 
+  //
   // Helpers
   //
 

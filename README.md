@@ -84,7 +84,7 @@ General
  * bower install
 
 App
-* `grunt app` -> http://localhost:9000 
+* `grunt app` -> http://localhost:9000
   * grunt will recompile portions of the server on save depending on the file type (eg: re-minify js)
 
 API
@@ -128,9 +128,16 @@ Models are all registered automatically on server startup. The server will crawl
 
 both routes and models can be added in the standard raw mongo/express methods, if you see fit. If thats the case, they need not follow the file structure used for automation.
 
+the following variables and utils are cached by middleware
+* `req`
+  * `session`    - a copy of the parsed session cookie
+  * `signedIn()` - returns whether or not the user is signed in (using the hash to validate)
+* `res`
+  * `setSession(session, signedIn)` - takes `session[username]`, `session[email]` and `signedIn` to generate and set the session cookie. defaults to null values
+
 **Errors**
 
-Custom error handling middleware was added to standardize output. All errors will follow the structure 
+Custom error handling middleware was added to standardize output. All errors will follow the structure
 
 ```javascript
 {
@@ -149,7 +156,7 @@ to generate error on the fly, please use teh error generato  `require(process.cw
 }
 ```
 
-which is then handled by the errorhandler middleware which applies defaults and sends the error object. 
+which is then handled by the errorhandler middleware which applies defaults and sends the error object.
 
 **NOTE:** Raw mongoose/joi errors are accepted in both the error generator and the middleware. They will be processed and groomed into the standard error output. An example converted mongoose/joi validation error is listed below. The intent is for the APP to match paths to messages in form inputs
 
@@ -190,6 +197,17 @@ if an arrray is passed in, it will execute an async.waterfall. the validator als
 * `password` - accepts letters and at least one number between 4 and 10 characters
 
 
+**Session**
+
+the following utils are available from /lib/session.js
+* `isvalidSession(req)` - return whether or not this session is signed in with a valid hash
+* `primeSession(req, res, next)` - app level middleware that parses and sets up the session state/cookie. if neither are sent in the request, they are generated. the following utilities are added as well
+  * `req.session`    - a copy of the parsed session cookie
+  * `res.signedIn()` - returns whether or not the user is signed in (using the hash to vlaidate)
+  * `res.setSession(session, signedIn)` - takes `session[username]`, `session[email]` and `signedIn` to generate and set the session cookie. defaults to null values
+* `requireSession(req, res, next)` - Route level middleware. returns 401 if a valid session is not found
+
+
 APP Specific
 ============
 
@@ -197,9 +215,9 @@ APP Specific
 Mongoman
 ========
 
-I hate code bloat especially when its something that we'll need to do over and over again. So I made a wrapper MANage MONGOose/mongo and mongoose-validator. 
+I hate code bloat especially when its something that we'll need to do over and over again. So I made a wrapper MANage MONGOose/mongo and mongoose-validator.
 
-Once this is near completion I'd like to make it into a separate module for public use. 
+Once this is near completion I'd like to make it into a separate module for public use.
 
 **Schema building**
 
@@ -257,6 +275,6 @@ All validations that an error message param as the last argument to override the
 
 * `Mongoman.register(name, schema, [options])` - register new schema with a raw object (not a `Schema` instance)
 * `Mongoman.model(name)` - wrapper to get a model
-* `Mongoman.save(modelName, inputs, errorHandler, successHandler)` - save an `input` object to `modelName`, validation/DB errors will go to the `errorHandler` (generally `next()`), otherwise, `successHandler` is called 
+* `Mongoman.save(modelName, inputs, errorHandler, successHandler)` - save an `input` object to `modelName`, validation/DB errors will go to the `errorHandler` (generally `next()`), otherwise, `successHandler` is called
 * `Mongoman.schema(schemaObj)` - returns a new schema instance of the passed in object
 

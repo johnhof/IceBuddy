@@ -2,11 +2,13 @@ var express      = require('express');
 var mongoose     = require('mongoose');
 var routes       = require(process.cwd() + '/api/routes');
 var helpers      = require(process.cwd() + '/api/lib/helpers');
+var session      = require(process.cwd() + '/api/lib/session');
 var errorHandler = require(process.cwd() + '/api/lib/error').errorHandler;
 var http         = require('http');
 var json         = require('express-json');
 var bodyParser   = require('body-parser');
 var colors       = require('colors');
+var cookieParser = require('cookie-parser')
 
 
 //
@@ -39,6 +41,8 @@ var api = express();
 api.use(json());
 api.use(bodyParser.urlencoded({ extended: true }));
 api.use(bodyParser.json());
+api.use(cookieParser());
+api.use(session.primeSession);
 
 api.set('port', config.port);
 

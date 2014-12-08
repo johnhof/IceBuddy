@@ -39,7 +39,7 @@ var validate = function validate (inputs, schema, middleMan, onComplete) {
 }
 
 //
-// common use regex's
+// Common use regex's
 //
 
 validate.regex = {
@@ -47,6 +47,10 @@ validate.regex = {
   password   : /^.*(?=.{4,10})(?=.*\d)(?=.*[a-zA-Z]).*$/,
   domainName : /\.(com|edu|net|org|info|coop|int|co\.uk|org\.uk|ac\.uk|uk)$/
 };
+
+//
+// Session
+//
 
 //
 // Export

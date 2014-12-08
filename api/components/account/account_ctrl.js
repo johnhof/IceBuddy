@@ -39,6 +39,7 @@ module.exports = function accountController (api) {
           inputs.password = bcrypt.hashSync(inputs.password, bcrypt.genSaltSync());
 
           Mongoman.save('account', req.body, callback, function (user) {
+            res.setSession(user, true);
             res.data = {
               success : true,
               message : 'Account ' + inputs.username + ' created'
