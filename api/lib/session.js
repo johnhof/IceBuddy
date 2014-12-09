@@ -4,6 +4,12 @@ var Err    = require(process.cwd() + '/api/lib/error').errorGenerator;
 
 
 //
+// Setup functions
+//
+
+var server_secret = bcrypt.hashSync((new Date()).toString() + 'here\'s some more entropy for you', bcrypt.genSaltSync());
+
+//
 // Standalone functions
 //
 
@@ -22,17 +28,14 @@ exports.isValidSession = function (req) {
 
 // init req.signedIn, req.session, and res.setSession()
 exports.primeSession = function (req, res, next) {
-  req.session = req.cookies.ice_session;
+  req.session = req.cookies.session;
 
   if (!req.session) {
     req.session = newSession();
-    // res.cookie('ice_session', req.session, { secure: true }); // not being set for some reason :(
-    res.cookie('ice_session', req.session);
+    res.cookie('session', req.session);
   }
 
-  req.signedIn = function () {
-    return exports.isValidSession(req);
-  }
+  req.isSignedIn = exports.isValidSession(req)
 
   // set session
   res.setSession = function (session, signedIn) {
@@ -48,7 +51,7 @@ exports.primeSession = function (req, res, next) {
       sessionObj.hash = bcrypt.hashSync(hashSeed, bcrypt.genSaltSync());
     }
 
-    res.cookie('ice_session', sessionObj);
+    res.cookie('session', sessionObj);
   }
 
   return next();
@@ -72,7 +75,7 @@ exports.requireSession = function (req, res, next) {
 
 // extract important values from the session for hashing purposes
 function sessionToSeed (session) {
-  return [session.username, session.email, session.issued, session.signedIn].toString();
+  return [session.username, session.email, session.issued, session.signedIn, server_secret].toString();
 }
 
 // generate a generic empty session
