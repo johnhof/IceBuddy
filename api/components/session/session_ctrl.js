@@ -21,9 +21,10 @@ module.exports = function sessionController (api) {
           if (!user || !bcrypt.compareSync(inputs.password, user.password)) {
             return callback(Err('Login failed. check your credentials and try again'))
           } else {
+            res.setSession(user, true);
             res.data = {
               success :true,
-              message : 'now logged in (not really though, we need to implement this)'
+              message : 'now logged in as ' + user.username
             }
 
             return callback();
@@ -37,18 +38,20 @@ module.exports = function sessionController (api) {
     // Read
     //
     read : function (req, res, next) {
-      res.json = {
-        success: true
-      };
-      return next();
-    },
+      Account.findOne({
+        email    : req.session.email
+      }, function (error, user) {
+        if (error) { return next(error); }
 
+        res.data = {
+          email      : user.email,
+          username   : user.username,
+          registered : user.registered,
+          name       : user.name
+        };
 
-    //
-    // Update
-    //
-    update : function (req, res, next) {
-      return next();
+        return next();
+      });
     },
 
 
@@ -56,6 +59,8 @@ module.exports = function sessionController (api) {
     // Destroy
     //
     destroy : function (req, res, next) {
+      // nullify the session and return
+      res.setSession();
       return next();
     }
   };
