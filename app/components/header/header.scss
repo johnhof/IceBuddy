@@ -1,5 +1,7 @@
 @import 'variables';
 
-.navbar-default {
-  background-color: #FFFFFF;
+.navbar {
+  &.navbar-default {
+    background-color: #FFFFFF;
+  }
 }

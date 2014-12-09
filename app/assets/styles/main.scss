@@ -11,7 +11,7 @@ html, body {
   margin: 0;
   letter-spacing: 1px;
   background :none;
-  
+
 
   // font-family: 'SeasideResort';
   // font-family: 'Lobster';
@@ -21,12 +21,12 @@ html, body {
   // font-family: 'Exo';
   // font-family: 'Cantarell';
   font-family: 'SinkinSans';
-} 
+}
 
 html {
   background: rgb(240, 240, 240);
   height: 100%;
-  background: url('../images/ice.jpg') no-repeat center center fixed; 
+  background: url('../images/ice.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -36,8 +36,9 @@ html {
 #main-content {
   margin: auto;
   margin-top: 50px;
-  padding: 10px;  
-  
+  padding: 10px;
+  color: $grey;
+
   @media screen and (min-width: 800px) { width: 80%; }
   @media screen and (max-width: 700px) { width: 85%; }
   @media screen and (max-width: 800px) { width: 90%; }
@@ -52,6 +53,10 @@ html {
   width: 100%;
   background: rgba(245, 246, 247, 0.83);
   z-index: -1;
+}
+
+.container {
+  width: 100%;
 }
 
 //
