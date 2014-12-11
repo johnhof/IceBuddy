@@ -6,17 +6,18 @@ module.exports = Mongoman.register('player', {
   password   : Mongoman('Password').string().required().matches(regexSet.password).fin(),
   username   : Mongoman('User name').string().required().alphanum().isLength([3, 50]).fin(),
 
-  playerId: {},
-  preferredNumber : {},
+  player_id: Mongoman('Team Id').number().required().unique().fin(),
+  preferredNumber : Mongoman('Team Id').number().required().fin(),
 
   registered : Mongoman().date().required().default(Date.now).fin(),
   name       : {
     first : Mongoman('First name').string().required().alphanum().isLength([1, 50]).fin(),
     last  : Mongoman('Last name').string().required().alphanum().isLength([1, 50]).fin()
-  }
-
-  //
-  // TODO: flesh out schema
-  //
-
+  },
+  //List of teams player is associated with
+  teams   : [],
+  //account object (embedded)
+  account : {},
+  // List of game ids this user has participated in
+  games : []
 });
