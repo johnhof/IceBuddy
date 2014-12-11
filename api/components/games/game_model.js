@@ -12,7 +12,7 @@ module.exports = Mongoman.register('game', {
   //Array of Stats objects
   stats   : [],
   //Array of ref ids
-  refs   : [],
+  refs   : []
   
 
 
