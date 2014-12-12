@@ -73,6 +73,21 @@ helpers.requireDirContent(process.cwd() + '/api/components', /_model.js/i)
 // Register routes
 //
 
+// prime routes
+api.use(function init (req, res, next) {
+  res.data = {};
+
+  //
+  // TODO: figure out how to get either of these to work
+  //
+  // res.setHeader('Content-Type', 'application/json');
+  // res.set({
+  //   'Content-Type': 'application/json'
+  // })
+
+  return next();
+});
+
 routes.register(api);
 
 //
