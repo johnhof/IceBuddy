@@ -15,9 +15,9 @@ module.exports = Mongoman.register('player', {
     last  : Mongoman('Last name').string().required().alphanum().isLength([1, 50]).fin()
   },
   //List of teams player is associated with
-  teams   : [],
+  teams   : Mongoman('Teams').array().fin(),
   //account object (embedded)
   account : {},
   // List of game ids this user has participated in
-  games : []
+  games : Mongoman('Games').array().fin()
 });

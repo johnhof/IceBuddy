@@ -2,16 +2,14 @@ var regexSet = require(process.cwd() + '/api/lib/validate').regex;
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 
 module.exports = Mongoman.register('team', {
-  team_id: Mongoman('Team Id').number().required().unique().isLength([1, 50]).fin(),
+  team_id: Mongoman('Team Id').number().required().unique().fin(),
   name : Mongoman('Team name').string().required().alphanum().isLength([1, 50]).fin(),
   //(http://docs.mongodb.org/manual/tutorial/model-referenced-one-to-many-relationships-between-documents/)
   //This will be an array of season ids
-  seasons : [],
-  players : [],
+  seasons : Mongoman('Seasons').array().fin(),
+  players : Mongoman('Team Players').array().fin(),
   //Array of player ids
-  captains : [],
+  captains : Mongoman('Captains').array().fin(),
   //Array of user ids
-  managers : []
-
-
+  managers : Mongoman('Managers').array().fin()
 });
