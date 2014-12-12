@@ -76,6 +76,11 @@ helpers.requireDirContent(process.cwd() + '/api/components', /_model.js/i)
 // prime routes
 api.use(function init (req, res, next) {
   res.data = {};
+  res.setHeader('Content-Type', 'application/json');
+
+res.set({
+  'Content-Type': 'application/json'
+})
   return next();
 });
 
