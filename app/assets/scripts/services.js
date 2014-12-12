@@ -12,7 +12,7 @@ simpleApp.service('Cookie', [function () {
       var cookie = $.cookie(cookieName);
       if (cookie) {
         try {
-            result = JSON.parse(cookie);
+            result = JSON.parse(cookie.replace(/^j:/, ''));
         } catch (e) {
           console.error(e);
           result = null;
@@ -55,10 +55,12 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', function (Cookie, Api, 
 
   applyCookie();
   function applyCookie () {
-    var cookie = Cookie('session') || {};
-    session.username   = cookie.username;
-    session.email      = cookie.email;
-    session.isSignedIn = cookie.isSignedIn || false;
+    var cookie = Cookie('session');
+    if (cookie) {
+      session.username   = cookie.username;
+      session.email      = cookie.email;
+      session.isSignedIn = cookie.isSignedIn || false;
+    }
   }
 
   return session;

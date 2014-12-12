@@ -14,6 +14,8 @@ module.exports = function (grunt) {
 
   // use grunt proxy to forward requests to the api
   grunt.loadNpmTasks('grunt-connect-proxy');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-connect-prism');
 
   // Configurable paths for the application
   var appConfig = {
@@ -135,18 +137,25 @@ module.exports = function (grunt) {
         hostname: '0.0.0.0',
         livereload: 35729,
       },
-      // TODO : configure this to work on prod
-      proxies: [{
-        context: '/api',
-        host: 'localhost',
-        port: 8000
-      }],
+// // TODO : configure this to work on prod
+// proxies: [{
+//   context: '/api',
+//   host: 'localhost',
+//   port: 8000
+// }],
       livereload: {
         options: {
           open: true,
+// // TODO : configure this to work on prod
+// proxies: [{
+//   context: '/api',
+//   host: 'localhost',
+//   port: 8000
+// }],
           middleware: function (connect) {
             return [
-              require('grunt-connect-proxy/lib/utils').proxyRequest,
+              require('grunt-connect-prism/middleware'),
+              // require('grunt-connect-proxy/lib/utils').proxyRequest,
               connect.static('.tmp'),
               connect().use(
                 '/bower_components',
@@ -164,6 +173,23 @@ module.exports = function (grunt) {
           base: '<%= server.dist %>'
         }
       }
+    },
+
+    // Setup one prism
+    prism: {
+      options: {
+        mode: 'proxy',
+        mocksPath: './mocks',
+        context: '/api',
+        host: '0.0.0.0',
+        port: 8000,
+        https: false,
+        delay: 0,
+        /* rewrites requests to context */
+        rewrite: {}
+      },
+      serve: {},
+      e2e: {}
     },
 
     // Empties folders to start fresh
@@ -487,9 +513,21 @@ module.exports = function (grunt) {
   *
   ****************************************************************************************************/
 
-  grunt.registerTask('app', 'Starting API server...', function (target) {
+  grunt.registerTask('app', 'Starting API server...', function (prismMode) {
+
+
+    var prismTask = 'prism:serve';
+
+    if (prismMode) {
+      prismTask = prismTask + ':' + prismMode;
+    }
+consle.log(prismTask)
+
     grunt.task.run([
       'build',
+      // 'configureProxies:server',
+      prismTask,
+      // 'livereload-start',
       'connect:livereload',
       'watch'
     ]);
