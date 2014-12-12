@@ -31,7 +31,7 @@ exports.register = function  (api) {
 
   // Session
   var sessionCtrl = controller('session')
-  api.get('/session', init, session.requireSession, sessionCtrl.read, respond);
+  api.get('/session', session.requireSession, sessionCtrl.read, respond);
   routeCrud('/session', controller('session'));
 
   // Teams
@@ -44,11 +44,6 @@ exports.register = function  (api) {
   // MiddleWare
   //
 
-
-  function init (req, res, next) {
-    res.data = {};
-    return next();
-  }
 
   function respond (req, res, next) {
    res.setHeader('Content-Type', 'application/json'); // TODO: get this to actually work
@@ -75,10 +70,10 @@ exports.register = function  (api) {
 
   function routeCrud (route, controller) {
     // NOTE: this setup is in place to allow injection of middleware before and after the handler
-    if (controller.create) { api.post(route, init, controller.create, respond); }
-    if (controller.read) { api.get(route, init, controller.read, respond); }
-    if (controller.update) { api.put(route, init, controller.update, respond); }
-    if (controller.destroy) { api.delete(route, init, controller.destroy, respond); }
-    if (controller.search) { api.get(route, init, controller.search, respond); } // TODO: make this relevant
+    if (controller.create) { api.post(route, controller.create, respond); }
+    if (controller.read) { api.get(route, controller.read, respond); }
+    if (controller.update) { api.put(route, controller.update, respond); }
+    if (controller.destroy) { api.delete(route, controller.destroy, respond); }
+    if (controller.search) { api.get(route, controller.search, respond); } // TODO: make this relevant
   }
 }

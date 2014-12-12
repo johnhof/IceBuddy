@@ -73,6 +73,12 @@ helpers.requireDirContent(process.cwd() + '/api/components', /_model.js/i)
 // Register routes
 //
 
+// prime routes
+api.use(function init (req, res, next) {
+  res.data = {};
+  return next();
+});
+
 routes.register(api);
 
 //
