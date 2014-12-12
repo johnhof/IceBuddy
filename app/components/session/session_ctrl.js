@@ -1,6 +1,6 @@
-simpleApp.controller('SessionCtrl', ['$scope', function ($scope) {
-	
+simpleApp.controller('SessionCtrl', ['$scope', 'Session', function ($scope, Session) {
 
+  $scope.session = Session;
 
 
 }]);

@@ -10,7 +10,10 @@ var simpleApp = angular.module('simpleApp', [
 
   // utility modules
   'ngRoute',
-
-  // controllers
-  // 'mainController'
+  'ngResource'
 ]);
+
+
+simpleApp.config([function () {
+
+}]);

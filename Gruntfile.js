@@ -12,6 +12,9 @@ module.exports = function (grunt) {
   // run shell commands asyncronously
   grunt.loadNpmTasks('grunt-shell-spawn');
 
+  // use grunt proxy to forward requests to the api
+  grunt.loadNpmTasks('grunt-connect-proxy');
+
   // Configurable paths for the application
   var appConfig = {
     app  : require('./bower.json').appPath || 'app',
@@ -130,13 +133,20 @@ module.exports = function (grunt) {
       options: {
         port: 9000,
         hostname: '0.0.0.0',
-        livereload: 35729
+        livereload: 35729,
       },
+      // TODO : configure this to work on prod
+      proxies: [{
+        context: '/api',
+        host: 'localhost',
+        port: 8000
+      }],
       livereload: {
         options: {
           open: true,
           middleware: function (connect) {
             return [
+              require('grunt-connect-proxy/lib/utils').proxyRequest,
               connect.static('.tmp'),
               connect().use(
                 '/bower_components',
@@ -318,7 +328,7 @@ module.exports = function (grunt) {
       js: {
         files: {
           '<%= server.dist %>/scripts/main.js': ['<%= server.app %>/core/app.js',
-                                                  '<%= server.app %>/core/app_config.js',
+                                                  '<%= server.app %>/core/api.js',
                                                   '<%= server.app %>/scripts/services.js',
                                                   '<%= server.app %>/scripts/helpers.js',
                                                   '<%= server.app %>/**/*.js']
