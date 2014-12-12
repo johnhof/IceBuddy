@@ -22,13 +22,6 @@ module.exports = function (grunt) {
   // cache options for reuse
   var opts = {
     copy : {
-      fonts : {
-        expand: true,
-        dot: true,
-        flatten: true,
-        dest: '<%= server.dist %>/fonts',
-        src: '<%= server.app %>/assets/fonts/**/*'
-      },
       images : {
         expand: true,
         dot: true,
@@ -107,10 +100,6 @@ module.exports = function (grunt) {
       images : {
         files: ['<%= server.app %>/assets/images/**/*'],
         tasks: ['copy:images']
-      },
-      fonts : {
-        files: ['<%= server.app %>/assets/fonts/**/*'],
-        tasks: ['copy:fonts']
       },
       gruntfile: {
         files: ['Gruntfile.js'],
@@ -254,11 +243,9 @@ module.exports = function (grunt) {
         generatedImagesDir: '<%= server.dist %>/images',
         imagesDir: '<%= server.app %>',
         javascriptsDir: '<%= server.app %>',
-        fontsDir: '<%= server.app %>/shared_assets/fonts',
         importPath: './bower_components',
         httpImagesPath: 'shared_assets/images',
         httpGeneratedImagesPath: '/images/generated',
-        httpFontsPath: '/styles/fonts',
         relativeAssets: false,
         assetCacheBuster: false,
         raw: 'Sass::Script::Number.precision = 10\n'
@@ -281,8 +268,7 @@ module.exports = function (grunt) {
         src: [
           '<%= server.dist %>/scripts/*.js',
           '<%= server.dist %>/styles/*.css',
-          '<%= server.dist %>/images/*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= server.dist %>/styles/fonts/*'
+          '<%= server.dist %>/images/*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
     },
@@ -299,7 +285,6 @@ module.exports = function (grunt) {
       dist: {
         files: [
          opts.copy.images,
-         opts.copy.fonts,
          opts.copy.sass,
          opts.copy.index,
          opts.copy.views,
@@ -308,9 +293,6 @@ module.exports = function (grunt) {
       },
       images: {
         files: [opts.copy.images]
-      },
-      fonts: {
-        files: [opts.copy.fonts]
       },
       css : {
         files: [opts.copy.sass]
@@ -337,7 +319,8 @@ module.exports = function (grunt) {
         files: {
           '<%= server.dist %>/scripts/main.js': ['<%= server.app %>/core/app.js',
                                                   '<%= server.app %>/core/app_config.js',
-                                                  '<%= server.app %>/core/angular_helpers.js',
+                                                  '<%= server.app %>/scripts/services.js',
+                                                  '<%= server.app %>/scripts/helpers.js',
                                                   '<%= server.app %>/**/*.js']
         }
       },
