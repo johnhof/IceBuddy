@@ -46,8 +46,6 @@ exports.register = function  (api) {
 
 
   function respond (req, res, next) {
-   res.setHeader('Content-Type', 'application/json'); // TODO: get this to actually work
-   console.log(res.get('Content-Type'))
     if (res.data && Object.keys(res.data).length) {
       res.send(200).json(res.data);
     } else {
