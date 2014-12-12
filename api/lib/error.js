@@ -83,7 +83,9 @@ exports.errorHandler = function (error, req, res, next) {
 
 
   function sendErr (err) {
-    res.json(err.status || 500, {
+   res.setHeader('Content-Type', 'application/json'); // TODO: get this to actually work
+
+  res.status(err.status || 500).json({
       error   : err.error || 'Could not process request',
       details : err.details || null
     });
