@@ -1,5 +1,5 @@
 simpleApp.config(['$routeProvider', function ($routeProvider) {
-  
+
   $routeProvider.
 
     // Home
@@ -7,10 +7,17 @@ simpleApp.config(['$routeProvider', function ($routeProvider) {
       templateUrl : 'views/home.html',
       controller  : 'HomeCtrl'
     }).
-    when('/example', {
-      templateUrl : 'views/404.html',
+
+    //session
+    when('/session', {
+      templateUrl : 'views/session.html',
+      controller  : 'SessionCtrl'
     }).
-    
+    when('/session/:action', {
+      templateUrl : 'views/session.html',
+      controller  : 'SessionCtrl'
+    }).
+
     // 404
     otherwise({
       templateUrl : 'views/404.html',

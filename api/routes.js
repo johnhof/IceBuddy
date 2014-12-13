@@ -46,11 +46,7 @@ exports.register = function  (api) {
 
 
   function respond (req, res, next) {
-    if (res.data && Object.keys(res.data).length) {
-      res.send(200).json(res.data);
-    } else {
-      res.send(200);
-    }
+    res.status(200).send(res.data);
   }
 
 

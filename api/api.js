@@ -77,6 +77,8 @@ helpers.requireDirContent(process.cwd() + '/api/components', /_model.js/i)
 api.use(function init (req, res, next) {
   res.data = {};
 
+  console.log('  ' + (req.method).cyan.dim + ' ' + (req.url).grey.dim)
+
   //set headers
   res.set({
     'Content-Type': 'application/json' // TODO: Get this to work for errors!!!

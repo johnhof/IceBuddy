@@ -12,6 +12,8 @@ module.exports = function (grunt) {
   // run shell commands asyncronously
   grunt.loadNpmTasks('grunt-shell-spawn');
 
+  var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+
   // Configurable paths for the application
   var appConfig = {
     app  : require('./bower.json').appPath || 'app',
@@ -22,13 +24,6 @@ module.exports = function (grunt) {
   // cache options for reuse
   var opts = {
     copy : {
-      fonts : {
-        expand: true,
-        dot: true,
-        flatten: true,
-        dest: '<%= server.dist %>/fonts',
-        src: '<%= server.app %>/assets/fonts/**/*'
-      },
       images : {
         expand: true,
         dot: true,
@@ -108,10 +103,6 @@ module.exports = function (grunt) {
         files: ['<%= server.app %>/assets/images/**/*'],
         tasks: ['copy:images']
       },
-      fonts : {
-        files: ['<%= server.app %>/assets/fonts/**/*'],
-        tasks: ['copy:fonts']
-      },
       gruntfile: {
         files: ['Gruntfile.js'],
         tasks: ['build']
@@ -138,10 +129,16 @@ module.exports = function (grunt) {
 
     // The actual grunt server settings
     connect: {
+      proxies: [{
+        context: '/',
+        host: 'localhost',
+        port: 8000,
+        xforward: true
+      }],
       options: {
         port: 9000,
-        hostname: 'localhost',
-        livereload: 35729
+        hostname: '0.0.0.0',
+        livereload: 35729,
       },
       livereload: {
         options: {
@@ -154,7 +151,8 @@ module.exports = function (grunt) {
                 connect.static('./bower_components'),
                 appConfig.dist + '/'
               ),
-              connect.static(appConfig.dist)
+              connect.static(appConfig.dist),
+              proxySnippet
             ];
           }
         }
@@ -165,6 +163,23 @@ module.exports = function (grunt) {
           base: '<%= server.dist %>'
         }
       }
+    },
+
+    // Setup one prism
+    prism: {
+      options: {
+        mode: 'proxy',
+        mocksPath: './mocks',
+        context: '/api',
+        host: '0.0.0.0',
+        port: 8000,
+        https: false,
+        delay: 0,
+        /* rewrites requests to context */
+        rewrite: {}
+      },
+      serve: {},
+      e2e: {}
     },
 
     // Empties folders to start fresh
@@ -254,11 +269,9 @@ module.exports = function (grunt) {
         generatedImagesDir: '<%= server.dist %>/images',
         imagesDir: '<%= server.app %>',
         javascriptsDir: '<%= server.app %>',
-        fontsDir: '<%= server.app %>/shared_assets/fonts',
         importPath: './bower_components',
         httpImagesPath: 'shared_assets/images',
         httpGeneratedImagesPath: '/images/generated',
-        httpFontsPath: '/styles/fonts',
         relativeAssets: false,
         assetCacheBuster: false,
         raw: 'Sass::Script::Number.precision = 10\n'
@@ -281,8 +294,7 @@ module.exports = function (grunt) {
         src: [
           '<%= server.dist %>/scripts/*.js',
           '<%= server.dist %>/styles/*.css',
-          '<%= server.dist %>/images/*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= server.dist %>/styles/fonts/*'
+          '<%= server.dist %>/images/*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
     },
@@ -299,7 +311,6 @@ module.exports = function (grunt) {
       dist: {
         files: [
          opts.copy.images,
-         opts.copy.fonts,
          opts.copy.sass,
          opts.copy.index,
          opts.copy.views,
@@ -308,9 +319,6 @@ module.exports = function (grunt) {
       },
       images: {
         files: [opts.copy.images]
-      },
-      fonts: {
-        files: [opts.copy.fonts]
       },
       css : {
         files: [opts.copy.sass]
@@ -336,8 +344,9 @@ module.exports = function (grunt) {
       js: {
         files: {
           '<%= server.dist %>/scripts/main.js': ['<%= server.app %>/core/app.js',
-                                                  '<%= server.app %>/core/app_config.js',
-                                                  '<%= server.app %>/core/angular_helpers.js',
+                                                  '<%= server.app %>/core/api.js',
+                                                  '<%= server.app %>/scripts/services.js',
+                                                  '<%= server.app %>/scripts/helpers.js',
                                                   '<%= server.app %>/**/*.js']
         }
       },
@@ -494,9 +503,13 @@ module.exports = function (grunt) {
   *
   ****************************************************************************************************/
 
-  grunt.registerTask('app', 'Starting API server...', function (target) {
+  grunt.loadNpmTasks('grunt-connect-proxy');
+
+  grunt.registerTask('app', 'Starting API server...', function (prismMode) {
+
     grunt.task.run([
       'build',
+      'configureProxies',
       'connect:livereload',
       'watch'
     ]);
