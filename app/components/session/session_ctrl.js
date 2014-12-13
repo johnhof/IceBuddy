@@ -2,5 +2,4 @@ simpleApp.controller('SessionCtrl', ['$scope', 'Session', function ($scope, Sess
 
   $scope.session = Session;
 
-
 }]);

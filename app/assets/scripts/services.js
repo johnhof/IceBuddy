@@ -34,21 +34,17 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', function (Cookie, Api, 
 
     // logout and reload the current page
     signOut : function () {
-      applyCookie();
-      Api.session.destroy($route.reload);
+      Api.session.destroy(function () {
+        applyCookie();
+        $route.reload();
+      });
     },
 
     signIn : function (inputs) {
       Api.session.create(inputs, function (json, headers) {
         applyCookie();
-        console.log('\n\n');
-        console.log(json);
-        console.log(headers);
       }, function (error) {
         applyCookie();
-        console.log('\n\n');
-        console.log('error returned and handled');
-        console.log(error);
       });
     }
   }

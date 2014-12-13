@@ -76,14 +76,13 @@ exports.errorHandler = function (error, req, res, next) {
         error   : 'Internal server error'
       });
 
-      console.log('\n');
       throw (error);
     }
   }
 
 
   function sendErr (err) {
-    res.status(err.status || 500).json({
+    res.status(err.status || 500).send({
       error   : err.error || 'Could not process request',
       details : err.details || null
     });
