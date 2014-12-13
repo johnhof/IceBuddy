@@ -13,7 +13,6 @@ simpleApp.service('Api', ['$http',  '$resource', function ($http, $resource) {
 
   // return a function which thinly wraps the $http object
   var api = function (settings) {
-    settings.url = '/api/' + settings.url;
     return $http(settings);
   }
 
