@@ -11,6 +11,10 @@ module.exports = function accountController (api) {
     //
     create : function (req, res, next) {
       Mongoman.save('player', req.body, next, function () {
+        var inputs = req.body;
+        // validate(inputs, {
+          
+        // }
 
         res.data = {
           success : true,
