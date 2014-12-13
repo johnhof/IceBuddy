@@ -77,13 +77,10 @@ helpers.requireDirContent(process.cwd() + '/api/components', /_model.js/i)
 api.use(function init (req, res, next) {
   res.data = {};
 
-  //
-  // TODO: figure out how to get either of these to work
-  //
-  // res.setHeader('Content-Type', 'application/json');
-  // res.set({
-  //   'Content-Type': 'application/json'
-  // })
+  //set headers
+  res.set({
+    'Content-Type': 'application/json' // TODO: Get this to work for errors!!!
+  });
 
   return next();
 });
@@ -96,6 +93,7 @@ routes.register(api);
 
 // expect {error : 'string', status : 'status code', details : 'object'}
 api.use(errorHandler);
+
 
 //
 // mixins
