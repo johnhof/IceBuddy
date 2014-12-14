@@ -13,10 +13,6 @@ simpleApp.config(['$routeProvider', function ($routeProvider) {
       templateUrl : 'views/session.html',
       controller  : 'SessionCtrl'
     }).
-    when('/session/:action', {
-      templateUrl : 'views/session.html',
-      controller  : 'SessionCtrl'
-    }).
 
     // 404
     otherwise({

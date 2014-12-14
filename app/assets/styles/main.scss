@@ -17,7 +17,7 @@ html, body {
 html {
   background: rgb(240, 240, 240);
   height: 100%;
-  background: url('../images/crossword.png') left top;
+  background: url('../images/debut_light.png') left top;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -51,5 +51,49 @@ html {
 }
 
 //
+// Forms
 //
-//
+
+
+form {
+  .button-container {
+    display: flex;
+    padding: 10px 0;
+
+    .button {
+      border: 1px solid $grey;
+      border-radius: 3px;
+      min-height: 30px;
+      flex:1;
+
+      &:first-of-type {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .input-wrap {
+    display: flex;
+    padding: 10px 0;
+
+    label {
+      flex: 1;
+    }
+
+    input {
+      flex: 5;
+
+      border-radius: 3px;
+      border: 1px solid $grey;
+      min-height: 30px;
+
+      &.ng-invalid.ng-dirty {
+        border: 1px solid $red;
+      }
+
+      &[type="email"], &[type="password"], &[type="text"] {
+        padding-left: 10px;
+      }
+    }
+  }
+}
