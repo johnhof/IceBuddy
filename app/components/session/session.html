@@ -1,17 +1,23 @@
-<form id="session-form" name="form" class="css-form" novalidate>
 
-  <div class="input-wrap">
-    <!-- <label>Email</label> -->
-    <input validate required type="email" ng-model="inputs.email" name="email" placeholder="Email Address">
+<div id="session-content">
+
+  <div id="sample-container">
+    <img src="/images/devices.png">
+    <input type="button" class="button" value="Start Tracking Now">
   </div>
 
-  <div class="input-wrap">
-    <!-- <label>Password</label> -->
-    <input validate required type="password" ng-model="inputs.password" name="password" placeholder="Password">
-  </div>
+  <form id="session-form" name="form" class="css-form" novalidate>
+    <h3>Sign in | Sign up</h3>
+    <div class="input-wrap">
+      <input validate required type="email" ng-model="inputs.email" name="email" placeholder="Email Address">
+    </div>
+    <div class="input-wrap">
+      <input validate required type="password" ng-model="inputs.password" name="password" placeholder="Password">
+    </div>
+    <div class="button-wrap">
+      <input type="submit" class="button" value="Sign In">
+      <input type="button" class="button" ng-click="showSignUp(form)" value="Sign up">
+    </div>
+  </form>
 
-  <div class="button-container">
-    <input type="submit" class="button" value="Sign In">
-    <input type="button" class="button" ng-click="showSignUp(form)" value="Sign up">
-  </div>
-</form>
+</div>
