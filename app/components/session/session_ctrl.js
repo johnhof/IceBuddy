@@ -10,8 +10,6 @@ simpleApp.controller('SessionCtrl', ['$scope', 'Session', function ($scope, Sess
 
   $scope.submit = function submit () {
     var inputs = $scope.inputs;
-    console.log('submitting:');
-    console.log($scope);
 
     if (inputs.isSignUp) {
 
