@@ -2,18 +2,19 @@
 
 
 #session-content {
-  padding-top: 15%;
+  padding-top: 10%;
   max-height: 700px;
   display: flex;
 
   #sample-container {
+    text-align: center;
     flex: 1;
-    // min-width: 300px;
     padding-right: 20px;
     border-right: 1px dashed rgb(163, 163, 163);
     margin-right: 20px;
 
     img {
+      max-width: 350px;
       height: 100%;
       width: 100%;
     }

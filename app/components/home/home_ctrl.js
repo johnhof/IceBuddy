@@ -1,4 +1,4 @@
-simpleApp.controller('HomeCtrl', 'Session', ['$scope', 'Session', function ($scope, Session) {
+simpleApp.controller('HomeCtrl', ['$scope', 'Session', function ($scope, Session) {
   Session.requireSignIn();
 
   $scope.session = session;

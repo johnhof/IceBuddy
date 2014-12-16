@@ -27,7 +27,7 @@ simpleApp.service('Cookie', [function () {
 
 
 // A colelction of session data for the current user. Inludes sign in and sign out utilities
-simpleApp.service('Session', ['Cookie', 'Api', '$route', function (Cookie, Api, $route) {
+simpleApp.service('Session', ['Cookie', 'Api', '$route', '$window', function (Cookie, Api, $route, $window) {
   var session = {
     nickname   : null,
     email      : null,
@@ -71,7 +71,7 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', function (Cookie, Api, 
     // redirect to sign in page is the user isnt signed in
     requireSignIn : function () {
       if (!Cookie('session').isSignedIn) {
-        $window.location.href = '/session';
+        $window.location.href = '/#/session';
       }
     }
   }
