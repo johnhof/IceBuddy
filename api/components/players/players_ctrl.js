@@ -18,8 +18,8 @@ module.exports = function playerController (api) {
           first : Joi.string().optional().alphanum().min(1).max(50),
           last  : Joi.string().optional().alphanum().min(1).max(50)
         })
-      }, [
-        function save (error, callback) {
+      },
+      function save (result, callback) {
           Mongoman.save('player', req.body, next, function () {
             res.data = {
               success : true,
@@ -27,8 +27,7 @@ module.exports = function playerController (api) {
             }
             return callback();
           });
-        }
-      ], next);
+      }, next);
     },
 
 
@@ -37,60 +36,69 @@ module.exports = function playerController (api) {
     //
     read : function (req, res, next) {
       var inputs = req.body;
-      if (inputs && inputs.name && inputs.name.first && inputs.name.last ) {
-        Player.findOne({
+      validate(inputs, {
+          name     : Joi.object().keys({
+            first : Joi.string().optional().alphanum().min(1).max(50),
+            last  : Joi.string().optional().alphanum().min(1).max(50)
+          })
+        },
+        function read (result, callback) {
+          Player.findOne({
             name : 
-              { 
-                first : inputs.name.first,
-                last : inputs.name.last,
+                { 
+                  first : inputs.name.first,
+                  last : inputs.name.last,
+                }
+            }, function (error, player){
+              if ( player ) {
+                res.data = { 
+                    success : true, 
+                    player : player 
+                };
+                return callback();
+              } else {
+                res.data = { 
+                    success : false, 
+                    message : 'No player matched the name: ' + inputs.name.first + ' ' + inputs.name.last
+                };
+                return callback();
               }
-          }, function(err, player){
-            if ( player ) {
-              return res.send( { 
-                  success : true, 
-                  player : player 
-                } );
-            } else {
-              return res.send( { 
-                  success : false, 
-                  message : 'No player matched the name: ' + inputs.name.first + ' ' + inputs.name.last
-              } );
-            }
           });
-
-      } else {
-        return next( Err('Name.First and Name.Last are required fields') );
-      }
+        }, next);
     },
-
 
     //
     // Update
     //
     update : function (req, res, next) {
       var inputs = req.body;
-      if (inputs && inputs.id && inputs.update ) {
-        Player.findOneAndUpdate({
-            _id : inputs.id
-          }, 
-          inputs.update, //fields to Update
-          function(err, player){
-            if ( player ) {
-              //TODO: Add a check to see if it actually updated???
-              return res.send( { 
-                  success : true, 
-                  player : player
-              } );
-            } else {
-              return res.send( { 
-                  success : false, 
-                  message : 'No player matched the id: ' + inputs.id
-              } );
+      validate(inputs, {
+          id: Joi.string().token().required(),
+          update : Joi.object().min(0).required()
+        },
+        function update(result, callback) {
+          Player.findOneAndUpdate({
+              _id : inputs.id
+            }, 
+            inputs.update, //fields to Update
+            function (error, player){
+              if ( player ) {
+                //TODO: Add a check to see if it actually updated???
+                res.data = { 
+                    success : true, 
+                    player : player
+                };
+                return callback();
+              } else {
+                res.data = { 
+                    success : false, 
+                    message : 'No player matched the id: ' + inputs.id
+                };
+                return callback();
+              }
             }
-          });
-      } else {
-        return next( Err('Player Id and Update Object are required fields') ); 
-      }
+          );
+        }, next);
     },
 
 
@@ -99,27 +107,30 @@ module.exports = function playerController (api) {
     //
     destroy : function (req, res, next) {
       var inputs = req.body;
-      if (inputs && inputs.id ) {
-        Player.findOneAndRemove({
+        validate(inputs, {
+          id: Joi.string().token().required()
+        },
+        function destroy(result, callback) {
+          Player.findOneAndRemove({
             _id : inputs.id
           }, 
-          function(err, player){
+          function (error, player){
             if ( player ) {
               //TODO: Add a check to see if it actually updated???
-              return res.send( { 
+              res.data = { 
                   success : true, 
                   player : player
-              } );
+              };
+              return callback();
             } else {
-              return res.send( { 
+              res.data = { 
                   success : false, 
                   message : 'No player matched the id: ' + inputs.id
-              } );
+              };
+              return callback();
             }
           });
-      } else {
-        return next( Err('Player Id is required fields') ); 
-      }
+      }, next);
     }
   };
 }

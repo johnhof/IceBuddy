@@ -1,5 +1,5 @@
 //Player DB Crud Testing
-
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 var assert = require("assert");
 var request = require("request");
 var hasCreatedPlayer = false;
@@ -50,10 +50,10 @@ describe('Retrieving a player', function () {
         function (err, res, body) {
           if ( !err ) {
             try {
+              assert.notEqual(body, {})
               assert.equal(body.success, true);
               assert.equal(body.player.name.first, 'Duane' + testSeed);
               assert.equal(body.player.name.last, 'Tester' + testSeed);
-
               //Nested Update
               describe('Updating a player', function() {
                 it('should update player preferred number', function (done) {
@@ -108,7 +108,7 @@ describe('Retrieving a player', function () {
 
 
             } catch (e) {
-              err = "Exception Running Asserts " + e.message;
+              Err("Exception Running Asserts");
             }
           }
           done(err);
