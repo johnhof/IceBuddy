@@ -278,3 +278,8 @@ All validations that an error message param as the last argument to override the
 * `Mongoman.save(modelName, inputs, errorHandler, successHandler)` - save an `input` object to `modelName`, validation/DB errors will go to the `errorHandler` (generally `next()`), otherwise, `successHandler` is called
 * `Mongoman.schema(schemaObj)` - returns a new schema instance of the passed in object
 
+Testing
+============
+To run the test suite run the following at the root folder
+```make test```
+
