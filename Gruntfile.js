@@ -493,9 +493,28 @@ module.exports = function (grunt) {
           async: true
         }
       }
+    },
+
+
+    /***************************************************************************************************
+    *
+    *  Mocha testing tasks
+    *
+    ****************************************************************************************************/
+
+    simplemocha: {
+      options: {
+        globals     : ['expect'],
+        timeout     : 3000,
+        ignoreLeaks : false,
+        ui          : 'bdd',
+        reporter    : 'tap'
+      },
+      all: {
+        src: ['test/tests/**/*.js']
+      }
     }
   });
-
 
   /***************************************************************************************************
   *
@@ -519,6 +538,13 @@ module.exports = function (grunt) {
     grunt.task.run([
       // 'shell:mongo', // Mongo may need to be run separately, it has to start becfore the api, but then run in the background
       'shell:api',
+    ]);
+  });
+
+
+  grunt.registerTask('test', 'running API tests...', function (target) {
+    grunt.task.run([
+      'simplemocha',
     ]);
   });
 

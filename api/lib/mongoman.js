@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var validate = require('mongoose-validator');
+var _        = require('lodash');
 
 var Schema = mongoose.Schema;
 
@@ -135,7 +136,35 @@ mongoman.register = function (name, schema, options) {
       newSchema.index = options.index;
       delete options.index;
     }
+
+    // bind virtuals
+    _.each(options.virtuals || [], function (virtual) {
+      if (virtual) {
+        newSchema = newSchema.virtual(virtual.property);
+        newSchema = typeof virtual.get === 'function' ? newSchema.get(virtual.get): newSchema;
+        newSchema = typeof virtual.set === 'function' ? newSchema.set(virtuarl.set) : newSchema;
+      }
+    });
+
+
+    // bind middleware
+    _.each(options.middleware || [], function (props, trigger) {
+      if (trigger) {
+        if (typeof props.pre === 'function') { newSchema.pre(trigger, props.pre); }
+        if (typeof props.post === 'function') { newSchema.post(trigger, props.post); }
+      }
+    });
+
+    // bind methods
+    _.each(options.methods || [], function (func, name) {
+      if (name && typeof func === 'function') {
+        newSchema.methods[name] = func;
+      }
+    });
   }
+
+
+
 
   return mongoose.model(name, newSchema);
 }
