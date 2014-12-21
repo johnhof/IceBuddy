@@ -9,10 +9,10 @@
   <form id="session-form" name="form" class="css-form" novalidate>
     <h3>Sign in | Sign up</h3>
     <div class="input-wrap">
-      <input validate required type="email" ng-model="inputs.email" name="email" placeholder="Email Address">
+      <input validate required ng-pattern="patterns.email" type="text" ng-model="inputs.email" name="email" placeholder="Email Address">
     </div>
     <div class="input-wrap">
-      <input validate required type="password" ng-model="inputs.password" name="password" placeholder="Password">
+      <input validate required ng-pattern="patterns.password" type="password" ng-model="inputs.password" name="password" placeholder="Password">
     </div>
     <div class="button-wrap">
       <input type="submit" class="button" value="Sign In">

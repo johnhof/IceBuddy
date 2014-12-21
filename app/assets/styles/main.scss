@@ -85,22 +85,28 @@ h1, h2, h3, h4 {
   }
 }
 
-form.ng-submitted .ng-invalid {
-  border: 1px solid $red;
+.input-error {
+  color: $red;
+  display: none;
+}
+
+form.ng-submitted {
+  .invalid {
+    border: 1px solid $red;
+  }
+
+  .input-error {
+    display: block;
+  }
 }
 
 .input-wrap {
-  display: flex;
+  display: block;
   padding: 10px 0;
-
-  label {
-    flex: 1;
-  }
 
 
   input {
-    flex: 5;
-
+    width: 100%;
     border-radius: 3px;
     border: 1px solid $light-grey;
     min-height: 35px;
