@@ -20,7 +20,7 @@ module.exports = function accountController (api) {
             };
             return next();
           } else {
-            return next(Err('No player matches the provided ID', null, 404));
+            return next(Err.notFound('No player matches the provided ID'));
           }
       });
     },
@@ -41,7 +41,7 @@ module.exports = function accountController (api) {
           };
           return next();
         } else {
-          return next(Err('No player matches the provided ID', null, 404));
+          return next(Err.notFound('No player matches the provided ID'));
         }
       })
     },
@@ -61,7 +61,7 @@ module.exports = function accountController (api) {
           };
           return next();
         } else {
-          return next(Err('No player matches the provided ID', null, 404));
+          return next(Err.notFound('No player matches the provided ID'));
         }
       });
     }
