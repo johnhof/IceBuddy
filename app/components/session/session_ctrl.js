@@ -1,6 +1,8 @@
-simpleApp.controller('SessionCtrl', ['$scope', 'Session', function ($scope, Session) {
+simpleApp.controller('SessionCtrl', ['$scope', 'Session', 'Patterns', function ($scope, Session, Patterns) {
 
   $scope.session = Session;
+
+  $scope.patterns = Patterns;
 
   // Model init and form submission
   $scope.inputs = {
@@ -9,12 +11,12 @@ simpleApp.controller('SessionCtrl', ['$scope', 'Session', function ($scope, Sess
   };
 
   $scope.submit = function submit () {
-    var inputs = $scope.inputs;
+    $scope.$apply()
 
     if (inputs.isSignUp) {
 
     } else {
 
     }
-  }
+  };
 }]);

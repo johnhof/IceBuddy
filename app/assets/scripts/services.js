@@ -26,7 +26,7 @@ simpleApp.service('Cookie', [function () {
 }]);
 
 
-// A colelction of session data for the current user. Inludes sign in and sign out utilities
+// A collection of session data for the current user. Inludes sign in and sign out utilities
 simpleApp.service('Session', ['Cookie', 'Api', '$route', '$window', function (Cookie, Api, $route, $window) {
   var session = {
     nickname   : null,
