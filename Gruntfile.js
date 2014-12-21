@@ -1,5 +1,8 @@
 'use strict';
 
+
+var mongoose = require('mongoose');
+
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
@@ -475,8 +478,14 @@ module.exports = function (grunt) {
     concurrent: {},
 
     shell: {
-      mongo : {
+      mongo: {
         command: 'sudo mongod',
+        options: {
+          async: false
+        }
+      },
+      dropdb: {
+        command: 'mongo --eval "db.getMongo().getDBNames().forEach(function(i){ db.getSiblingDB(i).dropDatabase()})"',
         options: {
           async: false
         }
@@ -505,7 +514,7 @@ module.exports = function (grunt) {
     simplemocha: {
       options: {
         globals     : ['expect'],
-        timeout     : 3000,
+        timeout     : 10000,
         ignoreLeaks : false,
         ui          : 'bdd',
         reporter    : 'tap'
@@ -524,8 +533,8 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-connect-proxy');
 
-  grunt.registerTask('app', 'Starting API server...', function (prismMode) {
-
+  // run the app
+  grunt.registerTask('app', 'Starting API server...', function () {
     grunt.task.run([
       'build',
       'configureProxies',
@@ -534,20 +543,36 @@ module.exports = function (grunt) {
     ]);
   });
 
+  // run the api
   grunt.registerTask('api', 'Compiling and Starting App server...', function (target) {
     grunt.task.run([
-      // 'shell:mongo', // Mongo may need to be run separately, it has to start becfore the api, but then run in the background
       'shell:api',
     ]);
   });
 
 
+  // run tests
   grunt.registerTask('test', 'running API tests...', function (target) {
+    var set = ['simplemocha'];
+
+    if (grunt.option('drop')) {
+      set.unshift('shell:dropdb')
+    }
+
+    grunt.task.run(set);
+  });
+
+  // drop a database
+  grunt.registerTask('dropdb', 'dropping database...', function () {
     grunt.task.run([
-      'simplemocha',
+      'shell:dropdb'
     ]);
   });
 
+
+  //
+  // composite tasks used as utilities
+  //
 
   grunt.registerTask('build', [
     'clean:dist',

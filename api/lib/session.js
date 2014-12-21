@@ -32,7 +32,6 @@ exports.primeSession = function (req, res, next) {
 
   if (!req.session) {
     req.session = newSession();
-    res.cookie('session', req.session);
   }
 
   req.isSignedIn = exports.isValidSession(req)
@@ -51,6 +50,7 @@ exports.primeSession = function (req, res, next) {
       sessionObj.hash = bcrypt.hashSync(hashSeed, bcrypt.genSaltSync());
     }
 
+    res.clearCookie('session');
     res.cookie('session', sessionObj);
   }
 

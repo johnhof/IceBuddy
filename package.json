@@ -47,6 +47,7 @@
     "mocha": "~2.0.1",
     "mongoose": "~3.8.19",
     "mongoose-validator": "~1.0.2",
+    "qs": "^2.3.3",
     "request": "~2.49.0",
     "should": "~3.3.1",
     "time-grunt": "^0.3.1",
