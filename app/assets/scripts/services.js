@@ -1,7 +1,8 @@
 //
-// App Helpers
+// Global Services
 //
 
+// Parse a cookie and return tit as a JS object, defaulting to {} if the JSON cannot be parsed
 simpleApp.service('Cookie', [function () {
   return function (cookieName, value) {
     if (value) {
@@ -25,12 +26,26 @@ simpleApp.service('Cookie', [function () {
 }]);
 
 
-
-simpleApp.service('Session', ['Cookie', 'Api', '$route', function (Cookie, Api, $route) {
+// A collection of session data for the current user. Inludes sign in and sign out utilities
+simpleApp.service('Session', ['Cookie', 'Api', '$route', '$window', function (Cookie, Api, $route, $window) {
   var session = {
-    username   : null,
+    nickname   : null,
     email      : null,
     isSignedIn : false,
+    name       : {
+      first : null,
+      last  : null
+    },
+
+    displayName : function () {
+      if (session.name &&  session.name.first) {
+        return session.name.first;
+      } else if (session.username) {
+        return session.username;
+      } else {
+        return 'Guest';
+      }
+    },
 
     // logout and reload the current page
     signOut : function () {
@@ -40,12 +55,24 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', function (Cookie, Api, 
       });
     },
 
-    signIn : function (inputs) {
-      Api.session.create(inputs, function (json, headers) {
-        applyCookie();
-      }, function (error) {
-        applyCookie();
-      });
+    // submit sign in
+    signIn : function (inputs, callback) {
+      var cb = updateAndCallback(callback);
+      Api.session.create(inputs, cb, cb);
+    },
+
+    signUp : function (inputs, callback) {
+      var cb = updateAndCallback(callback);
+      Api.account.create(inputs, cb, cb);
+    },
+
+
+
+    // redirect to sign in page is the user isnt signed in
+    requireSignIn : function () {
+      if (!Cookie('session').isSignedIn) {
+        $window.location.href = '/#/session';
+      }
     }
   }
 
@@ -55,7 +82,21 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', function (Cookie, Api, 
     if (cookie) {
       session.username   = cookie.username;
       session.email      = cookie.email;
+
+      session.name       = cookie.name ? {
+        first : cookie.name.first,
+        last  : cookie.name.last
+      } : {};
+
       session.isSignedIn = cookie.isSignedIn || false;
+    }
+
+  }
+
+  function updateAndCallback (callback) {
+    return function () {
+      applyCookie();
+      callback(arguments);
     }
   }
 

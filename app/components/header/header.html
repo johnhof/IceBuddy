@@ -10,8 +10,17 @@
       <a class="navbar-brand" href="#/">IceBuddy</a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="#/">My Account</a></li>
+      <ul class="nav navbar-nav" ng-controller="SessionCtrl">
+          <!-- if signed in-->
+          <li ng-if="session.isSignedIn">
+            <a href="#/account">My Account</a> | <a ng-click="sessio.signOut()">Sign out</a>
+          </li>
+          <!-- else -->
+          <li ng-if="!session.isSignedIn">
+            <a href="#/session">Sign In | Sign Up</a>
+          </li>
+          <!-- end if -->
+        <li><a href="#/game_tracker">Start Game</a></li>
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Stat Tracker <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">

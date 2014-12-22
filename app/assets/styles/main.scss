@@ -18,10 +18,10 @@ html {
   background: rgb(240, 240, 240);
   height: 100%;
   background: url('../images/crossword.png') left top;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+}
+
+h1, h2, h3, h4 {
+  margin: 5px 0;
 }
 
 #main-content {
@@ -42,7 +42,7 @@ html {
   left: 0;
   height: 100%;
   width: 100%;
-  background: rgba(245, 246, 247, 0.83);
+  background: rgba(245, 246, 247, 0);
   z-index: -1;
 }
 
@@ -51,5 +51,69 @@ html {
 }
 
 //
+// Forms
 //
-//
+
+
+.button {
+  border: 1px solid #FFFFFF;
+  border-radius: 3px;
+  width: 100%;
+  min-height: 35px;
+  box-shadow: 0px 0px 3px #888888;
+  background: $dark-grey;
+  color: white;
+}
+
+.button-wrap {
+  display: flex;
+  padding: 10px 0;
+
+  .button {
+    flex:1;
+    color: white;
+
+    &[type="submit"] {
+      background: $blue;
+      color: white;
+    }
+
+
+    &:first-of-type {
+      margin-right: 10px;
+    }
+  }
+}
+
+.input-error {
+  color: $red;
+  display: none;
+}
+
+form.ng-submitted {
+  .invalid {
+    border: 1px solid $red;
+  }
+
+  .input-error {
+    display: block;
+  }
+}
+
+.input-wrap {
+  display: block;
+  padding: 10px 0;
+
+
+  input {
+    width: 100%;
+    border-radius: 3px;
+    border: 1px solid $light-grey;
+    min-height: 35px;
+    box-shadow: 0px 0px 3px #888888;
+
+    &[type="email"], &[type="password"], &[type="text"] {
+      padding-left: 10px;
+    }
+  }
+}
