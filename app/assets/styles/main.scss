@@ -24,6 +24,14 @@ h1, h2, h3, h4 {
   margin: 5px 0;
 }
 
+a {
+  cursor: pointer;
+
+  &:hover {
+    color: $blue;
+  }
+}
+
 #main-content {
   margin: auto;
   margin-top: 70px;
@@ -69,11 +77,11 @@ h1, h2, h3, h4 {
   display: flex;
   padding: 10px 0;
 
-  .button {
+  .button, [type="button"] {
     flex:1;
     color: white;
 
-    &[type="submit"] {
+    &[type="submit"], &[active="true"] {
       background: $blue;
       color: white;
     }
@@ -85,9 +93,13 @@ h1, h2, h3, h4 {
   }
 }
 
-.input-error {
+.error {
   color: $red;
   display: none;
+
+  &.main-error {
+    padding-top: 5px;
+  }
 }
 
 form.ng-submitted {
@@ -95,7 +107,7 @@ form.ng-submitted {
     border: 1px solid $red;
   }
 
-  .input-error {
+  .error {
     display: block;
   }
 }
@@ -107,13 +119,23 @@ form.ng-submitted {
 
   input {
     width: 100%;
-    border-radius: 3px;
+    border-radius: 1px;
     border: 1px solid $light-grey;
     min-height: 35px;
     box-shadow: 0px 0px 3px #888888;
 
     &[type="email"], &[type="password"], &[type="text"] {
       padding-left: 10px;
+
+      &:required {
+        &::-webkit-input-placeholder {
+          &:after {
+            content: "*";
+            padding-left: 5px;
+            color: $faded-red;
+          }
+        }
+      }
     }
   }
 }

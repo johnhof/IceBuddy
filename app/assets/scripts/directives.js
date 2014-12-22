@@ -11,7 +11,7 @@
 simpleApp.directive('email', ['Patterns', function (Patterns) {
   return {
     require: 'ngModel',
-    link: function(scope, elm, attrs, ctrl) {
+    link: function(scope, element, attrs, ctrl) {
       ctrl.$validators.email = function(modelValue, viewValue) {
         return Patterns.email.test(viewValue);
       };
@@ -23,7 +23,7 @@ simpleApp.directive('email', ['Patterns', function (Patterns) {
 simpleApp.directive('password', ['Patterns', function (Patterns) {
   return {
     require: 'ngModel',
-    link: function(scope, elm, attrs, ctrl) {
+    link: function(scope, element, attrs, ctrl) {
       ctrl.$validators.password = function(modelValue, viewValue) {
         return Patterns.password.test(viewValue);
       };
@@ -36,13 +36,10 @@ simpleApp.directive('password', ['Patterns', function (Patterns) {
 simpleApp.directive('match', [ function (Patterns) {
   return {
     require : 'ngModel',
-    scope   : {
-      match : '@'
-    }
-    link: function(scope, elm, attrs, ctrl) {
-      console.log(scope.match)
+    link: function (scope, element, attrs, ctrl) {
       ctrl.$validators.match = function(modelValue, viewValue) {
-        return Patterns.password.test(viewValue);
+        console.log(element.closest('form').find('input[ng-model="' + attrs.match + '"]').val())
+        return element.closest('form').find('input[ng-model="attrs.match"]').val() === viewValue;
       };
     }
   };
@@ -60,7 +57,7 @@ simpleApp.directive("validate", [function () {
     var map = {
       required : 'is a required field',
       email    : 'must be a valid email',
-      match    : 'does not match'
+      match    : 'does not match',
       invalid  : 'is invalid'
     };
 
@@ -77,6 +74,7 @@ simpleApp.directive("validate", [function () {
         var errorsKeys = Object.keys(ctrl.$error || {});
         if (errorsKeys.length) {
           element.addClass('invalid')
+          console.log(errorsKeys[0])
           $errorDiv.text(attr.name.capitalize() + ' ' + getError(errorsKeys[0]));
         } else {
           element.removeClass('invalid')
