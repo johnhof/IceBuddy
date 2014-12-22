@@ -18,15 +18,14 @@ module.exports = function playerController (api) {
           first : Joi.string().optional().alphanum().min(1).max(50),
           last  : Joi.string().optional().alphanum().min(1).max(50)
         })
-      },
-      function save (result, callback) {
-          Mongoman.save('player', req.body, next, function () {
-            res.data = {
-              success : true,
-              message : 'Player ' + inputs.name.first + ' ' + inputs.name.last + ' created'
-            }
-            return callback();
-          });
+      }, function save (result, callback) {
+        Mongoman.save('player', req.body, next, function () {
+          res.data = {
+            success : true,
+            message : 'Player ' + inputs.name.first + ' ' + inputs.name.last + ' created'
+          };
+          return callback();
+        });
       }, next);
     },
 
@@ -35,70 +34,48 @@ module.exports = function playerController (api) {
     // Read
     //
     read : function (req, res, next) {
-      var inputs = req.body;
-      validate(inputs, {
-          name     : Joi.object().keys({
-            first : Joi.string().optional().alphanum().min(1).max(50),
-            last  : Joi.string().optional().alphanum().min(1).max(50)
-          })
-        },
-        function read (result, callback) {
-          Player.findOne({
-            name : 
-                { 
-                  first : inputs.name.first,
-                  last : inputs.name.last,
-                }
-            }, function (error, player){
-              if ( player ) {
-                res.data = { 
-                    success : true, 
-                    player : player 
-                };
-                return callback();
-              } else {
-                res.data = { 
-                    success : false, 
-                    message : 'No player matched the name: ' + inputs.name.first + ' ' + inputs.name.last
-                };
-                return callback();
-              }
+      var inputs = req.query;
+
+      // take a player array and build the response body
+      function getResult (players) {
+        var success = !!(players && players.length);
+        return {
+          success : success,
+          message : !success ? 'No players found' : undefined,
+          players : players || []
+        };
+      }
+
+      // if the client performed a search
+      if (Object.keys(req.query).length) {
+        validate(inputs, {}, function (result, callback) {
+          Player.find(inputs, function (error, players) {
+            res.data = getResult(players)
+            return callback();
           });
         }, next);
+
+      // otherwise, return the last 10 registered
+      } else {
+        Player.find({
+          registered : {
+            $lte : new Date()
+          }
+        }).limit(10).exec(function (error, players) {
+          res.data = getResult(players)
+          return next();
+        });
+      }
     },
 
     //
     // Update
     //
     update : function (req, res, next) {
-      var inputs = req.body;
-      validate(inputs, {
-          id: Joi.string().token().required(),
-          update : Joi.object().min(0).required()
-        },
-        function update(result, callback) {
-          Player.findOneAndUpdate({
-              _id : inputs.id
-            }, 
-            inputs.update, //fields to Update
-            function (error, player){
-              if ( player ) {
-                //TODO: Add a check to see if it actually updated???
-                res.data = { 
-                    success : true, 
-                    player : player
-                };
-                return callback();
-              } else {
-                res.data = { 
-                    success : false, 
-                    message : 'No player matched the id: ' + inputs.id
-                };
-                return callback();
-              }
-            }
-          );
-        }, next);
+      //
+      // TODO : handle bulk updates (eg. add large number of players to a team)
+      //
+      return next();
     },
 
 
@@ -106,31 +83,7 @@ module.exports = function playerController (api) {
     // Destroy
     //
     destroy : function (req, res, next) {
-      var inputs = req.body;
-        validate(inputs, {
-          id: Joi.string().token().required()
-        },
-        function destroy(result, callback) {
-          Player.findOneAndRemove({
-            _id : inputs.id
-          }, 
-          function (error, player){
-            if ( player ) {
-              //TODO: Add a check to see if it actually updated???
-              res.data = { 
-                  success : true, 
-                  player : player
-              };
-              return callback();
-            } else {
-              res.data = { 
-                  success : false, 
-                  message : 'No player matched the id: ' + inputs.id
-              };
-              return callback();
-            }
-          });
-      }, next);
+      return next();
     }
   };
 }
