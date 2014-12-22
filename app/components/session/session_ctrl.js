@@ -12,6 +12,10 @@ simpleApp.controller('SessionCtrl', ['$scope', '$location', 'Session', 'Api', fu
     email    : null,
     password : null,
     username : null,
+    confirm  : {
+      email    : null,
+      password : null
+    },
     name     : {
       first : null,
       last  : null
