@@ -104,6 +104,8 @@ Useful grunt commands
 
 `grunt clean:modules` ->  removes node modules and bower components
 
+`gunt dropdb` - > drops the current local database
+
 API Specific
 ============
 
@@ -281,5 +283,13 @@ All validations that an error message param as the last argument to override the
 Testing
 ============
 To run the test suite run the following at the root folder
-```make test```
 
+```bash
+grunt test
+```
+
+if you want to drop the database before running, use
+
+```bash
+grunt test --drop
+```

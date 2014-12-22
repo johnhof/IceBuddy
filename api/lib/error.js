@@ -51,6 +51,10 @@ exports.errorGenerator = function (seed, details, status) {
   };
 }
 
+// wrappers for convenience
+exports.errorGenerator.notFound = function (seed, detail) { return exports.errorGenerator(seed || 'Content not found', detail, 404) }
+exports.errorGenerator.unAuth = function (seed, detail) { return exports.errorGenerator(seed || 'You are not authorized to perform this action', detail, 401) }
+
 //
 // middleware error handler
 //

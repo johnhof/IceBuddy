@@ -22,14 +22,14 @@ describe('Adding a player', function () {
           },
           registered: Date.now()
         },
-        json: true }, 
+        json: true },
         function (err, res, body) {
           assert.equal(body.error, null, 'Errors Reported: ' + body.error);
           assert.equal(body.success, true, 'Body returned not successful');
 
           //For Cleanup!
           hasCreatedPlayer = true;
-          
+
           done(err);
         }
     );
@@ -46,7 +46,7 @@ describe('Retrieving a player', function () {
             last:  'Tester' + testSeed
           }
         },
-        json: true }, 
+        json: true },
         function (err, res, body) {
           if ( !err ) {
             try {

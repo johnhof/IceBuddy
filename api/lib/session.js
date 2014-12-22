@@ -32,7 +32,6 @@ exports.primeSession = function (req, res, next) {
 
   if (!req.session) {
     req.session = newSession();
-    res.cookie('session', req.session);
   }
 
   req.isSignedIn = exports.isValidSession(req)
@@ -51,6 +50,7 @@ exports.primeSession = function (req, res, next) {
       sessionObj.hash = bcrypt.hashSync(hashSeed, bcrypt.genSaltSync());
     }
 
+    res.clearCookie('session');
     res.cookie('session', sessionObj);
   }
 
@@ -64,7 +64,7 @@ exports.primeSession = function (req, res, next) {
 
 // if no session is found, return 401
 exports.requireSession = function (req, res, next) {
-  var result = exports.isValidSession(req) ? null : Err('Must be signed in to view this page', null, 401);
+  var result = exports.isValidSession(req) ? null : Err.noAuth('Must be signed in to view this page');
   return next(result);
 }
 
