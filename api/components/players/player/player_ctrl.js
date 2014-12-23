@@ -43,7 +43,7 @@ module.exports = function playerController (api) {
         } else {
           return next(Err.notFound('No player matches the provided ID'));
         }
-      })
+      });
     },
 
 

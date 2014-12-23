@@ -149,32 +149,40 @@ function addPlayerToTeam (stash, next) {
   });
   describe('Add the player to the team', function () {
     it('add player to the created team object', function (done) {
-      test.request.post({
+      test.request.put({
         route : '/teams/' + stash.teamId + '/roster',
-        form  : { playerId : test.stash.testPlayer._id },
+        form  : { ids : [test.stash.testPlayer._id] },
       }, function (response, body) {
+        assert.equal(body.team.players.length, 1);
+        assert.equal(body.team.players[0], test.stash.testPlayer._id);
+        //Go to next Describe
+        return done();
+      });
+    });
+  });
+  describe('Retrieve the player from the team', function () {
+    it('retrieve rostered player', function (done) {
+      test.request.get({
+        route : '/teams/' + stash.teamId + '/roster'
+      }, function (response, body) {
+        assert.equal(body.team.players.length, 1);
+        assert.equal(body.team.players[0], test.stash.testPlayer._id);
+        //Go to next Describe
+        return done();
+      });
+    });
+  });
+  describe('Remove the player from the team', function () {
+    it('remove player from team', function (done) {
+      test.request.del({
+        route : '/teams/' + stash.teamId + '/roster',
+        form  : { ids : [test.stash.testPlayer._id] }
+      }, function (response, body) {
+        assert.equal(body.team.players.length, 0);
+        //Go to next Describe
         return next(null, done);
-      });  
-      
+      });
     });
   });
 
-}
-
-function _addPlayerToTeam( player ) {
-  return function (callback) {
-    test.request.post({
-      route : '/teams/' + stash.teamId + '/roster',
-      form  : {
-        name : {
-          first : firstName,
-          last  : lastName
-        },
-        preferred_number : number,
-      }
-    }, function (response, body) {
-      assert.equal(body.success, true);
-      return callback(null, body);
-    });
-  }
 }

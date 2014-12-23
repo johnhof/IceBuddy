@@ -1,7 +1,5 @@
 var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
-var Joi      = require('joi');
-var validate = require(process.cwd() + '/api/lib/validate');
 
 var Team = Mongoman.model('team');
 var Player = Mongoman.model('player');
@@ -20,36 +18,58 @@ module.exports = function accountController (api) {
     // Read -- Retrieve all players on the team
     //
     read : function (req, res, next) {
-      var team = _retrieveTeam(req.params.teamId, next);
-      if (team) {
-        var rosteredPlayers = [];
-        if ( team.players.length ) {
-          Player.find({
-              '_id': { $in: team.players}
-          }, function (err, players){
-            res.data = {
-              success : true,
-              team    : team,
-              players : players
-            };
-            return next();
-          });
+      Team.findOne({
+        '_id' : req.params.teamId
+      }, function (error, team) {
+        if (team) {
+          if ( team.players.length ) {
+            Player.find({
+                '_id': { $in: team.players}
+            }, function (error, players){
+              if ( error ) {
+                return next(error);  
+              }
+              res.data = {
+                success : true,
+                team    : team,
+                players : players
+              };
+              return next();
+            });
+          } else {
+            return next(Err.notFound('Team found, but has no players'));
+          }
         } else {
-          return next(Err.notFound('Team found, but has no players'));
+          return next(Err.notFound('No team matches the provided ID'));
         }
-      } else {
-        return next(Err.notFound('No team matches the provided ID'));
-      }
+      });
     },
 
 
     //
     // Update -- Add Player to a team
+    // In order to facilitate both single and multiple entry, update expects an array of ids
     //
     update : function (req, res, next) {
-      var team = _retrieveTeam(req.params.teamId, next);
-      //Add Player to a team
-      return next();
+      var inputs = req.body;
+      Team.findOneAndUpdate({
+        _id : req.params.teamId,
+      }, { $push: 
+          { players: { 
+              $each: inputs.ids
+            } 
+          } 
+      }, function (error, team) {
+        if (team) {
+          res.data = {
+            success : true,
+            team  : team
+          };
+          return next();
+        } else {
+          return next(Err.notFound('No team matches the provided ID'));
+        }
+      })
     },
 
 
@@ -57,8 +77,13 @@ module.exports = function accountController (api) {
     // Destroy -- Remove Player from a team
     //
     destroy : function (req, res, next) {
-      Team.findOneAndRemove({
+      var inputs = req.body;
+      Team.findOneAndUpdate({
         _id : req.params.teamId
+      }, { $pull: 
+          { 
+            players: { $in : inputs.ids }
+          } 
       }, function (error, team){
         if (team) {
           res.data = {
@@ -72,21 +97,4 @@ module.exports = function accountController (api) {
       });
     }
   };
-
-
-
-}
-
-function _retrieveTeam ( teamId, next ) {
-    Team.findOne({
-    '_id' : teamId
-    }, function (error, team){
-      if (team) {
-        return team;
-      } else {
-        //quit execution
-        return next(Err.notFound('No team matches the provided ID'));
-      }
-  });  
-  
 }
