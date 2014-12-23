@@ -3,7 +3,7 @@ var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 
 var Player   = Mongoman.model('player');
 
-module.exports = function accountController (api) {
+module.exports = function playerController (api) {
   return {
 
     //
@@ -43,7 +43,7 @@ module.exports = function accountController (api) {
         } else {
           return next(Err.notFound('No player matches the provided ID'));
         }
-      })
+      });
     },
 
 

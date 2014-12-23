@@ -19,9 +19,10 @@ module.exports = function playerController (api) {
           last  : Joi.string().optional().alphanum().min(1).max(50)
         })
       }, function save (result, callback) {
-        Mongoman.save('player', req.body, next, function () {
+        Mongoman.save('player', req.body, next, function ( player ) {
           res.data = {
             success : true,
+            player  : player,
             message : 'Player ' + inputs.name.first + ' ' + inputs.name.last + ' created'
           };
           return callback();
