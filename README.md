@@ -110,8 +110,8 @@ Useful grunt commands <a name="useful-commands"></a> [↑](#top)
 
 `grunt dropdb` -> drops the current database
 
-[↑](#top) API Specific <a name="api"></a>
-============
+API <a name="api"></a> [↑](#top)
+===
 
 A few things are done automatically cut down on controller/model/router bloat:
 
