@@ -6,7 +6,7 @@ Web service to compile and deliver local ice times (skate/stick time/pickup)
 * Structure 
 
 
-Structure <a name="structure"></a> [▲](#top)
+[↑](#top) Structure <a name="structure"></a>
 =========
 
 **API**
@@ -73,7 +73,7 @@ routes.js // route->controller mapping
 
 A collection of minified files made accessible to the client. This is where the actual Angular app runs. The App dir is for dev only
 
-To Run <a name="to-run"></a> [▲](#top)
+[↑](#top) To Run <a name="to-run"></a>
 ======
 
 General
@@ -96,7 +96,7 @@ API
 **Coming Soon**
 * command line options
 
-Useful grunt commands <a name="useful-commands"></a> [▲](#top)
+[↑](#top) Useful grunt commands <a name="useful-commands"></a>
 =====================
 
 `grunt clean:compiled` -> removes compiled code (./tmp, ./dist, ./sass_cache)
@@ -105,7 +105,7 @@ Useful grunt commands <a name="useful-commands"></a> [▲](#top)
 
 `grunt dropdb` -> drops the current database
 
-API Specific <a name="api"></a> [▲](#top)
+[↑](#top) API Specific <a name="api"></a>
 ============
 
 A few things are done automatically cut down on controller/model/router bloat:
@@ -209,11 +209,11 @@ the following utils are available from /lib/session.js
 * `requireSession(req, res, next)` - Route level middleware. returns 401 if a valid session is not found
 
 
-APP Specific <a name="app"></a> [▲](#top)
+[↑](#top) APP Specific <a name="app"></a>
 ============
 
 
-Mongoman <a name="mongoman"></a> [▲](#top)
+[↑](#top) Mongoman <a name="mongoman"></a>
 ========
 
 I hate code bloat especially when its something that we'll need to do over and over again. So I made a wrapper MANage MONGOose/mongo and mongoose-validator.
