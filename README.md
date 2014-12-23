@@ -3,10 +3,15 @@ IceBuddy <a name="top"></a>
 
 Web service to compile and deliver local ice times (skate/stick time/pickup)
 
-* Structure 
+* [Structure](#structure)
+* [To Run](#to-run)
+* [Useful Commands](#useful-commands)
+* [ApI](#api)
+* [App](#app)
+* [Mongoman](#mongoman)
 
 
-[↑](#top) Structure <a name="structure"></a>
+Structure <a name="structure"></a> [↑](#top)
 =========
 
 **API**
@@ -73,7 +78,7 @@ routes.js // route->controller mapping
 
 A collection of minified files made accessible to the client. This is where the actual Angular app runs. The App dir is for dev only
 
-[↑](#top) To Run <a name="to-run"></a>
+To Run <a name="to-run"></a> [↑](#top)
 ======
 
 General
@@ -96,7 +101,7 @@ API
 **Coming Soon**
 * command line options
 
-[↑](#top) Useful grunt commands <a name="useful-commands"></a>
+Useful grunt commands <a name="useful-commands"></a> [↑](#top)
 =====================
 
 `grunt clean:compiled` -> removes compiled code (./tmp, ./dist, ./sass_cache)
@@ -209,11 +214,11 @@ the following utils are available from /lib/session.js
 * `requireSession(req, res, next)` - Route level middleware. returns 401 if a valid session is not found
 
 
-[↑](#top) APP Specific <a name="app"></a>
-============
+APP <a name="app"></a> [↑](#top)
+===
 
 
-[↑](#top) Mongoman <a name="mongoman"></a>
+Mongoman <a name="mongoman"></a> [↑](#top)
 ========
 
 I hate code bloat especially when its something that we'll need to do over and over again. So I made a wrapper MANage MONGOose/mongo and mongoose-validator.
