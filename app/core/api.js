@@ -21,7 +21,7 @@ simpleApp.service('Api', ['$http',  '$resource', function ($http, $resource) {
   //
 
   //
-  // session
+  // Session
   //
   api.session = $resource('/session', null,  {
     create  : { method : 'POST' },
@@ -31,6 +31,7 @@ simpleApp.service('Api', ['$http',  '$resource', function ($http, $resource) {
    });
 
   //
+  // Account
   //
   api.account = $resource('/account', null,  {
     create : { method : 'POST' },

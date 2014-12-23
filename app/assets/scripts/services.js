@@ -37,6 +37,8 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', '$window', function (Co
       last  : null
     },
 
+    apply : applyCookie,
+
     displayName : function () {
       if (session.name &&  session.name.first) {
         return session.name.first;
@@ -54,18 +56,6 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', '$window', function (Co
         $route.reload();
       });
     },
-
-    // submit sign in
-    signIn : function (inputs, callback) {
-      var cb = updateAndCallback(callback);
-      Api.session.create(inputs, cb, cb);
-    },
-
-    signUp : function (inputs, callback) {
-      var cb = updateAndCallback(callback);
-      Api.account.create(inputs, cb, cb);
-    },
-
 
 
     // redirect to sign in page is the user isnt signed in
@@ -91,13 +81,6 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', '$window', function (Co
       session.isSignedIn = cookie.isSignedIn || false;
     }
 
-  }
-
-  function updateAndCallback (callback) {
-    return function () {
-      applyCookie();
-      callback(arguments);
-    }
   }
 
   return session;

@@ -14,6 +14,16 @@
         a {
           padding: 25px 15px;
           height: $nav-height;
+          display: inline-block;
+
+          &:hover {
+            color: $blue;
+          }
+
+
+          &.flush {
+            padding: 25px 0;
+          }
         }
       }
 
@@ -27,6 +37,23 @@
           a {
             padding: 25px 15px;
             height: $nav-height;
+            display: inline-block;
+
+            &:hover {
+              color: $blue;
+            }
+
+            &.flush {
+              padding: 25px 0;
+
+              &:first-of-type {
+                padding-left: 15px;
+              }
+
+              &:last-of-type {
+                padding-right: 15px;
+              }
+            }
           }
 
           ul {
