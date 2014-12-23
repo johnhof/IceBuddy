@@ -1,13 +1,12 @@
-IceBuddy
+IceBuddy <a name="top"></a> 
 ========
 
 Web service to compile and deliver local ice times (skate/stick time/pickup)
 
+* Structure 
 
-**Built from:** https://github.com/johnhof/simple_skeleton
 
-
-Structure
+Structure <a name="structure"></a> [▲](#top)
 =========
 
 **API**
