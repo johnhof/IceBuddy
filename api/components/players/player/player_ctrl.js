@@ -3,7 +3,7 @@ var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 
 var Player   = Mongoman.model('player');
 
-module.exports = function accountController (api) {
+module.exports = function playerController (api) {
   return {
 
     //

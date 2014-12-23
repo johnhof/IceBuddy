@@ -40,6 +40,7 @@ exports.register = function  (api) {
   // Teams
   routeCrud('/teams', controller('teams'));
   routeCrud('/teams/:teamId', controller('teams.team'));
+  routeCrud('/teams/:teamId/roster', controller('teams.roster'));
 
 
 
