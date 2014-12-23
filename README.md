@@ -73,7 +73,7 @@ routes.js // route->controller mapping
 
 A collection of minified files made accessible to the client. This is where the actual Angular app runs. The App dir is for dev only
 
-To Run
+To Run <a name="to-run"></a> [▲](#top)
 ======
 
 General
@@ -96,14 +96,16 @@ API
 **Coming Soon**
 * command line options
 
-Useful grunt commands
+Useful grunt commands <a name="useful-commands"></a> [▲](#top)
 =====================
 
 `grunt clean:compiled` -> removes compiled code (./tmp, ./dist, ./sass_cache)
 
 `grunt clean:modules` ->  removes node modules and bower components
 
-API Specific
+`grunt dropdb` -> drops the current database
+
+API Specific <a name="api"></a> [▲](#top)
 ============
 
 A few things are done automatically cut down on controller/model/router bloat:
@@ -207,11 +209,11 @@ the following utils are available from /lib/session.js
 * `requireSession(req, res, next)` - Route level middleware. returns 401 if a valid session is not found
 
 
-APP Specific
+APP Specific <a name="app"></a> [▲](#top)
 ============
 
 
-Mongoman
+Mongoman <a name="mongoman"></a> [▲](#top)
 ========
 
 I hate code bloat especially when its something that we'll need to do over and over again. So I made a wrapper MANage MONGOose/mongo and mongoose-validator.
