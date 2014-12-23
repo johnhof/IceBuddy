@@ -13,7 +13,7 @@
       <ul class="nav navbar-nav" ng-controller="SessionCtrl">
           <!-- if signed in-->
           <li ng-if="session.isSignedIn">
-            <a href="#/account">My Account</a> | <a ng-click="sessio.signOut()">Sign out</a>
+            <a class="flush" href="#/account">My Account</a> | <a class="flush" ng-click="session.signOut()">Sign out</a>
           </li>
           <!-- else -->
           <li ng-if="!session.isSignedIn">
