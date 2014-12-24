@@ -1,0 +1,141 @@
+@import 'variables';
+
+
+//
+// Universal Styles
+//
+
+
+html, body {
+  padding: 0;
+  margin: 0;
+  background :none;
+
+  font-family: 'Open Sans', sans-serif;
+}
+
+html {
+  background: rgb(240, 240, 240);
+  height: 100%;
+  background: url('../images/crossword.png') left top;
+}
+
+h1, h2, h3, h4 {
+  margin: 5px 0;
+}
+
+a {
+  cursor: pointer;
+
+  &:hover {
+    color: $blue;
+  }
+}
+
+#main-content {
+  margin: auto;
+  margin-top: 70px;
+  padding: 10px;
+  color: $grey;
+
+  @media screen and (min-width: 800px) { width: 80%; }
+  @media screen and (max-width: 700px) { width: 85%; }
+  @media screen and (max-width: 800px) { width: 90%; }
+  @media screen and (max-width: 600px) { width: 100%; }
+}
+
+#background-filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(245, 246, 247, 0);
+  z-index: -1;
+}
+
+.container {
+  width: 100%;
+}
+
+//
+// Forms
+//
+
+
+.button {
+  border: 1px solid #FFFFFF;
+  border-radius: 3px;
+  width: 100%;
+  min-height: 35px;
+  box-shadow: 0px 0px 3px #888888;
+  background: $dark-grey;
+  color: white;
+}
+
+.button-wrap {
+  display: flex;
+  padding: 10px 0;
+
+  .button, [type="button"] {
+    flex:1;
+    color: white;
+
+    &[type="submit"], &[active="true"] {
+      background: $blue;
+      color: white;
+    }
+
+
+    &:first-of-type {
+      margin-right: 10px;
+    }
+  }
+}
+
+.error {
+  color: $red;
+  display: none;
+
+  &.main-error {
+    padding-top: 5px;
+  }
+}
+
+form.ng-submitted {
+  .invalid {
+    border: 1px solid $red;
+  }
+
+  .error {
+    display: block;
+  }
+}
+
+.input-wrap {
+  display: block;
+  padding: 10px 0;
+
+
+  input {
+    width: 100%;
+    border-radius: 1px;
+    border: 1px solid $light-grey;
+    min-height: 35px;
+    box-shadow: 0px 0px 3px #888888;
+
+    &[type="email"], &[type="password"], &[type="text"] {
+      padding-left: 10px;
+
+      &:required {
+        &::-webkit-input-placeholder {
+          &:after {
+            content: "*";
+            padding-left: 5px;
+            color: $faded-red;
+          }
+        }
+      }
+    }
+  }
+}

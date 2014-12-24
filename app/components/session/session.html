@@ -1,0 +1,43 @@
+
+<div id="session-content">
+
+  <div id="sample-container">
+    <img src="/images/devices.png">
+    <input type="button" class="button" value="Start Tracking Now">
+  </div>
+
+  <form id="session-form" name="form" ng-class="{ 'ng-submitted' : submitted }" novalidate>
+    <h3>Sign in | Sign up</h3>
+    <div class="error main-error" ng-show="formError">{{ formError }}</div>
+
+    <div class="input-wrap">
+      <input validate required email type="text" ng-model="inputs.email" name="email" placeholder="Email Address">
+    </div>
+    <div class="input-wrap" ng-show="isSignUp">
+      <input validate required email match="inputs.email" type="text" ng-model="inputs.confirm.email" name="confirm email" placeholder="Confirm Email Address">
+    </div>
+
+    <div class="input-wrap">
+      <input validate required password type="password" ng-model="inputs.password" name="password" placeholder="Password">
+    </div>
+    <div class="input-wrap" ng-show="isSignUp">
+      <input validate required password match="inputs.password" required type="password" ng-model="inputs.confirm.password" name="confirm password" placeholder="Confirm Password">
+    </div>
+
+    <div class="input-wrap" ng-show="isSignUp">
+      <input validate required ng-maxlength="50" type="text" ng-model="inputs.username" name="username" placeholder="Username">
+    </div>
+    <div class="input-wrap" ng-show="isSignUp">
+      <input validate ng-maxlength="50" type="text" ng-model="inputs.name.first" name="first name" placeholder="First Name">
+    </div>
+    <div class="input-wrap" ng-show="isSignUp">
+      <input validate ng-maxlength="50" type="text" ng-model="inputs.name.last" name="last name" placeholder="Last Name" >
+    </div>
+
+    <div class="button-wrap">
+      <input class="button" type="button" active="{{ !isSignUp }}" ng-click="signIn($event)" value="Sign In">
+      <input class="button" type="button" active="{{ isSignUp }}" ng-click="signUp($event)" value="Sign up">
+    </div>
+  </form>
+
+</div>
