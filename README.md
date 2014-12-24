@@ -1,4 +1,4 @@
-IceBuddy <a name="top"></a> 
+IceBuddy
 ========
 
 Web service to compile and deliver local ice times (skate/stick time/pickup)
@@ -78,7 +78,7 @@ routes.js // route->controller mapping
 
 A collection of minified files made accessible to the client. This is where the actual Angular app runs. The App dir is for dev only
 
-To Run <a name="to-run"></a> [↑](#top)
+To Run
 ======
 
 General
@@ -108,7 +108,7 @@ Useful grunt commands <a name="useful-commands"></a> [↑](#top)
 
 `grunt clean:modules` ->  removes node modules and bower components
 
-`grunt dropdb` -> drops the current database
+`gunt dropdb` - > drops the current local database
 
 API <a name="api"></a> [↑](#top)
 ===
@@ -284,3 +284,6 @@ All validations that an error message param as the last argument to override the
 * `Mongoman.save(modelName, inputs, errorHandler, successHandler)` - save an `input` object to `modelName`, validation/DB errors will go to the `errorHandler` (generally `next()`), otherwise, `successHandler` is called
 * `Mongoman.schema(schemaObj)` - returns a new schema instance of the passed in object
 
+Testing
+============
+To run the test suite run the following at the root folder

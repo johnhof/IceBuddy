@@ -3,25 +3,26 @@ var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 
 var Player   = Mongoman.model('player');
 
-module.exports = function accountController (api) {
+module.exports = function playerController (api) {
   return {
-
-    //
-    // Create
-    //
-    create : function (req, res, next) {
-      return next();
-    },
-
 
     //
     // Read
     //
     read : function (req, res, next) {
-      res.data = {
-        success: true
-      };
-      return next();
+      Player.findOne({
+        '_id' : req.params.playerId
+        }, function (error, player){
+          if (player) {
+            res.data = {
+              success : true,
+              player  : player
+            };
+            return next();
+          } else {
+            return next(Err.notFound('No player matches the provided ID'));
+          }
+      });
     },
 
 
@@ -29,7 +30,20 @@ module.exports = function accountController (api) {
     // Update
     //
     update : function (req, res, next) {
-      return next();
+      var inputs = req.body;
+      Player.findOneAndUpdate({
+        _id : req.params.playerId
+      }, inputs, function (error, player) {
+        if (player) {
+          res.data = {
+            success : true,
+            player  : player
+          };
+          return next();
+        } else {
+          return next(Err.notFound('No player matches the provided ID'));
+        }
+      });
     },
 
 
@@ -37,7 +51,19 @@ module.exports = function accountController (api) {
     // Destroy
     //
     destroy : function (req, res, next) {
-      return next();
+      Player.findOneAndRemove({
+        _id : req.params.playerId
+      }, function (error, player){
+        if (player) {
+          res.data = {
+            success : true,
+            player  : player
+          };
+          return next();
+        } else {
+          return next(Err.notFound('No player matches the provided ID'));
+        }
+      });
     }
   };
 }

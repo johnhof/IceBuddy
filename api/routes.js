@@ -19,6 +19,9 @@ exports.register = function  (api) {
   routeCrud('/', controller('home'));
 
   // Account
+  var accountCtrl = controller('account')
+  api.get('/session', session.requireSession, accountCtrl.read, respond);
+  api.put('/session', session.requireSession, accountCtrl.update, respond);
   routeCrud('/account', controller('account'));
 
   // Leagues
@@ -37,6 +40,7 @@ exports.register = function  (api) {
   // Teams
   routeCrud('/teams', controller('teams'));
   routeCrud('/teams/:teamId', controller('teams.team'));
+  routeCrud('/teams/:teamId/roster', controller('teams.roster'));
 
 
 

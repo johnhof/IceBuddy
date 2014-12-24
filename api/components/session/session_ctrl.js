@@ -18,17 +18,20 @@ module.exports = function sessionController (api) {
         password : Joi.password()
       }, function success (inputs, callback) {
         Account.findOne({email : inputs.email}, function (error, user) {
-          if (!user || !bcrypt.compareSync(inputs.password, user.password)) {
-            return callback(Err('Login failed. check your credentials and try again'))
-          } else {
-            res.setSession(user, true);
-            res.data = {
-              success :true,
-              message : 'now logged in as ' + user.username
+          user.comparePassword(inputs.password, function (error, isValid) {
+            if (isValid) {
+              res.setSession(user, true);
+              res.data = {
+                success : true,
+                message : 'now logged in as ' + user.username
+              }
+
+            } else {
+              error = Err('Login failed. check your credentials and try again');
             }
 
-            return callback();
-          }
+            return callback(error);
+          });
         });
       }, next);
     },
