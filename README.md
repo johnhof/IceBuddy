@@ -78,7 +78,7 @@ routes.js // route->controller mapping
 
 A collection of minified files made accessible to the client. This is where the actual Angular app runs. The App dir is for dev only
 
-To Run
+To Run <a name="useful-commands"></a> [↑](#top)
 ======
 
 General
