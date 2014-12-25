@@ -104,7 +104,7 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', '$window', function (Co
 ////////////////////////////////////////////////////////////////////////
 
 // A collection of general purpose utilities
-simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', function (Cookie, Api, $route, $window) {
+simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', '$location', function (Cookie, Api, $route, $window, $location) {
   var $dom = angular.element('html');
   return {
 
@@ -113,28 +113,25 @@ simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', function (Cook
     //
 
 
-    formHelper : function (formObj) {
+    formHelper : function (formObj, dataModel) {
       var $form = angular.element('form[name=' + formObj.$name + ']');
       var form  = {
         // validate and perform passed in action
-        apiAction : function (resourceReq, onSuccess) {
+        apiAction : function (inputs, resourceReq, onSuccess) {
           formObj.submitted = true;
 
           if (form.validate()) {
-            resourceReq(onSuccess, form.resErrHandler);
+            resourceReq(inputs, onSuccess, form.resErrHandler);
           }
         },
+
         // validate by pairing visible inputs with their angular model counterparts to find validation errors
         validate : function () {
+          var inputsArr = form.visibleInputs();
           var valErrors;
 
           // only validate visible inputs
-          $form.find('input[ng-show]:not(.ng-hide), input:not([ng-show])').each(function () {
-            var $input   = $(this);
-
-            // make sure our parent isnt hidden either
-            if ($input.closest('[ng-show].ng-hide').length) { return; }
-
+          _.each(inputsArr, function ($input) {
             var angInput = formObj[$input.attr('name')]; // pair name to angular input obj
             if (angInput && Object.keys(angInput.$error || {}).length) {
               valErrors =  true;
@@ -142,6 +139,14 @@ simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', function (Cook
           });
 
           return !valErrors;
+        },
+
+        visibleInputs : function () {
+          return _.compact($form.find('input[ng-show]:not(.ng-hide), input:not([ng-show])').map(function () {
+            var $input = $(this);
+            // make sure our parent isnt hidden either
+            if (!$input.closest('[ng-show].ng-hide').length) { return $input; }
+          }));
         },
 
         // error handler which appends api errors to the form
@@ -153,14 +158,10 @@ simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', function (Cook
 
           // if its a validation error, set the error text for each problem input
           if (errorObj.error === 'ValidationError') {
-            console.log('val error')
-            console.log(errorObj)
             _.each(errorObj.details, function (valError) {
-              console.log(valError)
               if (!(valError && valError.path && valError.message)) { return; }
-console.log(valError.message)
-              var $input = $dom.find('error[data-matches="' + valError.path + '"], error[data-matches="inputs.' + valError.path + '"]');
-              $input.text(valError.message);
+              var $input = $dom.find('.error[data-matches="' + valError.path + '"], .error[data-matches="inputs.' + valError.path + '"], .error[data-matches="fomr.' + valError.path + '"]');
+              $input.text(valError.message.capitalize());
             });
 
           // if its not a validation error, just display add the error to the form
@@ -168,21 +169,22 @@ console.log(valError.message)
             formObj.globalError = errorObj.error;
           }
         },
-
-
-        //
-        // Miscellaneous utilities
-        //
-
-
-        // prefix /# and redirect
-        redirect : function (path) {
-          path = /^\//.test(path) ? path : '/' + path
-          $location.path('/#' + path);
-        }
       }
 
       return form;
+    },
+
+
+    //
+    // Miscellaneous utilities
+    //
+
+
+    // prefix /# and redirect
+
+    redirect : function (path) {
+      path = /^\//.test(path) ? path : '/' + path
+      $location.path(path);
     }
   }
 }])

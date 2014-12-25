@@ -32,7 +32,7 @@ simpleApp.controller('SessionCtrl', ['$scope', 'Utils', 'Session', 'Api', functi
       $scope.form.submitted = false;
       $scope.isSignUp  = true;
     } else {
-      $scope.submit(Api.account.create);
+      $scope.submit($scope.inputs, Api.account.create);
     }
   }
 
@@ -42,7 +42,10 @@ simpleApp.controller('SessionCtrl', ['$scope', 'Utils', 'Session', 'Api', functi
       $scope.form.submitted = false;
       $scope.isSignUp  = false;
     } else {
-      $scope.submit(Api.session.create);
+      $scope.submit({
+        email    : $scope.inputs.email,
+        password : $scope.inputs.password
+      }, Api.session.create);
     }
   }
 
@@ -50,10 +53,10 @@ simpleApp.controller('SessionCtrl', ['$scope', 'Utils', 'Session', 'Api', functi
   //
   // generic submit listener
   //
-  $scope.submit = function (submitReq) {
-    var form = Utils.formHelper($scope.form);
+  $scope.submit = function (inputs, submitReq) {
+    var form = Utils.formHelper($scope.form,  $scope.inputs);
 
-    form.apiAction(submitReq, function success () {
+    form.apiAction(inputs, submitReq, function success () {
       Session.apply();
       Utils.redirect('/');
     });
