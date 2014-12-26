@@ -24,14 +24,14 @@ module.exports = function accountController (api) {
       }, [
         function checkEmailUnique (result, callback) {
           Account.findOne({ email : inputs.email }, function (error, user) {
-            var result = user ? Err('Email in use') : null;
-            return callback(null, result);
+            var error = user ? Err('Email in use') : null;
+            return callback(error, result);
           });
         },
         function checUsernameUnique(result, callback) {
           Account.findOne({ nickname : inputs.nickname }, function (error, user) {
-          var result = user ? Err('Username in use') : null;
-          return callback(null, result);
+          var error = user ? Err('Username in use') : null;
+          return callback(error, result);
           });
         },
         function save (result, callback) {

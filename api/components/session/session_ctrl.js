@@ -17,21 +17,25 @@ module.exports = function sessionController (api) {
         email    : Joi.email(),
         password : Joi.password()
       }, function success (inputs, callback) {
-        Account.findOne({email : inputs.email}, function (error, user) {
-          user.comparePassword(inputs.password, function (error, isValid) {
-            if (isValid) {
-              res.setSession(user, true);
-              res.data = {
-                success : true,
-                message : 'now logged in as ' + user.username
+        var unAuth = Err.unAuth('Login failed. check your credentials and try again');
+
+        Account.findOne({email : inputs.email}, function (error, account) {
+          if (account) {
+            account.comparePassword(inputs.password, function (error, isValid) {
+              if (isValid) {
+                res.setSession(account, true);
+                res.data = {
+                  success : true,
+                  message : 'now logged in as ' + account.nickname
+                }
+                return callback();
+              } else {
+                return callback(unAuth);
               }
-
-            } else {
-              error = Err('Login failed. check your credentials and try again');
-            }
-
-            return callback(error);
-          });
+            });
+          } else {
+            callback(unAuth);
+          }
         });
       }, next);
     },
@@ -43,14 +47,14 @@ module.exports = function sessionController (api) {
     read : function (req, res, next) {
       Account.findOne({
         email    : req.session.email
-      }, function (error, user) {
+      }, function (error, account) {
         if (error) { return next(error); }
 
         res.data = {
-          email      : user.email,
-          username   : user.username,
-          registered : user.registered,
-          name       : user.name
+          email      : account.email,
+          account   : account.nickname,
+          registered : account.registered,
+          name       : account.name
         };
 
         return next();

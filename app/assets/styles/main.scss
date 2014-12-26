@@ -96,6 +96,7 @@ a {
 .error {
   color: $red;
   display: none;
+  font-weight: bold;
 
   &.main-error {
     padding-top: 5px;
