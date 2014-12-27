@@ -141,8 +141,8 @@ mongoman.register = function (name, schema, options) {
     _.each(options.virtuals || [], function (virtual) {
       if (virtual) {
         newSchema = newSchema.virtual(virtual.property);
-        newSchema = typeof virtual.get === 'function' ? newSchema.get(virtual.get): newSchema;
-        newSchema = typeof virtual.set === 'function' ? newSchema.set(virtuarl.set) : newSchema;
+        newSchema = typeof virtual.get === 'function' ? newSchema.get(virtual.get) : newSchema;
+        newSchema = typeof virtual.set === 'function' ? newSchema.set(virtual.set) : newSchema;
       }
     });
 

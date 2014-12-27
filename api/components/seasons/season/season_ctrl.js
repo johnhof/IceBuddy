@@ -3,7 +3,7 @@ var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
 
-var Game = Mongoman.model('game');
+var Season = Mongoman.model('season');
 
 module.exports = function accountController (api) {
   return {
@@ -12,17 +12,17 @@ module.exports = function accountController (api) {
     // Read
     //
     read : function (req, res, next) {
-      Game.findOne({
-        '_id' : req.params.gameId
-        }, function (error, game){
-          if (game) {
+      Season.findOne({
+        '_id' : req.params.seasonId
+        }, function (error, season){
+          if (season) {
             res.data = {
               success : true,
-              game  : game
+              season  : season
             };
             return next();
           } else {
-            return next(Err.notFound('No game matches the provided ID'));
+            return next(Err.notFound('No season matches the provided ID'));
           }
       });
     },
@@ -33,17 +33,17 @@ module.exports = function accountController (api) {
     //
     update : function (req, res, next) {
       var inputs = req.body;
-      Game.findOneAndUpdate({
-        _id : req.params.gameId
-      }, inputs, function (error, game) {
-        if (game) {
+      Season.findOneAndUpdate({
+        _id : req.params.seasonId
+      }, inputs, function (error, season) {
+        if (season) {
           res.data = {
             success : true,
-            game  : game
+            season  : season
           };
           return next();
         } else {
-          return next(Err.notFound('No game matches the provided ID'));
+          return next(Err.notFound('No season matches the provided ID'));
         }
       })
     },
@@ -53,17 +53,17 @@ module.exports = function accountController (api) {
     // Destroy
     //
     destroy : function (req, res, next) {
-      Game.findOneAndRemove({
-        _id : req.params.gameId
-      }, function (error, game){
-        if (game) {
+      Season.findOneAndRemove({
+        _id : req.params.seasonId
+      }, function (error, season){
+        if (season) {
           res.data = {
             success : true,
-            game  : game
+            season  : season
           };
           return next();
         } else {
-          return next(Err.notFound('No game matches the provided ID'));
+          return next(Err.notFound('No season matches the provided ID'));
         }
       });
     }
