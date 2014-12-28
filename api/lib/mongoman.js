@@ -130,19 +130,19 @@ mongoman.register = function (name, schema, options) {
   // TODO : iterate over every leaf looking for a mongoman constructor and call fin()
 
   var newSchema = new Schema(schema, options || { strict: true });
-
   if (options) {
     if (options.index) {
       newSchema.index = options.index;
       delete options.index;
     }
 
+
     // bind virtuals
     _.each(options.virtuals || [], function (virtual) {
       if (virtual) {
-        newSchema = newSchema.virtual(virtual.property);
-        newSchema = typeof virtual.get === 'function' ? newSchema.get(virtual.get): newSchema;
-        newSchema = typeof virtual.set === 'function' ? newSchema.set(virtuarl.set) : newSchema;
+        var newVirtual = newSchema.virtual(virtual.property);
+        ( typeof virtual.get === 'function' ) ? newVirtual.get(virtual.get) : newSchema;
+        ( typeof virtual.set === 'function' ) ? newVirtual.set(virtual.set) : newSchema;
       }
     });
 
@@ -161,11 +161,14 @@ mongoman.register = function (name, schema, options) {
         newSchema.methods[name] = func;
       }
     });
+
+    // bind statics
+    _.each(options.statics || [], function (func, name) {
+      if (name && typeof func === 'function') {
+        newSchema.statics[name] = func;
+      }
+    });
   }
-
-
-
-
   return mongoose.model(name, newSchema);
 }
 

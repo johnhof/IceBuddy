@@ -40,6 +40,10 @@ exports.register = function  (api) {
   routeCrud('/players', controller('players'));
   routeCrud('/players/:playerId', controller('players.player'));
 
+  // Stats
+  routeCrud('/stats', controller('stats'));
+  routeCrud('/stats/:statId', controller('stats.stat'));
+
   // Session
   var sessionCtrl = controller('session')
   api.get('/session', session.requireSession, sessionCtrl.read, respond);
