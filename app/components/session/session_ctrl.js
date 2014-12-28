@@ -1,7 +1,6 @@
-simpleApp.controller('SessionCtrl', ['$scope', '$location', 'Session', 'Api', function ($scope, $location, Session, Api) {
-  if (Session.isSignedIn) {
-    $location.path('/');
-  }
+simpleApp.controller('SessionCtrl', ['$scope', 'Utils', 'Session', 'Api', function ($scope, Utils, Session, Api) {
+  // not need to show this page if the user is signed in
+  if (Session.isSignedIn) { Utils.redirect('/'); }
 
   // expose services and modules
   $scope.session  = Session;
@@ -22,50 +21,44 @@ simpleApp.controller('SessionCtrl', ['$scope', '$location', 'Session', 'Api', fu
     }
   };
 
+  //
+  // Click listeners
+  //
 
 
   // Submit sign in or toggle state
   $scope.signUp = function (event) {
     if (!$scope.isSignUp) {
-      $scope.submitted = false;
+      $scope.form.submitted = false;
       $scope.isSignUp  = true;
     } else {
-      $scope.submit(Api.account.create, $scope.inputs);
+      $scope.submit($scope.inputs, Api.account.create);
     }
   }
 
   // Submit sign in or toggle state
   $scope.signIn = function (event) {
     if ($scope.isSignUp) {
-      $scope.submitted = false;
+      $scope.form.submitted = false;
       $scope.isSignUp  = false;
     } else {
-      $scope.submit(Api.session.create, {
+      $scope.submit({
         email    : $scope.inputs.email,
         password : $scope.inputs.password
-      });
+      }, Api.session.create);
     }
   }
 
-  $scope.submit = function (submitReq, inputs) {
-    $scope.submitted = true;
 
-    // check for relevant errors
-    var errors = false;
-    _.each(inputs, function (value, key) {
-      var input = $scope.form[key] || {};
-      if (Object.keys(input.$error || {}).length) {
-        errors =  true;
-      }
+  //
+  // generic submit listener
+  //
+  $scope.submit = function (inputs, submitReq) {
+    var form = Utils.formHelper($scope.form,  $scope.inputs);
+
+    form.apiAction(inputs, submitReq, function success () {
+      Session.apply();
+      Utils.redirect('/');
     });
-
-    if (!errors) {
-      submitReq(inputs, function (u, getResponseHeaders) {
-        Session.apply();
-        $location.path('/#/');
-      }, function (error) {
-          $scope.formError = !error.data.error || error.data.error == 'ValidationError' ? 'Failed to complete action' : error.data.error;
-      });
-    }
   }
 }]);

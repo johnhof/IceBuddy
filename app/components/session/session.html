@@ -6,9 +6,13 @@
     <input type="button" class="button" value="Start Tracking Now">
   </div>
 
-  <form id="session-form" name="form" ng-class="{ 'ng-submitted' : submitted }" novalidate>
-    <h3>Sign in | Sign up</h3>
-    <div class="error main-error" ng-show="formError">{{ formError }}</div>
+  <form id="session-form" name="form" ng-class="{ 'ng-submitted' : form.submitted }" novalidate>
+    <h3>
+      <span ng-show="isSignUp">Sign up</span>
+      <span ng-hide="isSignUp">Sign in</span>
+    </h3>
+
+    <div class="error main-error" ng-show="form.globalError">{{ form.globalError }}</div>
 
     <div class="input-wrap">
       <input validate required email type="text" ng-model="inputs.email" name="email" placeholder="Email Address">
@@ -25,7 +29,7 @@
     </div>
 
     <div class="input-wrap" ng-show="isSignUp">
-      <input validate required ng-maxlength="50" type="text" ng-model="inputs.username" name="username" placeholder="Username">
+      <input validate required ng-maxlength="50" type="text" ng-model="inputs.nickname" name="nickname" placeholder="nickname">
     </div>
     <div class="input-wrap" ng-show="isSignUp">
       <input validate ng-maxlength="50" type="text" ng-model="inputs.name.first" name="first name" placeholder="First Name">
