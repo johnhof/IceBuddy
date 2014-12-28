@@ -2,7 +2,7 @@ var regexSet = require(process.cwd() + '/api/lib/validate').regex;
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 
 module.exports = Mongoman.register('player', {
-  preferred_number : Mongoman('Team Id').number().required().fin(),
+  preferred_number : Mongoman('Preferred Number').number().required().fin(),
 
   registered : Mongoman().date().required().default(Date.now).fin(),
   name       : {

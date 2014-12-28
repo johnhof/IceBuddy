@@ -28,6 +28,14 @@ exports.register = function  (api) {
   routeCrud('/leagues', controller('leagues'));
   routeCrud('/leagues/:leagueId', controller('leagues.league'));
 
+  // Seasons -- Probably will replace Leagues
+  routeCrud('/seasons', controller('seasons'));
+  routeCrud('/seasons/:seasonId', controller('seasons.season'));
+
+  // Games
+  routeCrud('/games', controller('games'));
+  routeCrud('/games/:gameId', controller('games.game'));
+
   // Players
   routeCrud('/players', controller('players'));
   routeCrud('/players/:playerId', controller('players.player'));
