@@ -491,7 +491,7 @@ module.exports = function (grunt) {
         }
       },
       api : {
-        command: 'nodemon ./api/api.js',
+        command: 'nodemon ./api/api.js --ignore "test/" --ignore "app/" --ignore "dist/"',
         options: {
           async: false
         }
