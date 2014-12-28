@@ -1,27 +1,25 @@
 var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Joi      = require('joi');
+var validate = require(process.cwd() + '/api/lib/validate');
 
-var Team = Mongoman.model('stat');
+var Stat = Mongoman.model('stat');
 
 module.exports = function accountController (api) {
   return {
 
-    //
-    // Create
-    //
-    create : function (req, res, next) {
-      return next();
-    },
-
-
-    //
+//
     // Read
     //
     read : function (req, res, next) {
-      res.data = {
-        success: true
-      };
-      return next();
+      Stat.findById(req.params.statId, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
+          res.data = data;
+          return next();
+        }
+      });
     },
 
 
@@ -29,7 +27,15 @@ module.exports = function accountController (api) {
     // Update
     //
     update : function (req, res, next) {
-      return next();
+      var inputs = req.body;
+      Stat.updateById(req.params.statId, inputs, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
+          res.data = data;
+          return next();
+        }
+      });
     },
 
 
@@ -37,7 +43,14 @@ module.exports = function accountController (api) {
     // Destroy
     //
     destroy : function (req, res, next) {
-      return next();
+      Stat.deleteById(req.params.statId, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
+          res.data = data;
+          return next();
+        }
+      });
     }
   };
 }
