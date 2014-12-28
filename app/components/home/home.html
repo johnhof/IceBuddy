@@ -1,3 +1,15 @@
-<div>
- Welcome {{session.displayName}}
+<div id="home-content">
+  <div id="hero" ng-controller="SessionCtrl" class="card">
+    <div ng-if="session.isSignedIn">
+      Signed In
+    </div>
+    <div ng-if="!session.isSignedIn">
+      <div ng-include src="'views/_sign_in_form.html'" id="sign-in-form"></div>
+    </div>
+    <div style='clear: both'></div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6"><div class="card"> Teams</div></div>
+    <div class="col-sm-6"><div class="card"> Payers</div></div>
+  </div>
 </div>
