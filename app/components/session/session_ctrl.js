@@ -58,7 +58,12 @@ simpleApp.controller('SessionCtrl', ['$scope', '$routeParams', 'Utils', 'Session
 
     form.apiAction(inputs, submitReq, function success () {
       Session.apply();
-      Utils.reload();
+
+      if ($routeParams.onComplete) {
+        Utils.redirect($routeParams.onComplete);
+      } else {
+        Utils.reload();
+      }
     });
   }
 }]);
