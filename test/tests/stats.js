@@ -248,7 +248,6 @@ function retrieve (stash, next) {
 function update (stash, next) {
   describe('Updating a player', function() {
     it('should update player Goals and Assists', function (done) {
-      console.log('stash.statsId == ' + stash.statsId)
       var newGoals = 2;
       var newAssists = 2;
       test.request.put({

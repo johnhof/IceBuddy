@@ -16,7 +16,10 @@ module.exports = function accountController (api) {
         if ( error ) {
           return next(error);
         } else {
-          res.data = data;
+          res.data = {
+              success : true,
+              stat  : data || null
+          }
           return next();
         }
       });
@@ -32,7 +35,10 @@ module.exports = function accountController (api) {
         if ( error ) {
           return next(error);
         } else {
-          res.data = data;
+          res.data = {
+              success : true,
+              stat  : data || null
+          }
           return next();
         }
       });
@@ -47,7 +53,10 @@ module.exports = function accountController (api) {
         if ( error ) {
           return next(error);
         } else {
-          res.data = data;
+          res.data = {
+              success : true,
+              stat  : data || null
+          }
           return next();
         }
       });

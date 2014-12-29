@@ -12,13 +12,14 @@ module.exports = function playerController (api) {
     //
     create : function (req, res, next) {
       var inputs = req.body;
-
-      var inputs = req.body;
       Player.create(inputs, function ( error, data ) {
         if ( error ) {
           return next(error);
         } else {
-          res.data = data;
+          res.data = {
+              success : true,
+              player  : data || null
+          }
           return next();
         }
       });
@@ -31,36 +32,17 @@ module.exports = function playerController (api) {
     read : function (req, res, next) {
       var inputs = req.query;
 
-      // take a player array and build the response body
-      function getResult (players) {
-        var success = !!(players && players.length);
-        return {
-          success : success,
-          message : !success ? 'No players found' : undefined,
-          players : players || []
-        };
-      }
-
-      // if the client performed a search
-      if (Object.keys(req.query).length) {
-        validate(inputs, {}, function (result, callback) {
-          Player.find(inputs, function (error, players) {
-            res.data = getResult(players)
-            return callback();
-          });
-        }, next);
-
-      // otherwise, return the last 10 registered
-      } else {
-        Player.find({
-          registered : {
-            $lte : new Date()
+      Player.findByName(inputs, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
+          res.data = {
+              success : true,
+              players  : data || null
           }
-        }).limit(10).exec(function (error, players) {
-          res.data = getResult(players)
           return next();
-        });
-      }
+        }
+      });
     },
 
     //

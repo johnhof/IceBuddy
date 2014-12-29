@@ -13,19 +13,17 @@ module.exports = function accountController (api) {
     //
     create : function (req, res, next) {
       var inputs = req.body;
-      validate(inputs, {
-        name     : Joi.string().required().min(1).max(50),
-        league   : Joi.string().required().min(1).max(50),
-      }, function save (result, callback) {
-        Mongoman.save('season', req.body, next, function ( season ) {
+      Season.create(inputs, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
           res.data = {
-            success : true,
-            season  : season,
-            message : 'Season ' + inputs.name + ' created'
-          };
-          return callback();
-        });
-      }, next);
+              success : true,
+              season  : data
+          }
+          return next();
+        }
+      });
     },
 
 
@@ -34,37 +32,17 @@ module.exports = function accountController (api) {
     //
     read : function (req, res, next) {
       var inputs = req.query;
-
-      // take a season array and build the response body
-      function getResult (seasons) {
-        var success = !!(seasons && seasons.length);
-        return {
-          success : success,
-          message : !success ? 'No seasons found' : undefined,
-          seasons : seasons || []
-        };
-      }
-
-      // if the client performed a search
-      if (Object.keys(req.query).length) {
-        validate(inputs, {}, function (result, callback) {
-          Season.find(inputs, function (error, seasons) {
-            res.data = getResult(seasons)
-            return callback();
-          });
-        }, next);
-
-      // otherwise, return the last 10 registered
-      } else {
-        Season.find({
-          created : {
-            $lte : new Date()
+      Season.findByName(inputs, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
+          res.data = {
+              success : true,
+              seasons  : data || []
           }
-        }).limit(10).exec(function (error, seasons) {
-          res.data = getResult(seasons)
           return next();
-        });
-      }
+        }
+      });
     },
 
 

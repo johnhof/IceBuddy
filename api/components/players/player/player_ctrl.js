@@ -14,7 +14,10 @@ module.exports = function playerController (api) {
         if ( error ) {
           return next(error);
         } else {
-          res.data = data;
+          res.data = {
+              success : true,
+              player  : data || null
+          }
           return next();
         }
       });
@@ -30,7 +33,10 @@ module.exports = function playerController (api) {
         if ( error ) {
           return next(error);
         } else {
-          res.data = data;
+          res.data = {
+              success : true,
+              player  : data || null
+          }
           return next();
         }
       });
@@ -45,7 +51,10 @@ module.exports = function playerController (api) {
         if ( error ) {
           return next(error);
         } else {
-          res.data = data;
+          res.data = {
+              success : true,
+              player  : data || null
+          }
           return next();
         }
       });

@@ -1,6 +1,10 @@
 var regexSet = require(process.cwd() + '/api/lib/validate').regex;
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 
+var Joi      = require('joi');
+var validate = require(process.cwd() + '/api/lib/validate');
+var Err  = require(process.cwd() + '/api/lib/error').errorGenerator;
+
 module.exports = Mongoman.register('player', {
   preferred_number : Mongoman('Preferred Number').number().required().fin(),
 
@@ -14,7 +18,8 @@ module.exports = Mongoman.register('player', {
   //account object (embedded)
   account : {},
   // List of game ids this user has participated in
-  games : Mongoman('Games').default([]).array().fin()
+  games : Mongoman('Games').default([]).array().fin(),
+  created : Mongoman().date().required().default(Date.now).fin()
 }, {
   statics : {
     findById : function ( _id, callback ) {
@@ -22,11 +27,7 @@ module.exports = Mongoman.register('player', {
         '_id' : _id
       }, function (error, player){
           if (player) {
-            var data = {
-              success : true,
-              player  : player
-            };
-            return callback(null, data);
+            return callback(null, player);
           } else {
             return callback(Err.notFound('No player matches the provided ID'));
           }
@@ -37,11 +38,7 @@ module.exports = Mongoman.register('player', {
         _id : _id
       }, inputs, function (error, player) {
         if (player) {
-          var data = {
-            success : true,
-            player  : player
-          };
-          return callback(null, data);
+          return callback(null, player);
         } else {
           return callback(Err.notFound('No player matches the provided ID'));
         }
@@ -52,11 +49,7 @@ module.exports = Mongoman.register('player', {
         _id : _id
       }, function (error, player){
         if (player) {
-          var data = {
-            success : true,
-            player  : player
-          };
-          return callback(null, data);
+          return callback(null, player);
         } else {
           return callback(Err.notFound('No player matches the provided ID'));
         }
@@ -64,63 +57,40 @@ module.exports = Mongoman.register('player', {
     },
     create : function ( inputs, callback ) {
       validate(inputs, {
-        name     : Joi.object().keys({
-          first : Joi.string().optional().alphanum().min(1).max(50),
-          last  : Joi.string().optional().alphanum().min(1).max(50)
-        }, function save (result, saveCallback) {
-        Mongoman.save('player', inputs, callback, function ( player ) {
-          var data = {
-            success : true,
-            player  : player,
-            message : 'Stats created'
-          };
-          return saveCallback(null, data);
-        });
-      }, function (error, data) {
-        if ( error )  {
-          return callback(error);
-        } else {
-          return callback(null, data);
+          name     : Joi.object().keys({
+            first : Joi.string().required().alphanum().min(1).max(50),
+            last  : Joi.string().required().alphanum().min(1).max(50)
+          })
+        }, 
+        function save (result, saveCallback) {
+          Mongoman.save('player', inputs, callback, function ( player ) {
+            return saveCallback(null, player);
+          });
+        }, 
+        function (error, data) {
+          return callback(error, data);
         }
-        
-      });
+      );
     },
     findByName : function ( inputs, callback ) {
+      var thisPlayer = this;
 
       validate(inputs, {
         first : Joi.string().optional().alphanum().min(1).max(50),
         last  : Joi.string().optional().alphanum().min(1).max(50)
-      }, function (result, callback) {
-        Player.find(inputs, function (error, players) {
-          if ( error ) {
-            return callback(error);
-          } else {
-            var success = !!(players && players.length);
-            var data = {
-              success : success,
-              message : !success ? 'No players found' : undefined,
-              players : players || []
-            };
-            return callback(null, data);
-          }
-        });
-      }, next);
-      this.find({
-        player_id : player_id
-      }, function (error, players) {
-        if ( error ) {
-          return callback(error);
-        } else {
-          var success = !!(players && players.length);
-          var data = {
-            success : success,
-            message : !success ? 'No players found' : undefined,
-            players : players || []
-          };
-          return callback(null, data);
+      }, function (result, findCallback) {
+          thisPlayer.find(inputs, function (error, players) {
+            if ( error ) {
+              return callback(error);
+            } else {
+              return findCallback(null, players);
+            }
+          });
+        }, 
+        function (error, data) {
+          return callback(error, data);
         }
-      });
+      );
     }
   }
-
 });

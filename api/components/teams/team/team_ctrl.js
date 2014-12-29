@@ -12,18 +12,16 @@ module.exports = function accountController (api) {
     // Read
     //
     read : function (req, res, next) {
-      Team.findOne({
-        '_id' : req.params.teamId
-        }, function (error, team){
-          if (team) {
-            res.data = {
+      Team.findById(req.params.teamId, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
+          res.data = {
               success : true,
-              team  : team
-            };
-            return next();
-          } else {
-            return next(Err.notFound('No team matches the provided ID'));
+              team  : data || null
           }
+          return next();
+        }
       });
     },
 
@@ -33,19 +31,17 @@ module.exports = function accountController (api) {
     //
     update : function (req, res, next) {
       var inputs = req.body;
-      Team.findOneAndUpdate({
-        _id : req.params.teamId
-      }, inputs, function (error, team) {
-        if (team) {
-          res.data = {
-            success : true,
-            team  : team
-          };
-          return next();
+      Team.updateById(req.params.teamId, inputs, function ( error, data ) {
+        if ( error ) {
+          return next(error);
         } else {
-          return next(Err.notFound('No team matches the provided ID'));
+          res.data = {
+              success : true,
+              team  : data || null
+          }
+          return next();
         }
-      })
+      });
     },
 
 
@@ -53,17 +49,15 @@ module.exports = function accountController (api) {
     // Destroy
     //
     destroy : function (req, res, next) {
-      Team.findOneAndRemove({
-        _id : req.params.teamId
-      }, function (error, team){
-        if (team) {
-          res.data = {
-            success : true,
-            team  : team
-          };
-          return next();
+      Team.deleteById(req.params.teamId, function ( error, data ) {
+        if ( error ) {
+          return next(error);
         } else {
-          return next(Err.notFound('No team matches the provided ID'));
+          res.data = {
+              success : true,
+              team  : data || null
+          }
+          return next();
         }
       });
     }
