@@ -10,6 +10,7 @@ html, body {
   padding: 0;
   margin: 0;
   background :none;
+  min-width: 320px;
 
   font-family: 'Open Sans', sans-serif;
 }
@@ -30,6 +31,10 @@ a {
   &:hover {
     color: $blue;
   }
+}
+
+.navbar {
+  min-width: 320px;
 }
 
 #main-content {
@@ -54,8 +59,64 @@ a {
   z-index: -1;
 }
 
+//
+// General Utilities
+//
+
 .container {
   width: 100%;
+}
+
+.card {
+  border: 1px solid $light-grey;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.10);
+  background-color: #FFFFFF;
+  margin: 10px 0;
+  padding: 5px;
+
+  .title {
+    font-size: 24px;
+    text-decoration: none;
+    border-bottom: 1px dotted rgb(163, 163, 163);
+    width: 100%;
+    display: block
+  }
+
+  .card-row {
+    display: flex;
+
+    .label {
+      flex: 1;
+      padding-right: 5px;
+
+      &:after {
+        content: ":";
+      }
+    }
+
+    .value {
+      flex: 1
+    }
+  }
+}
+
+//
+// bootstrap overrides
+//
+
+.container-fluid {
+  padding-right:0px;
+  padding-left:0px;
+}
+
+.row {
+  margin: 0;
+  padding: 0;
+
+  [class*='col-'] {
+    padding-right:0px;
+    padding-left:0px;
+  }
 }
 
 //
@@ -71,21 +132,28 @@ a {
   box-shadow: 0px 0px 3px #888888;
   background: $dark-grey;
   color: white;
+
+  &[type="submit"], &[active="true"] {
+    background: $blue;
+    color: white;
+  }
 }
 
 .button-wrap {
   display: flex;
   padding: 10px 0;
 
-  .button, [type="button"] {
+  .button, [type="button"]{
     flex:1;
-    color: white;
 
     &[type="submit"], &[active="true"] {
       background: $blue;
       color: white;
     }
 
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
 
     &:first-of-type {
       margin-right: 10px;
@@ -93,10 +161,21 @@ a {
   }
 }
 
+input {
+  &[type="email"], &[type="password"], &[type="text"] {
+    padding-left: 10px;
+  }
+}
+
+a.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .error {
   color: $red;
   display: none;
-  font-weight: bold;
 
   &.main-error {
     padding-top: 5px;
@@ -109,6 +188,7 @@ form.ng-submitted {
   }
 
   .error {
+    font-weight: bold;
     display: block;
   }
 }
@@ -126,8 +206,6 @@ form.ng-submitted {
     box-shadow: 0px 0px 3px #888888;
 
     &[type="email"], &[type="password"], &[type="text"] {
-      padding-left: 10px;
-
       &:required {
         &::-webkit-input-placeholder {
           &:after {

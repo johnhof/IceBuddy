@@ -1,0 +1,19 @@
+<div id="team-search-container">
+  <div class="heading">
+    <input type="text" class="search-box" ng-model="searchTerm" placeholder="Enter team name...">
+    <input class="button" type="button" active="true" value="+ New Team">
+  </div>
+  <div class="container-fluid">
+    <div class="results row">
+
+      <div class="col-sm-6 col-md-6" ng-repeat="team in teams">
+        <div class="card">
+          <a class="title" ng-href="#/teams/{{team.id}}">{{team.title}}</a>
+          <div card-row label="Seasons" value="{{team.seasons}}"></div>
+          <div card-row label="Captains" value="{{team.Captains}}"></div>
+          <div card-row label="Record" value="{{1 - 0 - 10}}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
