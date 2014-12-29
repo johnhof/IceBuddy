@@ -10,18 +10,16 @@ module.exports = function playerController (api) {
     // Read
     //
     read : function (req, res, next) {
-      Player.findOne({
-        '_id' : req.params.playerId
-        }, function (error, player){
-          if (player) {
-            res.data = {
+      Player.findById(req.params.playerId, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
+          res.data = {
               success : true,
-              player  : player
-            };
-            return next();
-          } else {
-            return next(Err.notFound('No player matches the provided ID'));
+              player  : data || null
           }
+          return next();
+        }
       });
     },
 
@@ -31,17 +29,15 @@ module.exports = function playerController (api) {
     //
     update : function (req, res, next) {
       var inputs = req.body;
-      Player.findOneAndUpdate({
-        _id : req.params.playerId
-      }, inputs, function (error, player) {
-        if (player) {
-          res.data = {
-            success : true,
-            player  : player
-          };
-          return next();
+      Player.updateById(req.params.playerId, inputs, function ( error, data ) {
+        if ( error ) {
+          return next(error);
         } else {
-          return next(Err.notFound('No player matches the provided ID'));
+          res.data = {
+              success : true,
+              player  : data || null
+          }
+          return next();
         }
       });
     },
@@ -51,17 +47,15 @@ module.exports = function playerController (api) {
     // Destroy
     //
     destroy : function (req, res, next) {
-      Player.findOneAndRemove({
-        _id : req.params.playerId
-      }, function (error, player){
-        if (player) {
-          res.data = {
-            success : true,
-            player  : player
-          };
-          return next();
+      Player.deleteById(req.params.playerId, function ( error, data ) {
+        if ( error ) {
+          return next(error);
         } else {
-          return next(Err.notFound('No player matches the provided ID'));
+          res.data = {
+              success : true,
+              player  : data || null
+          }
+          return next();
         }
       });
     }

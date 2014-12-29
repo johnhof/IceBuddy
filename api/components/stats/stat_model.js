@@ -87,11 +87,7 @@ module.exports = Mongoman.register('stat', {
         '_id' : _id
       }, function (error, stat){
           if (stat) {
-            var data = {
-              success : true,
-              stat  : stat
-            };
-            return callback(null, data);
+            return callback(null, stat);
           } else {
             return callback(Err.notFound('No stat matches the provided ID'));
           }
@@ -102,11 +98,7 @@ module.exports = Mongoman.register('stat', {
         _id : _id
       }, inputs, function (error, stat) {
         if (stat) {
-          var data = {
-            success : true,
-            stat  : stat
-          };
-          return callback(null, data);
+          return callback(null, stat);
         } else {
           return callback(Err.notFound('No stat matches the provided ID'));
         }
@@ -117,11 +109,7 @@ module.exports = Mongoman.register('stat', {
         _id : _id
       }, function (error, stat){
         if (stat) {
-          var data = {
-            success : true,
-            stat  : stat
-          };
-          return callback(null, data);
+          return callback(null, stat);
         } else {
           return callback(Err.notFound('No stat matches the provided ID'));
         }
@@ -158,12 +146,7 @@ module.exports = Mongoman.register('stat', {
         so      : Joi.number().default(0).integer()
       }, function save (result, saveCallback) {
         Mongoman.save('stat', inputs, callback, function ( stat ) {
-          var data = {
-            success : true,
-            stat  : stat,
-            message : 'Stats created'
-          };
-          return saveCallback(null, data);
+          return callback(null, stat);
         });
       }, function (error, data) {
         if ( error )  {
@@ -174,57 +157,39 @@ module.exports = Mongoman.register('stat', {
         
       });
     },
-    findByPlayer : function ( player_id, callback ) {
+    findByPlayer : function ( inputs, callback ) {
       //This function will return all stats by player -- Think lifetime stats
       this.find({
-        player_id : player_id
+        player_id : inputs.player_id
       }, function (error, stats) {
         if ( error ) {
           return callback(error);
         } else {
-          var success = !!(stats && stats.length);
-          var data = {
-            success : success,
-            message : !success ? 'No stats found' : undefined,
-            stats : stats || []
-          };
-          return callback(null, data);
+          return callback(null, stats);
         }
       });
     },
-    findBySeason : function ( season_id, callback ) {
+    findBySeason : function ( inputs, callback ) {
       //This function will return all stats by season -- Think stats for every player for a season
       this.find({
-        season_id : season_id
+        season_id : inputs.season_id
       }, function (error, stats) {
         if ( error ) {
           return callback(error);
         } else {
-          var success = !!(stats && stats.length);
-          var data = {
-            success : success,
-            message : !success ? 'No stats found' : undefined,
-            stats : stats || []
-          };
-          return callback(null, data);
+          return callback(null, stats);
         }
       });
     },
-    findByGame : function ( game_id, callback ) {
+    findByGame : function ( inputs, callback ) {
       //This function will return all stats by game -- Think stats for every player for a game
       this.find({
-        game_id : game_id
+        game_id : inputs.game_id
       }, function (error, stats) {
         if ( error ) {
           return callback(error);
         } else {
-          var success = !!(stats && stats.length);
-          var data = {
-            success : success,
-            message : !success ? 'No stats found' : undefined,
-            stats : stats || []
-          };
-          return callback(null, data);
+          return callback(null, stats);
         }
       });
     },
@@ -243,13 +208,7 @@ module.exports = Mongoman.register('stat', {
         if ( error ) {
           return callback(error);
         } else {
-          var success = !!(stats && stats.length);
-          var data = {
-            success : success,
-            message : !success ? 'No stats found' : undefined,
-            stats : stats || []
-          };
-          return callback(null, data);
+          return callback(null, stats);
         }
       });
     },
@@ -268,13 +227,7 @@ module.exports = Mongoman.register('stat', {
         if ( error ) {
           return callback(error);
         } else {
-          var success = !!(stats && stats.length);
-          var data = {
-            success : success,
-            message : !success ? 'No stats found' : undefined,
-            stats : stats || null
-          };
-          return callback(null, data);
+          return callback(null, stats);
         }
       });
     }

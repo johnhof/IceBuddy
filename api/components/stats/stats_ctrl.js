@@ -17,7 +17,10 @@ module.exports = function accountController (api) {
         if ( error ) {
           return next(error);
         } else {
-          res.data = data;
+          res.data = {
+              success : true,
+              stat  : data || null
+          }
           return next();
         }
       });
@@ -48,16 +51,16 @@ module.exports = function accountController (api) {
                 return callback(error, data);
               });
             } else {
-              Stat.findByPlayer(inputs.player_id, function ( error, data ) {
+              Stat.findByPlayer(inputs, function ( error, data ) {
                 return callback(error, data);
               });
             }
           } else if( inputs.game_id ) {
-            Stat.findByGame(inputs.game_id, function ( error, data ) {
+            Stat.findByGame(inputs, function ( error, data ) {
               return callback(error, data);
             });
           } else if( inputs.season_id ) {
-            Stat.findBySeason(inputs.season_id, function ( error, data ) {
+            Stat.findBySeason(inputs, function ( error, data ) {
               return callback(error, data);
             });
           } else {
@@ -69,7 +72,11 @@ module.exports = function accountController (api) {
           if ( error ) {
             return next(error);
           } else {
-            res.data = data;
+            res.data = {
+                success : true,
+                stats  : data || []
+            }
+
             return next();
           }
         });

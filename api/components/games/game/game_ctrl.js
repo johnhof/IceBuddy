@@ -8,22 +8,20 @@ var Game = Mongoman.model('game');
 module.exports = function accountController (api) {
   return {
 
-//
+    //
     // Read
     //
     read : function (req, res, next) {
-      Game.findOne({
-        '_id' : req.params.gameId
-        }, function (error, game){
-          if (game) {
-            res.data = {
+      Game.findById(req.params.gameId, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
+          res.data = {
               success : true,
-              game  : game
-            };
-            return next();
-          } else {
-            return next(Err.notFound('No game matches the provided ID'));
+              game  : data || null
           }
+          return next();
+        }
       });
     },
 
@@ -33,19 +31,17 @@ module.exports = function accountController (api) {
     //
     update : function (req, res, next) {
       var inputs = req.body;
-      Game.findOneAndUpdate({
-        _id : req.params.gameId
-      }, inputs, function (error, game) {
-        if (game) {
-          res.data = {
-            success : true,
-            game  : game
-          };
-          return next();
+      Game.updateById(req.params.gameId, inputs, function ( error, data ) {
+        if ( error ) {
+          return next(error);
         } else {
-          return next(Err.notFound('No game matches the provided ID'));
+          res.data = {
+              success : true,
+              game  : data || null
+          }
+          return next();
         }
-      })
+      });
     },
 
 
@@ -53,17 +49,15 @@ module.exports = function accountController (api) {
     // Destroy
     //
     destroy : function (req, res, next) {
-      Game.findOneAndRemove({
-        _id : req.params.gameId
-      }, function (error, game){
-        if (game) {
-          res.data = {
-            success : true,
-            game  : game
-          };
-          return next();
+      Game.deleteById(req.params.gameId, function ( error, data ) {
+        if ( error ) {
+          return next(error);
         } else {
-          return next(Err.notFound('No game matches the provided ID'));
+          res.data = {
+              success : true,
+              game  : data || null
+          }
+          return next();
         }
       });
     }
