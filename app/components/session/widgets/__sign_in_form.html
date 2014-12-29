@@ -1,0 +1,19 @@
+<div id="session-content" ng-controller="SessionCtrl">
+  <form id="session-form" name="form" ng-class="{ 'ng-submitted' : form.submitted }" novalidate>
+    <h3>Sign in</h3>
+    <div class="error main-error" ng-show="form.globalError">{{ form.globalError }}</div>
+
+    <div class="input-wrap">
+      <input validate required email type="text" ng-model="inputs.email" name="email" placeholder="Email Address">
+    </div>
+
+    <div class="input-wrap">
+      <input validate required type="password" ng-model="inputs.password" name="password" placeholder="Password">
+    </div>
+
+    <div class="button-wrap">
+      <input class="button" type="button" active="{{ !isSignUp }}" ng-click="signIn($event)" value="Sign In">
+      <a class="button" type="button" active="false" ng-href="#/session?signup=true">Sign up</a>
+    </div>
+  </form>
+</div>

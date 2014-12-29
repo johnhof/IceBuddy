@@ -1,12 +1,12 @@
-simpleApp.controller('SessionCtrl', ['$scope', 'Utils', 'Session', 'Api', function ($scope, Utils, Session, Api) {
-  // not need to show this page if the user is signed in
+simpleApp.controller('SessionCtrl', ['$scope', '$routeParams', 'Utils', 'Session', 'Api', function ($scope, $routeParams, Utils, Session, Api) {
+  // no need to show this page if the user is signed in
   if (Session.isSignedIn) { Utils.redirect('/'); }
 
   // expose services and modules
   $scope.session  = Session;
 
   // Model init and form submission
-  $scope.isSignUp = false;
+  $scope.isSignUp = $routeParams.signup;
   $scope.inputs   = {
     email    : null,
     password : null,
@@ -58,7 +58,12 @@ simpleApp.controller('SessionCtrl', ['$scope', 'Utils', 'Session', 'Api', functi
 
     form.apiAction(inputs, submitReq, function success () {
       Session.apply();
-      Utils.redirect('/');
+
+      if ($routeParams.onComplete) {
+        Utils.redirect($routeParams.onComplete);
+      } else {
+        Utils.reload();
+      }
     });
   }
 }]);

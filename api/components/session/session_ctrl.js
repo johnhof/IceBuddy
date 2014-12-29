@@ -17,7 +17,7 @@ module.exports = function sessionController (api) {
         email    : Joi.email(),
         password : Joi.password()
       }, function success (inputs, callback) {
-        var unAuth = Err.unAuth('Login failed. check your credentials and try again');
+        var unAuth = Err.unAuth('Sign in failed. Please try again');
 
         Account.findOne({email : inputs.email}, function (error, account) {
           if (account) {

@@ -14,6 +14,12 @@ simpleApp.config(['$routeProvider', function ($routeProvider) {
       controller  : 'SessionCtrl'
     }).
 
+    //session
+    when('/teams', {
+      templateUrl : 'views/teams.html',
+      controller  : 'TeamsCtrl'
+    }).
+
     // 404
     otherwise({
       templateUrl : 'views/404.html',
