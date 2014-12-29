@@ -13,21 +13,15 @@ module.exports = function playerController (api) {
     create : function (req, res, next) {
       var inputs = req.body;
 
-      validate(inputs, {
-        name     : Joi.object().keys({
-          first : Joi.string().optional().alphanum().min(1).max(50),
-          last  : Joi.string().optional().alphanum().min(1).max(50)
-        })
-      }, function save (result, callback) {
-        Mongoman.save('player', req.body, next, function ( player ) {
-          res.data = {
-            success : true,
-            player  : player,
-            message : 'Player ' + inputs.name.first + ' ' + inputs.name.last + ' created'
-          };
-          return callback();
-        });
-      }, next);
+      var inputs = req.body;
+      Player.create(inputs, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
+          res.data = data;
+          return next();
+        }
+      });
     },
 
 
