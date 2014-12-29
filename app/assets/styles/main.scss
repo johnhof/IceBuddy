@@ -93,7 +93,7 @@ a {
   display: flex;
   padding: 10px 0;
 
-  .button, [type="button"] {
+  .button, [type="button"]{
     flex:1;
     color: white;
 
@@ -102,6 +102,9 @@ a {
       color: white;
     }
 
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
 
     &:first-of-type {
       margin-right: 10px;
@@ -109,10 +112,15 @@ a {
   }
 }
 
+a.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .error {
   color: $red;
   display: none;
-  font-weight: bold;
 
   &.main-error {
     padding-top: 5px;
@@ -125,6 +133,7 @@ form.ng-submitted {
   }
 
   .error {
+    font-weight: bold;
     display: block;
   }
 }

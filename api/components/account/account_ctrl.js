@@ -28,9 +28,9 @@ module.exports = function accountController (api) {
             return callback(error, result);
           });
         },
-        function checUsernameUnique(result, callback) {
+        function checNicknameUnique(result, callback) {
           Account.findOne({ nickname : inputs.nickname }, function (error, user) {
-          var error = user ? Err('Username in use') : null;
+          var error = user ? Err('Nickname in use') : null;
           return callback(error, result);
           });
         },

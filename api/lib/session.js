@@ -42,7 +42,7 @@ exports.primeSession = function (req, res, next) {
 
     // convert the user/session if one was passed in
     if (session) {
-      sessionObj.username = session.username;
+      sessionObj.nickname = session.nickname;
       sessionObj.email    = session.email;
       sessionObj.isSignedIn = isSignedIn;
 

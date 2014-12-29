@@ -185,6 +185,10 @@ simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', '$location', f
     redirect : function (path) {
       path = /^\//.test(path) ? path : '/' + path
       $location.path(path);
+    },
+
+    reload : function () {
+      $route.reload();
     }
   }
 }])
