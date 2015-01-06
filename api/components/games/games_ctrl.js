@@ -39,7 +39,7 @@ module.exports = function accountController (api) {
       var inputs = req.query;
 
       if ( inputs.season_id && inputs.team_id ) {
-        Game.findByTeamSeason(inputs, function ( error, data ) {
+        Game.findByTeamIdSeasonId(inputs, function ( error, data ) {
           if ( error ) {
             return next(error);
           } else {
@@ -51,7 +51,7 @@ module.exports = function accountController (api) {
           }
         });
       } else if ( inputs.season_id ) {
-        Game.findBySeason(inputs, function ( error, data ) {
+        Game.findBySeasonId(inputs, function ( error, data ) {
           if ( error ) {
             return next(error);
           } else {
@@ -63,7 +63,7 @@ module.exports = function accountController (api) {
           }
         });
       } else if ( inputs.team_id ) {
-        Game.findByTeam(inputs, function ( error, data ) {
+        Game.findByTeamId(inputs, function ( error, data ) {
           if ( error ) {
             return next(error);
           } else {

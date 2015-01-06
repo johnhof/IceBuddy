@@ -34,36 +34,17 @@ module.exports = function accountController (api) {
     read : function (req, res, next) {
       var inputs = req.query;
 
-      // take a team array and build the response body
-      function getResult (teams) {
-        var success = !!(teams && teams.length);
-        return {
-          success : success,
-          message : !success ? 'No teams found' : undefined,
-          teams : teams || []
-        };
-      }
-
-      // if the client performed a search
-      if (Object.keys(req.query).length) {
-        validate(inputs, {}, function (result, callback) {
-          Team.find(inputs, function (error, teams) {
-            res.data = getResult(teams)
-            return callback();
-          });
-        }, next);
-
-      // otherwise, return the last 10 registered
-      } else {
-        Team.find({
-          registered : {
-            $lte : new Date()
+      Team.findByName(inputs, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
+          res.data = {
+              success : true,
+              teams  : data || []
           }
-        }).limit(10).exec(function (error, teams) {
-          res.data = getResult(teams)
           return next();
-        });
-      }
+        }
+      });
     },
 
 

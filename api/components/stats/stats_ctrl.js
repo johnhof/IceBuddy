@@ -43,24 +43,24 @@ module.exports = function accountController (api) {
         }, function (result, callback) {
           if ( inputs.player_id ) {
             if ( inputs.game_id ) {
-              Stat.findByPlayerGame(inputs, function ( error, data ) {
+              Stat.findByPlayerIdGameId(inputs, function ( error, data ) {
                 return callback(error, data);
               });
             } else if( inputs.season_id ) {
-              Stat.findByPlayerSeason(inputs, function ( error, data ) {
+              Stat.findByPlayerIdSeasonId(inputs, function ( error, data ) {
                 return callback(error, data);
               });
             } else {
-              Stat.findByPlayer(inputs, function ( error, data ) {
+              Stat.findByPlayerId(inputs, function ( error, data ) {
                 return callback(error, data);
               });
             }
           } else if( inputs.game_id ) {
-            Stat.findByGame(inputs, function ( error, data ) {
+            Stat.findByGameId(inputs, function ( error, data ) {
               return callback(error, data);
             });
           } else if( inputs.season_id ) {
-            Stat.findBySeason(inputs, function ( error, data ) {
+            Stat.findBySeasonId(inputs, function ( error, data ) {
               return callback(error, data);
             });
           } else {

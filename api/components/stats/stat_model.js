@@ -12,6 +12,7 @@ module.exports = Mongoman.register('stat', {
   season_id: Mongoman('Season Id').string().required().fin(),
   goals : Mongoman('Goals').number().default(0).required().fin(),
   assists : Mongoman('Assists').number().default(0).required().fin(),
+  points : Mongoman('Points').number().default(0).required().fin(),
   
   plus_minus : Mongoman('Plus Minus').number().default(0).required().fin(),
   pim : Mongoman('Penalties In Minutes').number().default(0).required().fin(),
@@ -34,53 +35,10 @@ module.exports = Mongoman.register('stat', {
   sa : Mongoman('Shots Against').number().default(0).required().fin(),  
   ga : Mongoman('Goals Allowed').number().default(0).required().fin(),  
   so : Mongoman('Shut Out').number().default(0).required().fin(),
-
-  //No Total Points, PPG, Shots (calculated field)
-
-  // Saves, Sv Pct are also calculated
-
+  svpct : Mongoman('Save Percentage').number().default(0).required().fin(),
 
   created : Mongoman().date().required().default(Date.now).fin()
 }, {
-  virtuals : [
-    {
-      property : 'points',
-      get      : function () {
-        return this.goals + this.assists;
-      }, 
-      set      : function () {
-        Err('Total Points cannot set values');
-      }
-    } , {
-      property : 'game_result',
-      get      : function () {
-        if ( this.win ) { return 'W' }
-        if ( this.loss ) { return 'L' }
-        if ( this.otl ) { return 'OTL' }
-        if ( this.tie ) { return 'T' }
-        if ( this.no_decision ) { return 'ND' }
-      }, 
-      set      : function ( result ) {
-        switch ( result ) {
-          case 'W':
-            this.win = 1;
-            break;
-          case 'L':
-            this.loss = 1;
-            break;
-          case 'OTL':
-            this.otl = 1;
-            break;
-          case 'T':
-            this.tie = 1;
-            break;
-          case 'ND':
-            this.no_decision = 1;
-            break;
-        }
-      }
-    }
-  ],
   statics : {
     findById : function ( _id, callback ) {
       this.findOne({
@@ -120,31 +78,40 @@ module.exports = Mongoman.register('stat', {
         player_id  : Joi.string().token().required(),
         game_id    : Joi.string().token().required(),
         season_id  : Joi.string().token().required(),
-        goals      : Joi.number().default(0).integer(),
-        assists    : Joi.number().default(0).integer(),
-        plus_minus : Joi.number().default(0).integer(),
+        goals      : Joi.number().default(0).integer().optional(),
+        assists    : Joi.number().default(0).integer().optional(),
+        plus_minus : Joi.number().default(0).integer().optional(),
         
-        pim     : Joi.number().default(0),
-        ppg     : Joi.number().default(0).integer(),
-        ppa     : Joi.number().default(0).integer(),
-        shg     : Joi.number().default(0).integer(),
-        sha     : Joi.number().default(0).integer(),
-        gwg     : Joi.number().default(0).integer(),
-        otg     : Joi.number().default(0).integer(),
-        shots   : Joi.number().default(0).integer(),
-        fot     : Joi.number().default(0).integer(),
-        fow     : Joi.number().default(0).integer(),
+        pim     : Joi.number().default(0).optional(),
+        ppg     : Joi.number().default(0).integer().optional(),
+        ppa     : Joi.number().default(0).integer().optional(),
+        shg     : Joi.number().default(0).integer().optional(),
+        sha     : Joi.number().default(0).integer().optional(),
+        gwg     : Joi.number().default(0).integer().optional(),
+        otg     : Joi.number().default(0).integer().optional(),
+        shots   : Joi.number().default(0).integer().optional(),
+        fot     : Joi.number().default(0).integer().optional(),
+        fow     : Joi.number().default(0).integer().optional(),
 
         //Goalie stuff
         win     : Joi.number().default(0).integer(),
         loss    : Joi.number().default(0).integer(),
         otl     : Joi.number().default(0).integer(),
-        tie     : Joi.number().default(0).integer(),
-        nd      : Joi.number().default(0).integer(),
-        sa      : Joi.number().default(0).integer(),
-        ga      : Joi.number().default(0).integer(),
-        so      : Joi.number().default(0).integer()
+        tie     : Joi.number().default(0).integer().optional(),
+        nd      : Joi.number().default(0).integer().optional(),
+        sa      : Joi.number().default(0).integer().optional(),
+        ga      : Joi.number().default(0).integer().optional(),
+        so      : Joi.number().default(0).integer().optional()
       }, function save (result, saveCallback) {
+        var points = inputs.goals + inputs.assists;
+        var savePercentage = 0;
+        if ( inputs.sa ) {
+          savePercentage = inputs.ga / inputs.sa;
+        }
+
+        inputs.points = points;
+        inputs.svpct = savePercentage;
+
         Mongoman.save('stat', inputs, callback, function ( stat ) {
           return callback(null, stat);
         });
@@ -157,7 +124,7 @@ module.exports = Mongoman.register('stat', {
         
       });
     },
-    findByPlayer : function ( inputs, callback ) {
+    findByPlayerId : function ( inputs, callback ) {
       //This function will return all stats by player -- Think lifetime stats
       this.find({
         player_id : inputs.player_id
@@ -169,7 +136,7 @@ module.exports = Mongoman.register('stat', {
         }
       });
     },
-    findBySeason : function ( inputs, callback ) {
+    findBySeasonId : function ( inputs, callback ) {
       //This function will return all stats by season -- Think stats for every player for a season
       this.find({
         season_id : inputs.season_id
@@ -181,7 +148,7 @@ module.exports = Mongoman.register('stat', {
         }
       });
     },
-    findByGame : function ( inputs, callback ) {
+    findByGameId : function ( inputs, callback ) {
       //This function will return all stats by game -- Think stats for every player for a game
       this.find({
         game_id : inputs.game_id
@@ -193,7 +160,7 @@ module.exports = Mongoman.register('stat', {
         }
       });
     },
-    findByPlayerSeason : function ( inputs, callback ) {
+    findByPlayerIdSeasonId : function ( inputs, callback ) {
       //This function will return all stats by player for a season
       this.find({
         $and: [
@@ -212,7 +179,7 @@ module.exports = Mongoman.register('stat', {
         }
       });
     },
-    findByPlayerGame : function ( inputs, callback ) {
+    findByPlayerIdGameId : function ( inputs, callback ) {
       //This function will return all stats by player for a season -- will return single stat
       this.find({
         $and: [

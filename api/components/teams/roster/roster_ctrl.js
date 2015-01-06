@@ -2,7 +2,7 @@ var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 var Mongoman = require(process.cwd() + '/api/lib/mongoman');
 
 var Team = Mongoman.model('team');
-var Player = Mongoman.model('player');
+
 
 module.exports = function accountController (api) {
   return {
@@ -18,30 +18,22 @@ module.exports = function accountController (api) {
     // Read -- Retrieve all players on the team
     //
     read : function (req, res, next) {
-      Team.findOne({
-        '_id' : req.params.teamId
-      }, function (error, team) {
-        if (team) {
-          if ( team.players.length ) {
-            Player.find({
-                '_id': { $in: team.players}
-            }, function (error, players){
-              if ( error ) {
-                return next(error);  
-              }
-              res.data = {
+      Team.findById(req.params.teamId, function ( error, team ) {
+        if ( error ) {
+          return next(error);
+        } else if ( team ) {
+          team.getPlayers(function ( error, players ) {
+            res.data = {
                 success : true,
                 team    : team,
                 players : players
-              };
-              return next();
-            });
-          } else {
-            return next(Err.notFound('Team found, but has no players'));
-          }
+            };
+            return next();
+          });
         } else {
-          return next(Err.notFound('No team matches the provided ID'));
+          return next(Err.notFound('Team not found'));
         }
+        
       });
     },
 
@@ -52,24 +44,19 @@ module.exports = function accountController (api) {
     //
     update : function (req, res, next) {
       var inputs = req.body;
-      Team.findOneAndUpdate({
-        _id : req.params.teamId,
-      }, { $push: 
-          { players: { 
-              $each: inputs.ids
-            } 
-          } 
-      }, function (error, team) {
-        if (team) {
-          res.data = {
-            success : true,
-            team  : team
-          };
-          return next();
+      inputs.team_id = req.params.teamId;
+
+      Team.addPlayerIdsToTeam(inputs, function ( error, team ) {
+        if ( error ) {
+          return next(error);
         } else {
-          return next(Err.notFound('No team matches the provided ID'));
+          res.data = {
+              success : true,
+              team  : team || null
+          }
+          return next();
         }
-      })
+      });
     },
 
 
@@ -78,21 +65,16 @@ module.exports = function accountController (api) {
     //
     destroy : function (req, res, next) {
       var inputs = req.body;
-      Team.findOneAndUpdate({
-        _id : req.params.teamId
-      }, { $pull: 
-          { 
-            players: { $in : inputs.ids }
-          } 
-      }, function (error, team){
-        if (team) {
-          res.data = {
-            success : true,
-            team  : team
-          };
-          return next();
+      inputs.team_id = req.params.teamId;
+      Team.removePlayerIdsFromTeam(inputs, function ( error, team ) {
+        if ( error ) {
+          return next(error);
         } else {
-          return next(Err.notFound('No team matches the provided ID'));
+          res.data = {
+              success : true,
+              team  : team || null
+          }
+          return next();
         }
       });
     }

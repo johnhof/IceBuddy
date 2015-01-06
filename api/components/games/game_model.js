@@ -85,7 +85,7 @@ module.exports = Mongoman.register('game', {
         }, callback
       );
     },
-    findByTeamSeason : function ( inputs, callback ) {
+    findByTeamIdSeasonId : function ( inputs, callback ) {
       var thisGame = this;
 
       validate(inputs, {
@@ -121,7 +121,7 @@ module.exports = Mongoman.register('game', {
         }
       );
     },
-    findByTeam : function ( inputs, callback ) {
+    findByTeamId : function ( inputs, callback ) {
       //All Games this team has participated in
       var thisGame = this;
 
@@ -147,7 +147,7 @@ module.exports = Mongoman.register('game', {
         }, callback
       );
     },
-    findBySeason : function ( inputs, callback ) {
+    findBySeasonId : function ( inputs, callback ) {
       //All Games this season
       var thisGame = this;
 
