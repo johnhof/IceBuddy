@@ -5,6 +5,8 @@ var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
 var Err  = require(process.cwd() + '/api/lib/error').errorGenerator;
 
+var Player = Mongoman.model('player');
+
 module.exports = Mongoman.register('team', {
   name : Mongoman('Team name').string().required().isLength([1, 50]).fin(),
   //(http://docs.mongodb.org/manual/tutorial/model-referenced-one-to-many-relationships-between-documents/)
@@ -16,6 +18,39 @@ module.exports = Mongoman.register('team', {
   //Array of user ids
   managers : Mongoman('Managers').array().fin()
 }, {
+  methods : {
+    addByPlayerId : function ( playerId, callback ) {
+      this.players.push(playerId);
+      this.save( function ( err, team ) {
+        return callback(err, team);
+      });
+    },
+    addPlayer : function ( player, callback ) {
+      this.addByPlayerId(player['_id'], callback);
+    },
+    addPlayerIds : function ( players, callback ) {
+      players.forEach(function( player ){
+        if ( player && player['_id']) {
+          this.players.push( player['_id'] )
+        } else {
+          this.players.push( player )
+        }
+      });
+      this.save( function ( err, team ) {
+        return callback(err, team);
+      });
+    },
+    getPlayers : function (callback) {
+      Player.find({
+          '_id': { $in: this.players}
+      }, function (error, players){
+        if ( error ) {
+          return callback(error);  
+        }
+        return callback( players );
+      });
+    }
+  },
   statics : {
     findById : function ( _id, callback ) {
       this.findOne({
@@ -75,6 +110,58 @@ module.exports = Mongoman.register('team', {
               return callback(error);
             } else {
               return findCallback(null, teams);
+            }
+          });
+        }, 
+        function (error, data) {
+          return callback(error, data);
+        }
+      );
+    },
+    addPlayerIdsToTeam : function ( inputs, callback ) {
+      var thisTeam = this;
+      validate(inputs, {
+        playerIds     : Joi.array().required().min(1),
+        team_id     : Joi.string().required().token()
+      }, function (result, updateCallback) {
+          thisTeam.findOneAndUpdate({
+            _id : inputs.team_id,
+          }, { $push: 
+              { players: { 
+                  $each: inputs.playerIds
+                } 
+              } 
+          }, function (error, team) {
+            if (team) {
+              return updateCallback(null, team);
+            } else {
+              return updateCallback(Err.notFound('No team matches the provided ID'));
+            }
+          });
+        }, 
+        function (error, data) {
+          return callback(error, data);
+        }
+      );
+    },
+    removePlayerIdsFromTeam : function ( inputs, callback ) {
+      var thisTeam = this;
+      validate(inputs, {
+        playerIds     : Joi.array().required().min(1),
+        team_id     : Joi.string().required().token()
+      }, function (result, updateCallback) {
+          thisTeam.findOneAndUpdate({
+            _id : inputs.team_id,
+          }, { $pull: 
+              { players: { 
+                  $in: inputs.playerIds
+                } 
+              } 
+          }, function (error, team) {
+            if (team) {
+              return updateCallback(null, team);
+            } else {
+              return updateCallback(Err.notFound('No team matches the provided ID'));
             }
           });
         }, 

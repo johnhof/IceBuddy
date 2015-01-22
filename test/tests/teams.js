@@ -151,7 +151,7 @@ function addPlayerToTeam (stash, next) {
     it('add player to the created team object', function (done) {
       test.request.put({
         route : '/teams/' + stash.teamId + '/roster',
-        form  : { ids : [test.stash.testPlayer._id] },
+        form  : { playerIds : [test.stash.testPlayer._id] },
       }, function (response, body) {
         assert.equal(body.team.players.length, 1);
         assert.equal(body.team.players[0], test.stash.testPlayer._id);
@@ -176,7 +176,7 @@ function addPlayerToTeam (stash, next) {
     it('remove player from team', function (done) {
       test.request.del({
         route : '/teams/' + stash.teamId + '/roster',
-        form  : { ids : [test.stash.testPlayer._id] }
+        form  : { playerIds : [test.stash.testPlayer._id] }
       }, function (response, body) {
         assert.equal(body.team.players.length, 0);
         //Go to next Describe
