@@ -1,66 +1,63 @@
 'use strict';
 
-
-var mongoose = require('mongoose');
-
 module.exports = function (grunt) {
-
-  // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
-
-
-  // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
+  require('colors');
 
-  // run shell commands asyncronously
   grunt.loadNpmTasks('grunt-shell-spawn');
 
-  var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+  var config  = require('config.json')('./config.json');
+
+  if (!config) {
+    console.log('!! No Config file loaded !!');
+    process.kill();
+  }
 
   // Configurable paths for the application
   var appConfig = {
-    app  : require('./bower.json').appPath || 'app',
-    api  : require('./bower.json').apiPath || 'api',
-    dist : 'dist'
-  };
-
-  // cache options for reuse
-  var opts = {
+    app  : config.path.app,
+    dist : config.path.dist,
+    port : config.port,
     copy : {
       images : {
-        expand: true,
-        dot: true,
-        flatten: true,
-        dest: '<%= server.dist %>/images',
-        src: '<%= server.app %>/assets/images/**/*'
+        expand  : true,
+        dot     : true,
+        flatten : true,
+        dest    : '<%= server.dist %>/images',
+        src     : '<%= server.app %>/assets/images/**/*'
+      },
+      favicon : {
+        dest : '<%= server.dist %>/favicon.ico',
+        src  : '<%= server.app %>/assets/images/favicon.ico'
       },
       sass : {
-        expand: true,
-        dot: true,
-        flatten: true,
-        src: '<%= server.app %>/**/*.{sass,scss}',
-        dest: '.tmp/styles'
+        expand  : true,
+        dot     : true,
+        flatten : true,
+        src     : '<%= server.app %>/**/*.{sass,scss}',
+        dest    : '.tmp/styles'
       },
       index : {
-        expand: true,
-        dot: true,
-        flatten: true,
-        src: '<%= server.app %>/core/index.html',
-        dest: '<%= server.dist %>'
+        expand  : true,
+        dot     : true,
+        flatten : true,
+        src     : '<%= server.app %>/core/index.html',
+        dest    : '<%= server.dist %>'
       },
       views : {
-        expand: true,
-        dot: true,
-        flatten: true,
-        src: '<%= server.app %>/components/**/*.html',
-        dest: '<%= server.dist %>/views'
+        expand  : true,
+        dot     : true,
+        flatten : true,
+        src     : '<%= server.app %>/components/**/*.html',
+        dest    : '<%= server.dist %>/views'
       },
       partials : {
-        expand: true,
-        dot: true,
-        flatten: true,
-        src:'<%= server.app %>/assets/partials/**/*.html',
-        dest: '<%= server.dist %>/partials'
+        expand  : true,
+        dot     : true,
+        flatten : true,
+        src     :'<%= server.app %>/assets/partials/**/*.html',
+        dest    : '<%= server.dist %>/partials'
       }
     }
   }
@@ -87,20 +84,16 @@ module.exports = function (grunt) {
       js: {
         files: ['<%= server.app %>/**/*.js'],
         tasks: ['build-js'],
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        }
+        options: {}
       },
       css: {
         files: ['<%= server.app %>/**/*.{scss,sass}'],
-        tasks: ['build-stylus']
+        tasks: ['build-scss']
       },
       views: {
         files: ['<%= server.app %>/**/*.html'],
         tasks: ['build-html'],
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        }
+        options: {}
       },
       images : {
         files: ['<%= server.app %>/assets/images/**/*'],
@@ -108,12 +101,10 @@ module.exports = function (grunt) {
       },
       gruntfile: {
         files: ['Gruntfile.js'],
-        tasks: ['build']
+        tasks: ['build-dev']
       },
       livereload: {
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        },
+        options: {},
         files: [
           '<%= server.app %>/**/*.html',
           'dist/styles/*.css',
@@ -128,62 +119,6 @@ module.exports = function (grunt) {
     *  Server cleaning, compiling, and initialization tasks
     *
     ****************************************************************************************************/
-
-
-    // The actual grunt server settings
-    connect: {
-      proxies: [{
-        context: '/',
-        host: 'localhost',
-        port: 8000,
-        xforward: true
-      }],
-      options: {
-        port: 9000,
-        hostname: '0.0.0.0',
-        livereload: 35729,
-      },
-      livereload: {
-        options: {
-          open: true,
-          middleware: function (connect) {
-            return [
-              connect.static('.tmp'),
-              connect().use(
-                '/bower_components',
-                connect.static('./bower_components'),
-                appConfig.dist + '/'
-              ),
-              connect.static(appConfig.dist),
-              proxySnippet
-            ];
-          }
-        }
-      },
-      dist: {
-        options: {
-          open: true,
-          base: '<%= server.dist %>'
-        }
-      }
-    },
-
-    // Setup one prism
-    prism: {
-      options: {
-        mode: 'proxy',
-        mocksPath: './mocks',
-        context: '/api',
-        host: '0.0.0.0',
-        port: 8000,
-        https: false,
-        delay: 0,
-        /* rewrites requests to context */
-        rewrite: {}
-      },
-      serve: {},
-      e2e: {}
-    },
 
     // Empties folders to start fresh
     clean: {
@@ -251,9 +186,6 @@ module.exports = function (grunt) {
 
     // Automatically inject Bower components into the app
     wiredep: {
-      options: {
-        // cwd: '<%= server.app %>'
-      },
       app: {
         src: ['<%= server.app %>/core/index.html'],
         ignorePath:  /\.\.\//
@@ -313,24 +245,28 @@ module.exports = function (grunt) {
     copy: {
       dist: {
         files: [
-         opts.copy.images,
-         opts.copy.sass,
-         opts.copy.index,
-         opts.copy.views,
-         opts.copy.partials
+         appConfig.copy.images,
+         appConfig.copy.sass,
+         appConfig.copy.index,
+         appConfig.copy.views,
+         appConfig.copy.partials,
+         appConfig.copy.favicon
         ]
       },
       images: {
-        files: [opts.copy.images]
+        files: [
+          appConfig.copy.images,
+          appConfig.copy.favicon
+        ]
       },
       css : {
-        files: [opts.copy.sass]
+        files: [appConfig.copy.sass]
       },
       html : {
         files: [
-         opts.copy.index,
-         opts.copy.views,
-         opts.copy.partials
+         appConfig.copy.index,
+         appConfig.copy.views,
+         appConfig.copy.partials
         ]
       },
     },
@@ -346,11 +282,13 @@ module.exports = function (grunt) {
     concat: {
       js: {
         files: {
-          '<%= server.dist %>/scripts/main.js': ['<%= server.app %>/core/app.js',
-                                                  '<%= server.app %>/core/api.js',
-                                                  '<%= server.app %>/scripts/services.js',
-                                                  '<%= server.app %>/scripts/helpers.js',
-                                                  '<%= server.app %>/**/*.js']
+          '<%= server.dist %>/scripts/main.js': [
+            '<%= server.app %>/core/app.js',
+            '<%= server.app %>/core/api.js',
+            '<%= server.app %>/scripts/services.js',
+            '<%= server.app %>/scripts/helpers.js',
+            '<%= server.app %>/**/*.js'
+          ]
         }
       },
       css: {
@@ -460,10 +398,10 @@ module.exports = function (grunt) {
     // minify compiled CSS
     cssmin: {
       my_target: {
-        // files: [{
-        //   expand: true,
-        //   src: '<%= server.dist %>/styles/*.css',
-        // }]
+        files: [{
+          expand: true,
+          src: '<%= server.dist %>/styles/*.css',
+        }]
       }
     },
 
@@ -474,32 +412,23 @@ module.exports = function (grunt) {
     *
     ****************************************************************************************************/
 
-    // Run some tasks in parallel to speed up the build process
-    concurrent: {},
-
-    shell: {
-      mongo: {
-        command: 'sudo mongod',
+    concurrent: {
+      serverDev : {
+        tasks : [
+          'watch',
+          'shell:serve'
+        ],
         options: {
-          async: false
+          logConcurrentOutput: true
         }
       },
-      dropdb: {
-        command: 'mongo --eval "db.getMongo().getDBNames().forEach(function(i){ db.getSiblingDB(i).dropDatabase()})"',
+      serverProd : {
+        tasks : [
+          'watch',
+          'shell:serveProd'
+        ],
         options: {
-          async: false
-        }
-      },
-      api : {
-        command: 'nodemon ./api/api.js -q --ignore "test/" --ignore "app/" --ignore "dist/"',
-        options: {
-          async: false
-        }
-      },
-      install: {
-        command: 'npm install && bower install',
-        options: {
-          async: true
+          logConcurrentOutput: true
         }
       }
     },
@@ -522,32 +451,81 @@ module.exports = function (grunt) {
       all: {
         src: ['test/tests/**/*.js']
       }
+    },
+
+
+    /***************************************************************************************************
+    *
+    *  shell tasks
+    *
+    ****************************************************************************************************/
+
+    shell: {
+      install_bower: {
+        command: 'rm -rf ./bower_components && bower install',
+        options: {
+          async: false
+        }
+      },
+      dropdb: {
+        command: 'mongo --eval "db.getMongo().getDBNames().forEach(function(i){ db.getSiblingDB(i).dropDatabase()})"',
+        options: {
+          async: false
+        }
+      },
+      serve: {
+        command: 'nodemon server.js -q --ignore "test/" --ignore "app/" --ignore "dist/"',
+        options: {
+          async: false
+        }
+      },
+      serveProd: {
+        command: 'NODE_ENV=production nodemon server.js -q --ignore "test/" --ignore "app/" --ignore "dist/"',
+        options: {
+          async: false
+        }
+      },
+      deploy: {
+        command: 'jitsu deploy',
+        options: {
+          async: false
+        }
+      }
     }
   });
 
   /***************************************************************************************************
   *
-  *  Task registration
+  *  Primary Tasks
   *
   ****************************************************************************************************/
 
-  grunt.loadNpmTasks('grunt-connect-proxy');
-
   // run the app
-  grunt.registerTask('app', 'Starting API server...', function () {
-    grunt.task.run([
-      'build',
-      'configureProxies',
-      'connect:livereload',
-      'watch'
-    ]);
+  grunt.registerTask('serve', 'Starting app server...', function () {
+    grunt.task.run(['shell:serve']);
   });
 
-  // run the api
-  grunt.registerTask('api', 'Compiling and Starting App server...', function (target) {
-    grunt.task.run([
-      'shell:api',
-    ]);
+
+  // run the app
+  grunt.registerTask('app', 'Building and starting server...', function () {
+    var prod = grunt.option('prod');
+    if (prod) {
+      grunt.task.run([
+        'build-prod',
+        'concurrent:serverProd'
+      ]);
+
+    } else {
+      grunt.task.run([
+        'build-dev',
+        'concurrent:serverDev'
+      ]);
+    }
+  });
+
+  // drop the database
+  grunt.registerTask('dropdb', 'dropping the database...', function () {
+    grunt.task.run(['shell:dropdb']);
   });
 
 
@@ -562,19 +540,16 @@ module.exports = function (grunt) {
     grunt.task.run(set);
   });
 
-  // drop a database
-  grunt.registerTask('dropdb', 'dropping database...', function () {
-    grunt.task.run([
-      'shell:dropdb'
-    ]);
-  });
 
 
-  //
-  // composite tasks used as utilities
-  //
+  /***************************************************************************************************
+  *
+  *  Secondary tasks Tasks
+  *
+  ****************************************************************************************************/
 
-  grunt.registerTask('build', [
+
+  grunt.registerTask('build-prod', [
     'clean:dist',
     'wiredep',
     'copy:dist',
@@ -586,21 +561,37 @@ module.exports = function (grunt) {
     'concat:css',
     'autoprefixer',
     'cssmin',
-    // 'uglify',
-    // 'filerev', --- this shit is mucking up css/js serving. fix it later
-    // 'usemin',
+    'uglify',
+    'usemin',
     'htmlmin',
     'clean:tmp',
   ]);
 
-  grunt.registerTask('build-js', [
-    'clean:js',
-    'concat:js',
-    'ngmin',
+
+  grunt.registerTask('build-dev', [
+    'clean:dist',
+    'wiredep',
+    'copy:dist',
+    'useminPrepare',
+    'concat:js', //remove?
+    'compass',
+    'concat:css',
+    'autoprefixer',
     'clean:tmp',
   ]);
 
-  grunt.registerTask('build-stylus', [
+  //
+  // Individual file types
+  //
+
+  grunt.registerTask('build-js', [
+    'clean:js',
+    'ngmin',
+    'concat:js',
+    'clean:tmp',
+  ]);
+
+  grunt.registerTask('build-scss', [
     'clean:css',
     'copy:css',
     'compass',
@@ -615,7 +606,6 @@ module.exports = function (grunt) {
     'clean:html',
     'copy:html',
     'useminPrepare',
-    'cdnify',
     'htmlmin',
     'clean:tmp',
   ]);

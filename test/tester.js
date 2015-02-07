@@ -3,6 +3,7 @@ var request = require('request');
 var _       = require('lodash');
 var assert  = require('assert');
 var QS      = require('qs');
+var config  = require('config.json')('../config.json');
 
 request.defaults({
   json : true,
@@ -12,7 +13,7 @@ request.defaults({
 //
 // internal variables
 //
-var host = 'http://localhost:8000';
+var host = 'http://localhost:' + config.port;
 
 module.exports = function test (defaults) {
   defaults = defaults || {};

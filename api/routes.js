@@ -15,9 +15,6 @@ exports.register = function  (api) {
   // Generic CRUDS routes
   //
 
-  // Home
-  routeCrud('/', controller('home'));
-
   // Account
   var accountCtrl = controller('account')
   api.get('/session', session.requireSession, accountCtrl.read, respond);
