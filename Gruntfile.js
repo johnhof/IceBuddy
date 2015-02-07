@@ -7,7 +7,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-shell-spawn');
 
-  var config  = require('config.json')('./config.json');
+  var config  = require('config.json')();
 
   if (!config) {
     console.log('!! No Config file loaded !!');

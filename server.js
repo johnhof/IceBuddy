@@ -1,13 +1,15 @@
 var config       = require('config.json')();
 var express      = require('express');
-var routes       = require(__dirname + '/api/routes');
-var helpers      = require(__dirname + '/api/lib/helpers');
-var Err          = require(__dirname + '/api/lib/error');
+var routes       = require('./api/routes');
+var helpers      = require('./api/lib/helpers');
+var session      = require('./api/lib/session');
+var Err          = require('./api/lib/error');
 var json         = require('express-json');
 var bodyParser   = require('body-parser');
 var colors       = require('colors');
 var mon          = require('mongoman');
 var server       = express();
+var cookieParser = require('cookie-parser')
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -20,6 +22,8 @@ server.config = config;
 server.use(json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
+server.use(cookieParser());
+server.use(session.primeSession);
 
 console.log('\n\n++++  starting server  ++++'.yellow + '\n');
 
@@ -65,7 +69,7 @@ function setupServer () {
   server.use(function init (req, res, next) {
     res.data = {};
 
-    console.log('  ' + (req.method).cyan.dim + ' ' + (req.url).grey.dim)
+    process.stdout.write('  ' + (req.method).cyan.dim + ' ' + (req.url).grey.dim + ' ')
 
     res.set({ 'Content-Type': 'application/json' });
 

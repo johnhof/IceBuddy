@@ -59,7 +59,7 @@ exports.register = function  (api) {
 
 
   function respond (req, res, next) {
-    console.log('      --> ' + '200'.green);
+    console.log('200'.green);
     res.status(200).send(res.data);
   }
 
