@@ -1,9 +1,9 @@
-var express      = require('express');
-var mongoose     = require('mongoose');
 var routes       = require(process.cwd() + '/api/routes');
 var helpers      = require(process.cwd() + '/api/lib/helpers');
 var session      = require(process.cwd() + '/api/lib/session');
 var errorHandler = require(process.cwd() + '/api/lib/error').errorHandler;
+var express      = require('express');
+var Mon          = require('mongoman');
 var http         = require('http');
 var json         = require('express-json');
 var bodyParser   = require('body-parser');
@@ -52,18 +52,17 @@ api.config = config;
 // MongoDB setup (globals)
 //
 
-mongoose.connection.on("open", function (ref) {
+Mon.goose.connection.on("open", function (ref) {
   console.log("\nConnected to mongo server!\n".blue);
   listen();
 });
 
-mongoose.connection.on("error", function (err) {
+Mon.goose.connection.on("error", function (err) {
   console.log("\n!! Could not connect to mongo server !! \n    Try running `[sudo] mongod` in another terminal\n".red);
   process.kill();
 });
 
-var dbHost = 'mongodb://localhost/database'
-db = mongoose.connect(dbHost)
+db = Mon.connect();
 
 // register models
 helpers.requireDirContent(process.cwd() + '/api/components', /_model.js/i)

@@ -1,9 +1,9 @@
-var Err  = require(process.cwd() + '/api/lib/error').errorGenerator;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
+var Mon      = require('mongoman');
 var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
 
-var Stat = Mongoman.model('stat');
+var Stat = Mon.model('stat');
 
 module.exports = function accountController (api) {
   return {
@@ -67,7 +67,7 @@ module.exports = function accountController (api) {
             return callback(Err('Stat search must include a Player Id, Game Id, OR Season Id'))
           }
 
-      
+
         }, function (error, data){
           if ( error ) {
             return next(error);

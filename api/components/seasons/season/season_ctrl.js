@@ -1,9 +1,9 @@
 var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Mon      = require('mongoman');
 var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
 
-var Season = Mongoman.model('season');
+var Season = Mon.model('season');
 
 module.exports = function accountController (api) {
   return {
