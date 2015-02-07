@@ -1,22 +1,21 @@
 var regexSet = require(process.cwd() + '/api/lib/validate').regex;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
-
+var Mon      = require('mongoman');
 var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
-var Err  = require(process.cwd() + '/api/lib/error').errorGenerator;
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 
-var Player = Mongoman.model('player');
+var Player = Mon.model('player');
 
-module.exports = Mongoman.register('team', {
-  name : Mongoman('Team name').string().required().isLength([1, 50]).fin(),
+module.exports = Mon.register('team', {
+  name : Mon('Team name').string().required().min(1).max(50).fin(),
   //(http://docs.mongodb.org/manual/tutorial/model-referenced-one-to-many-relationships-between-documents/)
   //This will be an array of season ids
-  seasons : Mongoman('Seasons').array().fin(),
-  players : Mongoman('Team Players').array().fin(),
+  seasons : Mon('Seasons').array().fin(),
+  players : Mon('Team Players').array().fin(),
   //Array of player ids
-  captains : Mongoman('Captains').array().fin(),
+  captains : Mon('Captains').array().fin(),
   //Array of user ids
-  managers : Mongoman('Managers').array().fin()
+  managers : Mon('Managers').array().fin()
 }, {
   methods : {
     addByPlayerId : function ( playerId, callback ) {
@@ -45,7 +44,7 @@ module.exports = Mongoman.register('team', {
           '_id': { $in: this.players}
       }, function (error, players){
         if ( error ) {
-          return callback(error);  
+          return callback(error);
         }
         return callback( players );
       });
@@ -59,10 +58,10 @@ module.exports = Mongoman.register('team', {
           if (team) {
             return callback(null, team);
           } else {
-            return callback(Err.notFound('No team matches the provided ID'));
+            return callback(Err.notFound('No team regex the provided ID'));
           }
       });
-    }, 
+    },
     updateById : function ( _id, inputs, callback ) {
       this.findOneAndUpdate({
         _id : _id
@@ -70,7 +69,7 @@ module.exports = Mongoman.register('team', {
         if (team) {
           return callback(null, team);
         } else {
-          return callback(Err.notFound('No team matches the provided ID'));
+          return callback(Err.notFound('No team regex the provided ID'));
         }
       });
     },
@@ -81,19 +80,19 @@ module.exports = Mongoman.register('team', {
         if (team) {
           return callback(null, team);
         } else {
-          return callback(Err.notFound('No team matches the provided ID'));
+          return callback(Err.notFound('No team regex the provided ID'));
         }
       });
     },
     create : function ( inputs, callback ) {
       validate(inputs, {
           name     : Joi.string().required().min(1).max(50),
-        }, 
+        },
         function save (result, saveCallback) {
-          Mongoman.save('team', inputs, callback, function ( team ) {
+          Mon.save('team', inputs, callback, function ( team ) {
             return saveCallback(null, team);
           });
-        }, 
+        },
         function (error, data) {
           return callback(error, data);
         }
@@ -112,7 +111,7 @@ module.exports = Mongoman.register('team', {
               return findCallback(null, teams);
             }
           });
-        }, 
+        },
         function (error, data) {
           return callback(error, data);
         }
@@ -126,19 +125,19 @@ module.exports = Mongoman.register('team', {
       }, function (result, updateCallback) {
           thisTeam.findOneAndUpdate({
             _id : inputs.team_id,
-          }, { $push: 
-              { players: { 
+          }, { $push:
+              { players: {
                   $each: inputs.playerIds
-                } 
-              } 
+                }
+              }
           }, function (error, team) {
             if (team) {
               return updateCallback(null, team);
             } else {
-              return updateCallback(Err.notFound('No team matches the provided ID'));
+              return updateCallback(Err.notFound('No team regex the provided ID'));
             }
           });
-        }, 
+        },
         function (error, data) {
           return callback(error, data);
         }
@@ -152,19 +151,19 @@ module.exports = Mongoman.register('team', {
       }, function (result, updateCallback) {
           thisTeam.findOneAndUpdate({
             _id : inputs.team_id,
-          }, { $pull: 
-              { players: { 
+          }, { $pull:
+              { players: {
                   $in: inputs.playerIds
-                } 
-              } 
+                }
+              }
           }, function (error, team) {
             if (team) {
               return updateCallback(null, team);
             } else {
-              return updateCallback(Err.notFound('No team matches the provided ID'));
+              return updateCallback(Err.notFound('No team regex the provided ID'));
             }
           });
-        }, 
+        },
         function (error, data) {
           return callback(error, data);
         }

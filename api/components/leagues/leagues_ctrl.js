@@ -1,7 +1,7 @@
-var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Err = require(process.cwd() + '/api/lib/error').errorGenerator;
+var Mon = require('mongoman');
 
-var League = Mongoman.model('league');
+var League = Mon.model('league');
 
 module.exports = function accountController (api) {
   return {
@@ -10,7 +10,7 @@ module.exports = function accountController (api) {
     // Create
     //
     create : function (req, res, next) {
-      Mongoman.save('league', req.body, next, function () {
+      Mon.save('league', req.body, next, function () {
 
         res.data = {
           success : true,

@@ -1,43 +1,42 @@
 var regexSet = require(process.cwd() + '/api/lib/validate').regex;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
-
+var Mon      = require('mongoman');
 var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
-var Err  = require(process.cwd() + '/api/lib/error').errorGenerator;
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 
-module.exports = Mongoman.register('stat', {
-  player_id: Mongoman('Player Id').string().required().fin(),
+module.exports = Mon.register('stat', {
+  player_id: Mon('Player Id').string().required().fin(),
   //For historic stacts we could just use 0
-  game_id: Mongoman('Game Id').string().required().fin(),
-  season_id: Mongoman('Season Id').string().required().fin(),
-  goals : Mongoman('Goals').number().default(0).required().fin(),
-  assists : Mongoman('Assists').number().default(0).required().fin(),
-  points : Mongoman('Points').number().default(0).required().fin(),
-  
-  plus_minus : Mongoman('Plus Minus').number().default(0).required().fin(),
-  pim : Mongoman('Penalties In Minutes').number().default(0).required().fin(),
-  ppg : Mongoman('Power Play Goals').number().default(0).required().fin(),
-  ppa : Mongoman('Power Play Assists').number().default(0).required().fin(),
-  shg : Mongoman('Short Handed Goals').number().default(0).required().fin(),
-  sha : Mongoman('Short Handed Assists').number().default(0).required().fin(),
-  gwg : Mongoman('Game Winning Goal').number().default(0).required().fin(),
-  otg : Mongoman('Overtime Goal').number().default(0).required().fin(),
-  shots : Mongoman('Shots').number().default(0).required().fin(),
-  fot : Mongoman('Face Offs Taken').number().default(0).required().fin(),
-  fow : Mongoman('Face Offs Won').number().default(0).required().fin(),
+  game_id: Mon('Game Id').string().required().fin(),
+  season_id: Mon('Season Id').string().required().fin(),
+  goals : Mon('Goals').number().default(0).required().fin(),
+  assists : Mon('Assists').number().default(0).required().fin(),
+  points : Mon('Points').number().default(0).required().fin(),
+
+  plus_minus : Mon('Plus Minus').number().default(0).required().fin(),
+  pim : Mon('Penalties In Minutes').number().default(0).required().fin(),
+  ppg : Mon('Power Play Goals').number().default(0).required().fin(),
+  ppa : Mon('Power Play Assists').number().default(0).required().fin(),
+  shg : Mon('Short Handed Goals').number().default(0).required().fin(),
+  sha : Mon('Short Handed Assists').number().default(0).required().fin(),
+  gwg : Mon('Game Winning Goal').number().default(0).required().fin(),
+  otg : Mon('Overtime Goal').number().default(0).required().fin(),
+  shots : Mon('Shots').number().default(0).required().fin(),
+  fot : Mon('Face Offs Taken').number().default(0).required().fin(),
+  fow : Mon('Face Offs Won').number().default(0).required().fin(),
 
   //Goalie stuff as well
-  win : Mongoman('Win').number().default(0).required().fin(),  
-  loss : Mongoman('Loss').number().default(0).required().fin(),  
-  otl : Mongoman('Overtime Loss').number().default(0).required().fin(),  
-  tie : Mongoman('Tie').number().default(0).required().fin(),
-  nd : Mongoman('No Decision').number().default(0).required().fin(),
-  sa : Mongoman('Shots Against').number().default(0).required().fin(),  
-  ga : Mongoman('Goals Allowed').number().default(0).required().fin(),  
-  so : Mongoman('Shut Out').number().default(0).required().fin(),
-  svpct : Mongoman('Save Percentage').number().default(0).required().fin(),
+  win : Mon('Win').number().default(0).required().fin(),
+  loss : Mon('Loss').number().default(0).required().fin(),
+  otl : Mon('Overtime Loss').number().default(0).required().fin(),
+  tie : Mon('Tie').number().default(0).required().fin(),
+  nd : Mon('No Decision').number().default(0).required().fin(),
+  sa : Mon('Shots Against').number().default(0).required().fin(),
+  ga : Mon('Goals Allowed').number().default(0).required().fin(),
+  so : Mon('Shut Out').number().default(0).required().fin(),
+  svpct : Mon('Save Percentage').number().default(0).required().fin(),
 
-  created : Mongoman().date().required().default(Date.now).fin()
+  created : Mon().date().required().default(Date.now).fin()
 }, {
   statics : {
     findById : function ( _id, callback ) {
@@ -47,10 +46,10 @@ module.exports = Mongoman.register('stat', {
           if (stat) {
             return callback(null, stat);
           } else {
-            return callback(Err.notFound('No stat matches the provided ID'));
+            return callback(Err.notFound('No stat regex the provided ID'));
           }
       });
-    }, 
+    },
     updateById : function ( _id, inputs, callback ) {
       this.findOneAndUpdate({
         _id : _id
@@ -58,7 +57,7 @@ module.exports = Mongoman.register('stat', {
         if (stat) {
           return callback(null, stat);
         } else {
-          return callback(Err.notFound('No stat matches the provided ID'));
+          return callback(Err.notFound('No stat regex the provided ID'));
         }
       });
     },
@@ -69,7 +68,7 @@ module.exports = Mongoman.register('stat', {
         if (stat) {
           return callback(null, stat);
         } else {
-          return callback(Err.notFound('No stat matches the provided ID'));
+          return callback(Err.notFound('No stat regex the provided ID'));
         }
       });
     },
@@ -81,7 +80,7 @@ module.exports = Mongoman.register('stat', {
         goals      : Joi.number().default(0).integer().optional(),
         assists    : Joi.number().default(0).integer().optional(),
         plus_minus : Joi.number().default(0).integer().optional(),
-        
+
         pim     : Joi.number().default(0).optional(),
         ppg     : Joi.number().default(0).integer().optional(),
         ppa     : Joi.number().default(0).integer().optional(),
@@ -112,7 +111,7 @@ module.exports = Mongoman.register('stat', {
         inputs.points = points;
         inputs.svpct = savePercentage;
 
-        Mongoman.save('stat', inputs, callback, function ( stat ) {
+        Mon.save('stat', inputs, callback, function ( stat ) {
           return callback(null, stat);
         });
       }, function (error, data) {
@@ -121,7 +120,7 @@ module.exports = Mongoman.register('stat', {
         } else {
           return callback(null, data);
         }
-        
+
       });
     },
     findByPlayerId : function ( inputs, callback ) {

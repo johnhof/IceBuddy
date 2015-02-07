@@ -1,26 +1,25 @@
-var regexSet = require(process.cwd() + '/api/lib/validate').regex;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
-
+var Mon      = require('mongoman');
 var Joi      = require('joi');
+var regexSet = require(process.cwd() + '/api/lib/validate').regex;
 var validate = require(process.cwd() + '/api/lib/validate');
-var Err  = require(process.cwd() + '/api/lib/error').errorGenerator;
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 
-module.exports = Mongoman.register('game', {
+module.exports = Mon.register('game', {
   home: {
-    team_id: Mongoman('Home Team Id').string().required().fin(),
-    players: Mongoman('Home Team Players').array().default([]).fin(),
-    score  : Mongoman('Home Team score').string().required().fin()
+    team_id: Mon('Home Team Id').string().required().fin(),
+    players: Mon('Home Team Players').array().default([]).fin(),
+    score  : Mon('Home Team score').string().required().fin()
   },
   away: {
-    team_id: Mongoman('Away Team Id').string().required().fin(),
-    players: Mongoman('Away Team Players').array().default([]).fin(),
-    score  : Mongoman('Away Team score').number().required().fin()
+    team_id: Mon('Away Team Id').string().required().fin(),
+    players: Mon('Away Team Players').array().default([]).fin(),
+    score  : Mon('Away Team score').number().required().fin()
   },
   //This the season id this game belongs to
-  season_id : Mongoman('Season Id').string().required().fin(),
+  season_id : Mon('Season Id').string().required().fin(),
   //Array of ref ids
-  refs : Mongoman('Referees').array().default([]).fin(),
-  date_time : Mongoman('Game time').date().required().fin()
+  refs : Mon('Referees').array().default([]).fin(),
+  date_time : Mon('Game time').date().required().fin()
 
 },
 {
@@ -32,10 +31,10 @@ module.exports = Mongoman.register('game', {
           if (game) {
             return callback(null, game);
           } else {
-            return callback(Err.notFound('No game matches the provided ID'));
+            return callback(Err.notFound('No game regex the provided ID'));
           }
       });
-    }, 
+    },
     updateById : function ( _id, inputs, callback ) {
       this.findOneAndUpdate({
         _id : _id
@@ -43,7 +42,7 @@ module.exports = Mongoman.register('game', {
         if (game) {
           return callback(null, game);
         } else {
-          return callback(Err.notFound('No game matches the provided ID'));
+          return callback(Err.notFound('No game regex the provided ID'));
         }
       });
     },
@@ -58,7 +57,7 @@ module.exports = Mongoman.register('game', {
           };
           return callback(null, data);
         } else {
-          return callback(Err.notFound('No game matches the provided ID'));
+          return callback(Err.notFound('No game regex the provided ID'));
         }
       });
     },
@@ -77,9 +76,9 @@ module.exports = Mongoman.register('game', {
           season_id : Joi.string().token().required(),
           refs : Joi.array().optional(),
           date_time : Joi.date().required(),
-        }, 
+        },
         function save (result, saveCallback) {
-          Mongoman.save('game', inputs, callback, function ( game ) {
+          Mon.save('game', inputs, callback, function ( game ) {
             return saveCallback(null, game);
           });
         }, callback
@@ -115,7 +114,7 @@ module.exports = Mongoman.register('game', {
               return findCallback(null, games);
             }
           });
-        }, 
+        },
         function (error, data) {
           return callback(error, data);
         }

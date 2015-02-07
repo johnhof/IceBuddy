@@ -59,6 +59,7 @@ exports.errorGenerator.unAuth = function (seed, detail) { return exports.errorGe
 // middleware error handler
 //
 exports.errorHandler = function (error, req, res, next) {
+  console.log(error)
   if (!(error instanceof Error)) {
 
     // catch and handle raw mongoose errors
@@ -86,6 +87,7 @@ exports.errorHandler = function (error, req, res, next) {
 
 
   function sendErr (err) {
+    console.log('      --> ' + (err.status + ' - ' + (err.error || 'Could not process request')).red);
     res.status(err.status || 500).send({
       error   : err.error || 'Could not process request',
       details : err.details || null

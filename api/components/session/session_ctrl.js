@@ -1,10 +1,9 @@
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Mon      = require('mongoman');
 var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 var validate = require(process.cwd() + '/api/lib/validate');
 var Joi      = require('joi');
-var bcrypt   = require('bcrypt-nodejs');
 
-var Account = Mongoman.model('account');
+var Account = Mon.model('account');
 
 module.exports = function sessionController (api) {
   return {

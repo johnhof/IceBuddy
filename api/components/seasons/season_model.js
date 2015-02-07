@@ -1,18 +1,17 @@
 var regexSet = require(process.cwd() + '/api/lib/validate').regex;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
-
+var Mon      = require('mongoman');
 var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
-var Err  = require(process.cwd() + '/api/lib/error').errorGenerator;
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 
-module.exports = Mongoman.register('season', {
-  name    : Mongoman('Season Name').string().required().isLength([1, 50]).fin(),
-  league  : Mongoman('League Name').string().required().isLength([1, 50]).fin(),
+module.exports = Mon.register('season', {
+  name    : Mon('Season Name').string().required().min(1).max(50).fin(),
+  league  : Mon('League Name').string().required().min(1).max(50).fin(),
   // List of game ids this season
-  games : Mongoman('Games').default([]).array().fin(),
+  games : Mon('Games').default([]).array().fin(),
 
-  created : Mongoman().date().required().default(Date.now).fin(),
-  
+  created : Mon().date().required().default(Date.now).fin(),
+
 
 },{
   statics : {
@@ -23,10 +22,10 @@ module.exports = Mongoman.register('season', {
           if (season) {
             return callback(null, season);
           } else {
-            return callback(Err.notFound('No season matches the provided ID'));
+            return callback(Err.notFound('No season regex the provided ID'));
           }
       });
-    }, 
+    },
     updateById : function ( _id, inputs, callback ) {
       this.findOneAndUpdate({
         _id : _id
@@ -34,7 +33,7 @@ module.exports = Mongoman.register('season', {
         if (season) {
           return callback(null, season);
         } else {
-          return callback(Err.notFound('No season matches the provided ID'));
+          return callback(Err.notFound('No season regex the provided ID'));
         }
       });
     },
@@ -45,7 +44,7 @@ module.exports = Mongoman.register('season', {
         if (season) {
           return callback(null, season);
         } else {
-          return callback(Err.notFound('No season matches the provided ID'));
+          return callback(Err.notFound('No season regex the provided ID'));
         }
       });
     },
@@ -53,12 +52,12 @@ module.exports = Mongoman.register('season', {
       validate(inputs, {
           name     : Joi.string().required().min(1).max(50),
           league   : Joi.string().required().min(1).max(50),
-        }, 
+        },
         function save (result, saveCallback) {
-          Mongoman.save('season', inputs, callback, function ( season ) {
+          Mon.save('season', inputs, callback, function ( season ) {
             return saveCallback(null, season);
           });
-        }, 
+        },
         function (error, data) {
           return callback(error, data);
         }
@@ -78,7 +77,7 @@ module.exports = Mongoman.register('season', {
               return findCallback(null, seasons);
             }
           });
-        }, 
+        },
         function (error, data) {
           return callback(error, data);
         }

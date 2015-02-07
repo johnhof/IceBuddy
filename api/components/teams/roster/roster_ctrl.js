@@ -1,7 +1,7 @@
-var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Err = require(process.cwd() + '/api/lib/error').errorGenerator;
+var Mon = require('mongoman');
 
-var Team = Mongoman.model('team');
+var Team = Mon.model('team');
 
 
 module.exports = function accountController (api) {
@@ -33,7 +33,7 @@ module.exports = function accountController (api) {
         } else {
           return next(Err.notFound('Team not found'));
         }
-        
+
       });
     },
 
