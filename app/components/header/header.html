@@ -7,29 +7,29 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#/">IceBuddy</a>
+      <a class="navbar-brand ripple" href="#/">IceBuddy</a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav" ng-controller="SessionCtrl">
           <!-- if signed in-->
           <li ng-if="session.isSignedIn">
-            <a class="flush" href="#/account">My Account</a> | <a class="flush" ng-click="session.signOut()">Sign out</a>
+            <a class="flush" href="#/account" class="ripple">My Account</a> | <a class="flush" ng-click="session.signOut()">Sign out</a>
           </li>
           <!-- else -->
           <li ng-if="!session.isSignedIn">
-            <a href="#/session">Sign In | Sign Up</a>
+            <a href="#/session" class="ripple">Sign In | Sign Up</a>
           </li>
           <!-- end if -->
-        <li><a href="#/game_tracker">Start Game</a></li>
+        <li><a href="#/game_tracker" class="ripple">Start Game</a></li>
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Stat Tracker <span class="caret"></span></a>
+          <a class="dropdown-toggle ripple" data-toggle="dropdown" role="button" aria-expanded="false">Stat Tracker <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="#stats/team">Team Stats</a></li>
             <li><a href="#stats/league">League Stats</a></li>
             <li><a href="#stats/user">My Stats</a></li>
           </ul>
         </li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#contact" class="ripple">Contact</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>

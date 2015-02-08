@@ -1,24 +1,21 @@
 @import 'variables';
 
-
+////////////////////////////////////////////////////////////////////////
 //
-// Universal Styles
+//  Base Styling
 //
-
+////////////////////////////////////////////////////////////////////////
 
 html, body {
   padding: 0;
   margin: 0;
   background :none;
-  min-width: 320px;
-
   font-family: 'Open Sans', sans-serif;
 }
 
 html {
-  background: rgb(240, 240, 240);
+  background-color: $divider-color;
   height: 100%;
-  background: url('../images/crossword.png') left top;
 }
 
 h1, h2, h3, h4 {
@@ -30,23 +27,15 @@ a {
 
   &:hover {
     color: $blue;
+    text-decoration: none;
   }
 }
 
-.navbar {
-  min-width: 320px;
-}
 
 #main-content {
   margin: auto;
   margin-top: 70px;
-  padding: 10px;
-  color: $grey;
-
-  @media screen and (min-width: 800px) { width: 80%; }
-  @media screen and (max-width: 700px) { width: 85%; }
-  @media screen and (max-width: 800px) { width: 90%; }
-  @media screen and (max-width: 600px) { width: 100%; }
+  color: $text-color;
 }
 
 #background-filter {
@@ -59,50 +48,109 @@ a {
   z-index: -1;
 }
 
+////////////////////////////////////////////////////////////////////////
 //
-// General Utilities
+//  Utility styling
 //
+////////////////////////////////////////////////////////////////////////
 
 .container {
   width: 100%;
 }
 
-.card {
-  border: 1px solid $light-grey;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.10);
-  background-color: #FFFFFF;
-  margin: 10px 0;
-  padding: 5px;
 
-  .title {
-    font-size: 24px;
-    text-decoration: none;
-    border-bottom: 1px dotted rgb(163, 163, 163);
-    width: 100%;
-    display: block
+.ngdialog.ngdialog-theme-default.spinner-container .ngdialog-content {
+  background-color: transparent;
+
+  .spinner {
+    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 10px;
   }
 
-  .card-row {
-    display: flex;
+  .spinner > div {
+    background-color: $light-grey;
+    height: 100%;
+    margin: 2px;
+    width: 4px;
+    display: inline-block;
 
-    .label {
-      flex: 1;
-      padding-right: 5px;
+    -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+    animation: stretchdelay 1.2s infinite ease-in-out;
+  }
 
-      &:after {
-        content: ":";
-      }
-    }
+  .spinner .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+  }
 
-    .value {
-      flex: 1
+  .spinner .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+  }
+
+  .spinner .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+  }
+
+  .spinner .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+  }
+
+  @-webkit-keyframes stretchdelay {
+    0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+    20% { -webkit-transform: scaleY(1.0) }
+  }
+
+  @keyframes stretchdelay {
+    0%, 40%, 100% {
+      transform: scaleY(0.4);
+      -webkit-transform: scaleY(0.4);
+    }  20% {
+      transform: scaleY(1.0);
+      -webkit-transform: scaleY(1.0);
     }
   }
 }
 
+.sprite {
+  font-size: 32;
+  transition: 0.25s ease-in-out all;
+
+  &.size-16 { font-size: 16px; }
+  &.size-18 { font-size: 18px; }
+  &.size-21 { font-size: 21px; }
+  &.size-24 { font-size: 24px; }
+  &.size-32 { font-size: 32px; }
+  &.size-48 { font-size: 48px; }
+  &.size-64 { font-size: 64px; }
+  &.size-96 { font-size: 96px; }
+}
+
+.divider {
+  background-color: $divider-color;
+  margin: $space 0;
+
+  &.horizontal {
+    width: 100%;
+    height:1px;
+  }
+
+  &.vertical {
+    width: 1px;
+    height: 100%;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////
 //
-// bootstrap overrides
+//  Bootstrap overrides
 //
+////////////////////////////////////////////////////////////////////////
 
 .container-fluid {
   padding-right:0px;
@@ -116,105 +164,5 @@ a {
   [class*='col-'] {
     padding-right:0px;
     padding-left:0px;
-  }
-}
-
-//
-// Forms
-//
-
-
-.button {
-  border: 1px solid #FFFFFF;
-  border-radius: 3px;
-  width: 100%;
-  min-height: 35px;
-  box-shadow: 0px 0px 3px #888888;
-  background: $dark-grey;
-  color: white;
-
-  &[type="submit"], &[active="true"] {
-    background: $blue;
-    color: white;
-  }
-}
-
-.button-wrap {
-  display: flex;
-  padding: 10px 0;
-
-  .button, [type="button"]{
-    flex:1;
-
-    &[type="submit"], &[active="true"] {
-      background: $blue;
-      color: white;
-    }
-
-    text-align: center;
-    vertical-align: middle;
-    text-decoration: none;
-
-    &:first-of-type {
-      margin-right: 10px;
-    }
-  }
-}
-
-input {
-  &[type="email"], &[type="password"], &[type="text"] {
-    padding-left: 10px;
-  }
-}
-
-a.button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.error {
-  color: $red;
-  display: none;
-
-  &.main-error {
-    padding-top: 5px;
-  }
-}
-
-form.ng-submitted {
-  .invalid {
-    border: 1px solid $red;
-  }
-
-  .error {
-    font-weight: bold;
-    display: block;
-  }
-}
-
-.input-wrap {
-  display: block;
-  padding: 10px 0;
-
-
-  input {
-    width: 100%;
-    border-radius: 1px;
-    border: 1px solid $light-grey;
-    min-height: 35px;
-    box-shadow: 0px 0px 3px #888888;
-
-    &[type="email"], &[type="password"], &[type="text"] {
-      &:required {
-        &::-webkit-input-placeholder {
-          &:after {
-            content: "*";
-            padding-left: 5px;
-            color: $faded-red;
-          }
-        }
-      }
-    }
   }
 }
