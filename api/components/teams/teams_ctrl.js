@@ -1,9 +1,9 @@
-var Err  = require(process.cwd() + '/api/lib/error').errorGenerator;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
+var Mon      = require('mongoman');
 var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
 
-var Team = Mongoman.model('team');
+var Team = Mon.model('team');
 
 module.exports = function accountController (api) {
   return {
@@ -14,9 +14,9 @@ module.exports = function accountController (api) {
     create : function (req, res, next) {
       var inputs = req.body;
       validate(inputs, {
-        name     : Joi.string().required().min(1).max(50),
+        name : Joi.string().required().min(1).max(50),
       }, function save (result, callback) {
-        Mongoman.save('team', req.body, next, function ( team ) {
+        Mon.save('team', req.body, next, function ( team ) {
           res.data = {
             success : true,
             team  : team,

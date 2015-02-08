@@ -1,15 +1,15 @@
 var regexSet = require(process.cwd() + '/api/lib/validate').regex;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Mon = require('mongoman');
 var bcrypt   = require('bcrypt-nodejs');
 
-module.exports = Mongoman.register('account', {
-  email      : Mongoman('Email').string().required().unique().matches(regexSet.email).fin(),
-  password   : Mongoman('Password').string().required().fin(),
-  nickname   : Mongoman('Nickname').string().required().unique().alphanum().isLength([3, 50]).fin(), // display name
-  registered : Mongoman().date().required().default(Date.now).fin(),
+module.exports = Mon.register('account', {
+  email      : Mon('Email').string().required().unique().regex(regexSet.email).fin(),
+  password   : Mon('Password').string().required().fin(),
+  nickname   : Mon('Nickname').string().required().unique().alphanum().min(3).max(50).fin(), // display name
+  registered : Mon().date().required().default(Date.now).fin(),
   name       : {
-    first : Mongoman('First name').string().required().alphanum().isLength([1, 50]).fin(),
-    last  : Mongoman('Last name').string().required().alphanum().isLength([1, 50]).fin()
+    first : Mon('First name').string().required().alphanum().min(1).max(50).fin(),
+    last  : Mon('Last name').string().required().alphanum().min(1).max(50).fin()
   }
 }, {
 

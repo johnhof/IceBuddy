@@ -1,9 +1,9 @@
-var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
-var validate = require(process.cwd() + '/api/lib/validate');
+var Mon      = require('mongoman');
 var Joi      = require('joi');
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
+var validate = require(process.cwd() + '/api/lib/validate');
 
-var Account = Mongoman.model('account');
+var Account = Mon.model('account');
 
 module.exports = function accountController (api) {
   return {
@@ -35,7 +35,7 @@ module.exports = function accountController (api) {
           });
         },
         function save (result, callback) {
-          Mongoman.save('account', req.body, callback, function (user) {
+          Mon.save('account', req.body, callback, function (user) {
             res.setSession(user, true);
             res.data = {
               success : true,

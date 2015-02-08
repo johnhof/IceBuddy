@@ -1,0 +1,20 @@
+{
+  "port" : 9000,
+  "path" : {
+    "app"   : "app",
+    "bower" : "bower_components",
+    "dist"  : "dist"
+  },
+  "staticMap" : {
+    "/images"           : "/dist/images",
+    "/scripts"          : "/dist/scripts",
+    "/styles"           : "/dist/styles",
+    "/views"            : "/dist/views",
+    "/favicon.ico"      : "/dist/favicon.ico",
+    "/bower_components" : "/bower_components"
+  },
+  "db" : {
+    "dev"  : "mongodb://localhost/database",
+    "prod" : ""
+  }
+}

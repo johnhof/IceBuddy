@@ -1,7 +1,7 @@
-var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Err = require(process.cwd() + '/api/lib/error').errorGenerator;
+var Mon = require('mongoman');
 
-var League = Mongoman.model('league');
+var League = Mon.model('league');
 
 module.exports = function accountController (api) {
   return {

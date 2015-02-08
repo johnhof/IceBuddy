@@ -1,9 +1,9 @@
-var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
+var Mon      = require('mongoman');
 var Joi      = require('joi');
+var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 var validate = require(process.cwd() + '/api/lib/validate');
 
-var Game = Mongoman.model('game');
+var Game = Mon.model('game');
 
 module.exports = function accountController (api) {
   return {

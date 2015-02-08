@@ -6,13 +6,11 @@ Web service to compile and deliver local ice times (skate/stick time/pickup)
 * [Structure](#structure)
 * [To Run](#to-run)
 * [Useful Commands](#useful-commands)
-* [ApI](#api)
+* [Api](#api)
 * [App](#app)
-* [Mongoman](#mongoman)
 
 
-Structure <a name="structure"></a> [↑](#top)
-=========
+## Structure
 
 **API**
 
@@ -78,31 +76,27 @@ routes.js // route->controller mapping
 
 A collection of minified files made accessible to the client. This is where the actual Angular app runs. The App dir is for dev only
 
-To Run <a name="useful-commands"></a> [↑](#top)
-======
+## To Run
 
 General
- * Requires MongoDB, Node, Compass (Ruby)
- * Clone Git Repo
- * npm install
- * bower install
+ - Requires MongoDB, Node, Compass (Ruby)
+ - Clone Git Repo
+ - `$ npm install`
+ - `$ bower install`
+ - `$ grunt app`
+   - watches for changes in both API and App for rebuild
+   - `--prod` builds a production version (minified)
+   - `--dev` builds a dev version (unminified/default)
 
-App
-* `grunt app` -> http://localhost:9000
-  * grunt will recompile portions of the server on save depending on the file type (eg: re-minify js)
+If you get an `addr in use` error, run `killall node` to terminate active node servers
 
-API
-* `npm install nodemon -g`
-* `[sudo] mongod`
-* `grunt api` -> http://localhost:8000
-  * nodemon will restart the server for js changes
+## Useful grunt commands
 
+`grunt serve` -> run with the current build (no watch)
 
-**Coming Soon**
-* command line options
+`grunt build-prod` -> builds a minified prob dist
 
-Useful grunt commands <a name="useful-commands"></a> [↑](#top)
-=====================
+`grunt build-dev` -> builds an unminified dev dist
 
 `grunt clean:compiled` -> removes compiled code (./tmp, ./dist, ./sass_cache)
 
@@ -110,8 +104,7 @@ Useful grunt commands <a name="useful-commands"></a> [↑](#top)
 
 `gunt dropdb` - > drops the current local database
 
-API <a name="api"></a> [↑](#top)
-===
+## API
 
 A few things are done automatically cut down on controller/model/router bloat:
 
@@ -214,76 +207,6 @@ the following utils are available from /lib/session.js
 * `requireSession(req, res, next)` - Route level middleware. returns 401 if a valid session is not found
 
 
-APP <a name="app"></a> [↑](#top)
-===
+## APP
 
-
-Mongoman <a name="mongoman"></a> [↑](#top)
-========
-
-I hate code bloat especially when its something that we'll need to do over and over again. So I made a wrapper MANage MONGOose/mongo and mongoose-validator.
-
-Once this is near completion I'd like to make it into a separate module for public use.
-
-**Schema building**
-
-Below is a simple Model constructor to demonstrate a use case
-
-```javascript
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
-
-// register a user model
-module.exports = Mongoman.register('user', {
-  name : Mongoman('Name') // error templates will use the 'Name' string when specifying issues
-           .string().required().isAlphaNum().isLength([3, 50]) // it is a required, alaphanumeric, string, of length greater than 3 and less than 50
-         .fin() // compile the construcor object (some day, Mongoman.register will do this for us)
-});
-```
-
-Here is an example controller
-
-```javascript
-var Mongoman = require(process.cwd() + '/api/lib/mongoman');
-
-module.exports = function accountController (api) {
-  return {
-    create : function (req, res, next) {
-      Mongoman.save('player', req.body, next, function () {
-        res.data = { success : true, }
-        return next();
-      });
-    },
-```
-
-**Constructor properties** - remeber to update me!!
-
-* `string()` - type `String`
-* `date()` - type `Date`
-* `number()` - type `Number`
-* `buffer()` - type `Buffer`
-* `booleand()` - type `Boolean`
-* `mixed()` - type `Mixed`
-* `objectId()` - type `ObjectId`
-* `array()` - type `Array`
-* `type(type)` - set type as 'type' parameter
-* `required()` - configure schema to require this property
-* `default(val)` - default to `val` parameter
-
-**Constructor validations** - remeber to update me!!
-
-All validations that an error message param as the last argument to override the default error
-
-* `alphanum([msg])` - must be alpha numberic
-* `isLength(array, [msg])` - must be between `array[0]` and `array[1]`
-* `matches(regex, [msg])` - must match regex
-
-**Stand alone helpers**
-
-* `Mongoman.register(name, schema, [options])` - register new schema with a raw object (not a `Schema` instance)
-* `Mongoman.model(name)` - wrapper to get a model
-* `Mongoman.save(modelName, inputs, errorHandler, successHandler)` - save an `input` object to `modelName`, validation/DB errors will go to the `errorHandler` (generally `next()`), otherwise, `successHandler` is called
-* `Mongoman.schema(schemaObj)` - returns a new schema instance of the passed in object
-
-Testing
-============
-To run the test suite run the following at the root folder
+COMING SOON : design specs based on googles [material design guide](http://www.google.com/design/spec/material-design/introduction.html)

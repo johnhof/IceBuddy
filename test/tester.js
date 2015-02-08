@@ -3,6 +3,8 @@ var request = require('request');
 var _       = require('lodash');
 var assert  = require('assert');
 var QS      = require('qs');
+var colors  = require('colors');
+var config  = require('config.json')(process.cwd() + '/config.json');
 
 request.defaults({
   json : true,
@@ -12,7 +14,9 @@ request.defaults({
 //
 // internal variables
 //
-var host = 'http://localhost:8000';
+var host = 'http://localhost:' + config.port;
+
+console.log(host)
 
 module.exports = function test (defaults) {
   defaults = defaults || {};
