@@ -94,7 +94,7 @@ If you get an `addr in use` error, run `killall node` to terminate active node s
 
 `grunt serve` -> run with the current build (no watch)
 
-`grunt build-prod` -> builds a minified prob dist
+`grunt build-prod` -> builds a minified prod dist
 
 `grunt build-dev` -> builds an unminified dev dist
 
