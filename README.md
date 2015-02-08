@@ -79,26 +79,24 @@ A collection of minified files made accessible to the client. This is where the 
 ## To Run
 
 General
- * Requires MongoDB, Node, Compass (Ruby)
- * Clone Git Repo
- * npm install
- * bower install
+ - Requires MongoDB, Node, Compass (Ruby)
+ - Clone Git Repo
+ - `$ npm install`
+ - `$ bower install`
+ - `$ grunt app`
+   - watches for changes in both API and App for rebuild
+   - `--prod` builds a production version (minified)
+   - `--dev` builds a dev version (unminified/default)
 
-App
-* `grunt app` -> http://localhost:9000
-  * grunt will recompile portions of the server on save depending on the file type (eg: re-minify js)
-
-API
-* `npm install nodemon -g`
-* `[sudo] mongod`
-* `grunt api` -> http://localhost:8000
-  * nodemon will restart the server for js changes
-
-
-**Coming Soon**
-* command line options
+If you get an `addr in use` error, run `killall node` to terminate active node servers
 
 ## Useful grunt commands
+
+`grunt serve` -> run with the current build (no watch)
+
+`grunt build-prod` -> builds a minified prob dist
+
+`grunt build-dev` -> builds an unminified dev dist
 
 `grunt clean:compiled` -> removes compiled code (./tmp, ./dist, ./sass_cache)
 

@@ -15,9 +15,6 @@ exports.register = function  (api) {
   // Generic CRUDS routes
   //
 
-  // Home
-  routeCrud('/', controller('home'));
-
   // Account
   var accountCtrl = controller('account')
   api.get('/session', session.requireSession, accountCtrl.read, respond);
@@ -62,7 +59,7 @@ exports.register = function  (api) {
 
 
   function respond (req, res, next) {
-    console.log('      --> ' + '200'.green);
+    console.log('200'.green);
     res.status(200).send(res.data);
   }
 
