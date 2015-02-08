@@ -68,13 +68,6 @@ Web service to compile and deliver local ice times (skate/stick time/pickup)
     ---- index.html // main view container in which other views and partials are wrapped
 
     ---- router.js // mapping of routes to views
-,
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "scripts":  {
-    "test": "mocha 'test/**/*.js'"
-  }
 
 ```
 
