@@ -16,8 +16,6 @@ request.defaults({
 //
 var host = 'http://localhost:' + config.port;
 
-console.log(host)
-
 module.exports = function test (defaults) {
   defaults = defaults || {};
 

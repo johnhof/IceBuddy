@@ -62,7 +62,6 @@ helpers.requireDirContent(__dirname + '/api/components', /_model.js/i)
 function setupServer () {
   // static deliverly
   for (staticDir in config.staticMap) {
-    console.log(__dirname + config.staticMap[staticDir])
     server.use(staticDir, express.static(__dirname + config.staticMap[staticDir]));
   }
 
