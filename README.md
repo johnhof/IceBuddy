@@ -12,69 +12,71 @@ Web service to compile and deliver local ice times (skate/stick time/pickup)
 
 ## Structure
 
-**API**
-
 ```
 
-api.js // base script
+- Gruntfile.js // grunt build script
 
-config.json // configuration data
+- config.json // server configurations
 
-routes.js // route->controller mapping
+> dist // compiled client side components
 
->> lib // helpers, shared assets
+> api
 
->> components // models and controllers
+  -- routes.js // route->controller mapping
 
-  >>>> example
+  >> lib // helpers, shared assets
 
-  ------ example_ctrl.js (C)
+  >> components // models and controllers
 
-  ------ example_model.js (M) (IMPORTANT - all models `_model.js` are registered on server startup)
+    >>>> example
+
+    ------ example_ctrl.js (C)
+
+    ------ example_model.js (M) (IMPORTANT - all models `_model.js` are registered on server startup)
+
+
+> app
+
+  >> assets
+
+    >>>> fonts
+
+    >>>> images
+
+    >>>> partials
+
+    >>>> scripts
+
+    >>>> styles
+
+  >> components
+
+    >>>> example
+
+      ---- example.html // (V)
+
+      ---- example.scss
+
+      ---- example_ctrl.js // (C)
+
+  >> core
+
+    ---- app,js // angular setup and server management
+
+    ---- api.js // api service. wrapper for a set of $resource objects
+
+    ---- index.html // main view container in which other views and partials are wrapped
+
+    ---- router.js // mapping of routes to views
+,
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts":  {
+    "test": "mocha 'test/**/*.js'"
+  }
 
 ```
-
-**App**
-
-```
-
->> assets
-
-  >>>> fonts
-
-  >>>> images
-
-  >>>> partials
-
-  >>>> scripts
-
-  >>>> styles
-
->> components
-
-  >>>> example
-
-    ---- example.html // (V)
-
-    ---- example.scss
-
-    ---- example_ctrl.js // (C)
-
->> core
-
-  ---- app,js // angular setup and server management
-
-  ---- app_congif // app configuration
-
-  ---- index.html // main view container in which other views and partials are wrapped
-
-  ---- router.js // mapping of routes to views
-
-```
-
-**Dist**
-
-A collection of minified files made accessible to the client. This is where the actual Angular app runs. The App dir is for dev only
 
 ## To Run
 
