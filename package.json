@@ -56,5 +56,11 @@
   },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "scripts":  {
+    "test": "mocha 'test/**/*.js' --colors"
+  },
+  "devDependencies": {
+    "colors": "1.0.3"
   }
 }

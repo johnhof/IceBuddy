@@ -3,6 +3,7 @@ var request = require('request');
 var _       = require('lodash');
 var assert  = require('assert');
 var QS      = require('qs');
+var colors  = require('colors');
 
 request.defaults({
   json : true,

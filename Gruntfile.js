@@ -502,26 +502,6 @@ module.exports = function (grunt) {
           async: true
         }
       }
-    },
-
-
-    /***************************************************************************************************
-    *
-    *  Mocha testing tasks
-    *
-    ****************************************************************************************************/
-
-    simplemocha: {
-      options: {
-        globals     : ['expect'],
-        timeout     : 10000,
-        ignoreLeaks : false,
-        ui          : 'bdd',
-        reporter    : 'tap'
-      },
-      all: {
-        src: ['test/tests/**/*.js']
-      }
     }
   });
 
