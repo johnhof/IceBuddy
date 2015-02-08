@@ -62,6 +62,7 @@ helpers.requireDirContent(__dirname + '/api/components', /_model.js/i)
 function setupServer () {
   // static deliverly
   for (staticDir in config.staticMap) {
+    console.log(__dirname + config.staticMap[staticDir])
     server.use(staticDir, express.static(__dirname + config.staticMap[staticDir]));
   }
 
@@ -85,6 +86,7 @@ function setupServer () {
   // any route not used by the API should return the standart page
   server.get('*', function (req, res) {
     res.set({ 'Content-Type': 'text/html; charset=utf-8' });
+    console.log('200'.green);
     res.sendFile(__dirname + '/dist/index.html');
   });
 
