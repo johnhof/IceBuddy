@@ -204,4 +204,95 @@ the following utils are available from /lib/session.js
 
 ## APP
 
-COMING SOON : design specs based on googles [material design guide](http://www.google.com/design/spec/material-design/introduction.html)
+Following googles [material design guide](http://www.google.com/design/spec/material-design/introduction.html) a set of scss variables and angular directive are defined for use accross the site.
+
+### SCSS tools
+
+#### General
+
+```
+// all spacing should be a multiple or divisor of the $space variable
+$space: // 8px
+
+// material design hinges on the principal of paper components in 3D space.
+// any time a paper component overlays another, the elevation mixin must be used.
+// The $scale parameter will set the box shadow size/alpha for the paper component
+@inlude elevation($scale)
+
+// all cards must have a border radius
+$radius // 2px;
+```
+
+#### Text Sizes
+
+```
+@inlude button-text () // 14px, bold, uppercase
+
+@inlude caption-text () // 12px
+
+@inlude body-text () // 14px
+
+@inlude body-bold-text () // 14px, bold
+
+@inlude subhead-text () // 16px
+
+@inlude title-text () // 20px, bold
+
+@inlude headline-text () // 24px
+
+@inlude display-small-text () // 34px
+
+@inlude display-medium-text () // 45px
+
+@inlude display-large-text () // 56px
+```
+
+#### Color Palette
+
+```
+// Base
+$base-color // white
+
+// Shades
+
+// white
+$divider-color // 12% opacity
+$disabled-color // 26% opacity
+$secondary-text-color // 54% opacity
+$text-color // 87% opacity
+
+// black
+$divider-light-color // 12% opacity
+$disabled-light-color // 26% opacity
+$secondary-text-light-color // 54% opacity
+$text-light-color // 87% opacity
+
+// Primary - Blue
+$primary-light // 500
+$primary // 700
+$primary-dark // 900
+
+// Accent - Orange
+$accent // A700
+$accent-fallback // A200
+```
+
+#### Utilities
+
+```
+@include center() // center content vertically and horizontally
+```
+
+### Directives
+
+#### Animations
+
+
+**ripple**
+
+- restrict
+    - Class
+- animation
+    - Ripple effect on click
+- options
+    - `.dark` class in conjustion will cause dark ripple
