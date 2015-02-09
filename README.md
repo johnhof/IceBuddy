@@ -247,7 +247,7 @@ $radius // 2px;
 @inlude display-large-text () // 56px
 ```
 
-#### Color Palette
+#### Color Palette ([source](http://www.google.com/design/spec/style/color.html#color-color-palette))
 
 ```
 // Base
