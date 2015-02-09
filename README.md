@@ -204,6 +204,25 @@ the following utils are available from /lib/session.js
 
 ## APP
 
+### Utilities
+
+
+#### Sprites
+
+for the sake of speed, I pulled in the [ionicon bower package](http://ionicons.com/). I also added a sprite directive to standardize use. Please use a sprite from the sheet linked above. We'll probably need to add another sprite tool for unsupported sprites, but we'll cross that bridge when we come to it.
+
+
+```html
+<sprite name="[ionicon name]" size="[optional: size in pixels defafult: 32]" href="[optional: href for new tab]"></sprite>
+```
+
+without the directive
+
+```html
+<a class="[ionicon name] [some size class]" href="[href]" target="__blank"></a>
+```
+### Material Design
+
 Following googles [material design guide](http://www.google.com/design/spec/material-design/introduction.html) a set of scss variables and angular directive are defined for use accross the site.
 
 ### SCSS tools
