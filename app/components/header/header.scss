@@ -1,7 +1,7 @@
 @import 'variables';
 
 .navbar {
-  @include elevation(3);
+  @include elevation(2);
   height: $nav-height;
 
   &.navbar-default {
