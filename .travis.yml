@@ -8,6 +8,7 @@ before_install:
   - npm install -g grunt-cli
   - gem install compass
   - npm install -g bower
+  - npm install -g nodemon
 before_script: 
   - bower install
   - grunt app
