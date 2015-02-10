@@ -5,28 +5,205 @@
   height: 100%;
 
   #hero {
-    background: url('../images/hero_left.png') no-repeat center center;
+    background: url('../images/hero.jpg') no-repeat center center;
+    background-size: cover;
     width: 100%;
-    height: 50%;
-    height: 350px;
-    color: white;
+    height: 300px;
+    @include elevation(1);
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
 
-    #sign-in-form {
-      float: right;
-      width: 45%;
-      min-width: 300px;
-      padding: 40px 5%;
+    .action-conainer {
+      display: block;
+      width: 30%;
+      min-width: 304px;
+      padding: $space * 2;
 
-      input {
-        &[type="email"], &[type="password"], &[type="text"] {
-          color: $grey;
+      $input-height: $space * 5;
+
+      .divider.horizontal {
+        height: 2px;
+      }
+
+      .button {
+        background-color: $accent-fallback;
+        color: $secondary-text-color;
+      }
+
+      input, .button, .separator {
+        height: $input-height;
+        width: 100%;
+        margin: $space 0;
+      }
+
+      .separator {
+        @include title-text();
+        @include center();
+        color: $accent-fallback;
+        text-transform: uppercase;
+      }
+
+      .login-container {
+        width: 100%;
+
+        > * {
+          border-radius: $radius;
+          @include elevation(2);
+
+          &[type="submit"] {
+            background-color: $primary-light;
+            color: $text-light-color;
+            border: 0;
+          }
         }
       }
 
-      #session-content{
-        padding: 0;
+      .track {
+        margin: ($space * 2) 0;
+        @include elevation(2);
       }
     }
   }
 
-};
+  [class*="col-"] {
+    padding: $space ($space / 2);
+
+    &:first-of-type {
+      padding-left: $space;
+    }
+    &:last-of-type {
+      padding-right: $space;
+    }
+
+   .card {
+      height: 100%;
+      width: 100%;
+
+      header {
+        display: flex;
+
+        span {
+          flex: 2;
+          padding: $space 0;
+          @include title-text();
+          border-top-left-radius: $radius;
+          background-color: $accent;
+          color: $text-light-color;
+          text-align: center;
+        }
+
+
+        input {
+          flex: 3;
+          width: 100%;
+          border-top-right-radius: $radius;
+
+          &:hover, &:focus {
+            border-top-right-radius: $radius;
+          }
+        }
+      }
+
+
+      .vertical-list {
+        max-height: $space * 75; // 600px
+
+        .no-result {
+          display: flex;
+          height: $space * 8; // 64;
+          @include subhead-text();
+          color: $secondary-text-color;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .list-row {
+          padding: ($space * 2) 0;
+          cursor: pointer;
+          color: $text-color;
+
+          .leading {
+            flex:1;
+            padding: 0 $space;
+            display: flex;
+            justify-content: center;
+
+            > * {
+              display: flex;
+              align-items: center;
+            }
+
+            span {
+              color: $disabled-color;
+            }
+          }
+
+          .trailing {
+            flex: 5;
+            padding-right: $space;
+
+            .title {
+              @include body-bold-text();
+              margin-bottom: $space;
+
+              .number {
+                float: right;
+                color: $secondary-text-color;
+                padding: 0 $space;
+
+                &:before {
+                  content: "#";
+                  padding-right: $space / 2;
+                }
+              }
+            }
+
+            .content {
+              @include body-text();
+
+              .list {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                span {
+                  color: $secondary-text-color;
+
+                  &:after {
+                    content: ",";
+                    margin-right: $space / 2;
+                  }
+
+                  &:last-of-type:after {
+                    content: "";
+                    margin: 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    #hero {
+      .action-conainer {
+        width: 100%;
+        padding: $space;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    [class*="col-"] {
+      padding: $space $space 0;
+
+      &:last-of-type {
+        padding-bottom: $space;
+      }
+    }
+  }
+}

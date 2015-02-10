@@ -1,24 +1,90 @@
 <div id="home-content">
-  <div id="hero" ng-controller="SessionCtrl" class="card">
-    <div ng-if="session.isSignedIn">
-      Signed In
+  <div id="hero" ng-controller="SessionCtrl">
+
+    <div class="action-conainer">
+
+      <div class="button track ripple">Start Game</div>
+
+      <div class="divider horizontal"></div>
+
+      <form  class="login-container" novalidate>
+        <input type="email"  email ng-model="inputs.email" required placeholder="Account Email">
+        <input type="password" pasword required ng-model="inputs.password" placeHolder="Account Password">
+        <input type="submit" name="Sign in" class="button ripple">
+      </form>
+
     </div>
-    <div ng-if="!session.isSignedIn">
-      <!-- <div ng-include src="'views/_sign_in_form.html'" id="sign-in-form"></div> -->
-      <widget view="sign_in_form"></widget>
-    </div>
-    <div style='clear: both'></div>
+
   </div>
-  <!-- <div class="container-fluid">
-    <div class="row">
+  <div class="container-fluid">
+    <row>
       <div class="col-sm-6">
         <div class="card">
-          <div ng-include src="'views/teams.html'" id="teams-wrapper" ng-controller="TeamsCtrl"></div>
+          <header>
+            <span>Teams</span>
+            <input type="text"  placeholder="Search">
+          </header>
+
+
+          <section class="vertical-list">
+            <!-- No Teams -->
+            <div class="no-result" ng-show="!teams.length">No Result, try a new search</div>
+            <!-- Team List -->
+            <a class="list-row ripple dark" ng-show="teams.length" ng-repeat="team in teams" >
+              <div class="leading">
+                <img ng-if="team.logo" src="team.logo">
+                <sprite name="ion-android-image" size="48" ng-if="!team.logo"></sprite>
+              </div>
+              <div class="trailing">
+                <div class="title">
+                  {{team.name}}
+                </div>
+                <div class="content">
+                  <div class="list">
+                    Roster: <span ng-repeat="player in team.roster"  ng-show="team.roster.length">{{player}}</span>
+                    <span ng-hide="team.roster.length">None</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </section>
+
         </div>
       </div>
       <div class="col-sm-6">
-        <div class="card"><a ng-href="#/players">Payers</a></div>
+        <div class="card">
+          <header>
+            <span>Players</span>
+            <input type="text" placeholder="Search">
+          </header>
+
+          <section class="vertical-list">
+            <!-- No Players -->
+            <div class="no-result" ng-show="!players.length">No Result, try a new search</div>
+            <!-- Player List -->
+            <a class="list-row ripple dark" ng-show="players.length" ng-repeat="player in players">
+              <div class="leading">
+                <img ng-if="team.logo" src="team.logo">
+                <sprite name="ion-android-image" size="48" ng-if="!team.logo"></sprite>
+              </div>
+              <div class="trailing">
+                <div class="title">
+                  {{player.name}}
+                  <span class="number">{{player.number}}</span>
+                </div>
+                <div class="content">
+                  <div class="list">
+                    Teams:
+                    <span ng-repeat="team in player.teams" ng-show="player.teams.length">{{team}}</span>
+                    <span ng-hide="player.teams.length">None</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </section>
+
+        </div>
       </div>
-    </div>
-  </div> -->
+    </row>
+  </div>
 </div>

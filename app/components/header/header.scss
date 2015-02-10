@@ -1,28 +1,83 @@
 @import 'variables';
 
 .navbar {
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
-  height: 70px;
+  @include elevation(2);
+  height: $nav-height;
 
   &.navbar-default {
-    background-color: #FFFFFF;
+    border: 0;
+    background-color: $primary;
+    color: $text-light-color;
 
     .container {
+      color: $text-light-color;
 
       // header text
       .navbar-header {
+        color: $text-light-color;
+
         a {
+          color: $text-light-color;
           padding: 25px 15px;
           height: $nav-height;
           display: inline-block;
 
-          &:hover {
-            color: $blue;
-          }
-
-
           &.flush {
             padding: 25px 0;
+          }
+
+          &:hover, &:focus {
+            color: inherit;
+          }
+        }
+      }
+
+     .open > a {
+       background-color: inherit;
+
+       &:hover, &:focus {
+        color: inherit;
+       }
+     }
+
+      ul li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+
+        a {
+          color: inherit;
+        }
+      }
+
+      .collapse ul.dropdown-menu {
+        height: initial;
+        border-radius: 0;
+        padding: 0;
+        border: 0;
+        width: 100%;
+        min-width: 0;
+        @include elevation(2);
+
+        li {
+          border-bottom:1px solid $divider-color;
+
+          &:last-of-type {
+            border-bottom: 0;
+          }
+
+          a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            width: 100%;
+            color: $text-color;
+
+            &:hover {
+              background-color: inherit;
+            }
           }
         }
       }
@@ -40,7 +95,6 @@
             display: inline-block;
 
             &:hover {
-              color: $blue;
             }
 
             &.flush {
@@ -64,7 +118,17 @@
       }
 
       .navbar-toggle {
-        margin: 16px;
+        border-color: transparent;
+        border-radius: 0;
+        margin: $space * 2;
+
+        .icon-bar {
+          background-color: $text-light-color;
+        }
+
+        &:hover {
+          background-color: transparent;
+        }
       }
 
       // mobile dropdown
@@ -72,7 +136,7 @@
         &.collapsing, &.collapse.in {
 
           @media (max-width: 768px) {
-            background: white;
+            background: $text-light-color;
             box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
           }
         }
