@@ -5,7 +5,7 @@
     "node": ">=0.10.0"
   },
   "scripts":  {
-    "start": "node server",
+    "start": "grunt app",
     "test": "mocha 'test/**/*.js'"
   },
   "dependencies": {
