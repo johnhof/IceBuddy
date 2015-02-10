@@ -10,7 +10,8 @@ var simpleApp = angular.module('simpleApp', [
 
   // utility modules
   'ngRoute',
-  'ngResource'
+  'ngResource',
+  'ngDialog'
 ]);
 
 

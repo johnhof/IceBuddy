@@ -1,4 +1,4 @@
-simpleApp.controller('SessionCtrl', ['$scope', '$routeParams', 'Utils', 'Session', 'Api', function ($scope, $routeParams, Utils, Session, Api) {
+simpleApp.controller('SessionCtrl', ['$scope', '$routeParams', 'Utils', 'Session', 'Api', 'FormHelper', function ($scope, $routeParams, Utils, Session, Api, FormHelper) {
   // no need to show this page if the user is signed in
   if (Session.isSignedIn) { Utils.redirect('/'); }
 
@@ -54,7 +54,7 @@ simpleApp.controller('SessionCtrl', ['$scope', '$routeParams', 'Utils', 'Session
   // generic submit listener
   //
   $scope.submit = function (inputs, submitReq) {
-    var form = Utils.formHelper($scope.form,  $scope.inputs);
+    var form = FormHelper($scope.form,  $scope.inputs);
 
     form.apiAction(inputs, submitReq, function success () {
       Session.apply();

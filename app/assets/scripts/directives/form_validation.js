@@ -1,39 +1,8 @@
-//
-// Global Directives
-//
-
-
 ////////////////////////////////////////////////////////////////////////
 //
-//  Utility Directives
+//  Custom Validators
 //
 ////////////////////////////////////////////////////////////////////////
-
-
-//
-// Cards
-//
-
-simpleApp.directive('card-row', [function (Patterns) {
-  return {
-    scope    : {
-      label : '=',
-      value : '='
-    },
-    template : '<span class="label">label</span>  <span class="value">value</span>'
-  };
-}]);
-
-////////////////////////////////////////////////////////////////////////
-//
-//  Form Validation Directives
-//
-////////////////////////////////////////////////////////////////////////
-
-//
-// Custon Validators
-//
-
 
 simpleApp.directive('email', ['Patterns', function (Patterns) {
   return {
@@ -85,9 +54,11 @@ simpleApp.directive('match', [function () {
   };
 }]);
 
+////////////////////////////////////////////////////////////////////////
 //
-// Validation handler
+//  validate directive
 //
+////////////////////////////////////////////////////////////////////////
 
 // directive to automatically show any errors bound to the accompanying model (`[name].$error` in a form)
 //  error display binds to the `name` attribute
@@ -107,7 +78,7 @@ simpleApp.directive("validate", [function () {
       },
       {
         error   : 'email',
-        message : 'must be a valid email'
+        message : 'must be valid'
       },
       {
         error   : 'password',
@@ -115,7 +86,7 @@ simpleApp.directive("validate", [function () {
       },
       {
         error   : 'required',
-        message : 'is a required field'
+        message : 'is required'
       }
     ];
 

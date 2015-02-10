@@ -1,7 +1,8 @@
-
+////////////////////////////////////////////////////////////////////////
 //
-// Colors
+//  Colors
 //
+////////////////////////////////////////////////////////////////////////
 
 $grey: #777;
 $light-grey: #e7e7e7;
@@ -17,8 +18,104 @@ $dark-red: #a00;
 
 $orange: #FF9B00;
 
+////////////////////////////////////////////////////////////////////////
 //
-// Heights
+//  Dimensions
 //
+////////////////////////////////////////////////////////////////////////
 
-$nav-height: 70px;
+$nav-height: 72px;
+
+$space: 8px;
+
+@mixin elevation ($scale) {
+  box-shadow: 0px 0px (8 * $scale) + px rgba(0, 0, 0, (0.25 * $scale));
+}
+
+$radius: 2px;
+
+
+////////////////////////////////////////////////////////////////////////
+//
+//  Text
+//
+////////////////////////////////////////////////////////////////////////
+
+@mixin button-text () {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+}
+@mixin caption-text () {
+  font-size: 12px;
+}
+@mixin body-text () {
+  font-size: 14px;
+}
+@mixin body-bold-text () {
+  font-size: 14px;
+  font-weight: 600;
+}
+@mixin subhead-text () {
+  font-size: 16px;
+}
+@mixin title-text () {
+  font-size: 20px;
+  font-weight: 600;
+}
+@mixin headline-text () {
+  font-size: 24px;
+}
+@mixin display-small-text () {
+  font-size: 34px;
+}
+@mixin display-medium-text () {
+  font-size: 45px;
+}
+@mixin display-large-text () {
+  font-size: 56px;
+}
+
+////////////////////////////////////////////////////////////////////////
+//
+// Color Palate
+//
+////////////////////////////////////////////////////////////////////////
+
+// for full palate recommendations, see gogole's style page of the design guide
+// http://www.google.com/design/spec/style/color.html#color-color-palette
+
+// Base - White
+$base-color: #FFF;
+
+// Shades
+$divider-color: rgba(0, 0, 0, 0.12);
+$disabled-color: rgba(0, 0, 0, 0.26);
+$secondary-text-color: rgba(0, 0, 0, 0.54);
+$text-color: rgba(0, 0, 0, 0.87);
+
+$divider-light-color: rgba(255, 255, 255, 0.12);
+$disabled-light-color: rgba(255, 255, 255, 0.26);
+$secondary-text-light-color: rgba(255, 255, 255, 0.54);
+$text-light-color: rgba(255, 255, 255, 0.87);
+
+// Primary - Blue
+$primary-light: #2196F3; // 500
+$primary: #1976D2; // 700
+$primary-dark: #0D47A1; // 900
+
+// Accent - Orange
+$accent: #FF6D00; // A700
+$accent-fallback: #FFAB40; // A200
+
+////////////////////////////////////////////////////////////////////////
+//
+// Utilities
+//
+////////////////////////////////////////////////////////////////////////
+
+@mixin center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
