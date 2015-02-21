@@ -471,6 +471,9 @@ module.exports = function (grunt) {
         options: {
           async: false
         }
+      },
+      populateDemoData: {
+        command: 'node util.js populateDemoData --clean',
       }
     }
   });
@@ -507,6 +510,11 @@ module.exports = function (grunt) {
   // drop the database
   grunt.registerTask('dropdb', 'dropping the database...', function () {
     grunt.task.run(['shell:dropdb']);
+  });
+
+  // Populate the database
+  grunt.registerTask('populateDemoData', 'Populating the database...', function () {
+    grunt.task.run(['shell:populateDemoData']);
   });
 
 

@@ -180,6 +180,17 @@ function addPlayerToTeam (stash, next) {
       }, function (response, body) {
         assert.equal(body.team.players.length, 0);
         //Go to next Describe
+        return done();
+      });
+    });
+  });
+
+  //Clean up the created player
+  describe('Delete the player', function () {
+    it('remove player from team', function (done) {
+      test.request.del({
+        route : '/players/' + test.stash.testPlayer._id
+      }, function (response, body) {
         return next(null, done);
       });
     });

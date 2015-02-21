@@ -30,8 +30,13 @@ exports.requireDirContent = function (path, regEx) {
   // use a recurseive tree mapper to retrieve the object
   var resultObj = subTreeObj({}, path);
 
+  console.log('Hiii')
+  console.log('Path == ' + path)
+
   // recursive tree for requirign content which matches regex
   function subTreeObj (currentLeaf, currentPath) {
+
+    console.log('SubTree')
 
     // for the current leaf, iterate over its matching directory
     var currentContents = exports.getDirContents(currentPath);
@@ -40,9 +45,16 @@ exports.requireDirContent = function (path, regEx) {
         currentLeaf[content.name] = {};
       }
 
+      console.log('1 --- ' + content.isJs)
+      console.log('2 --- ' + content.name + content.extension)
+      console.log('3 --- ' + regEx.test(content.name + content.extension))
+      console.log('3 --- ' + regEx)
+
       // if this is is a file, require it as a property of this leaf
       if (content.isJs && regEx.test(content.name + content.extension)) {
         currentLeaf[content.name] = require(content.path + '/' + content.name + content.extension);
+
+        console.log('currentLeaf === ', currentLeaf)
 
       // if it's a directory, recurse
       } else if (!content.isFile) {
@@ -75,3 +87,4 @@ exports.getDirContents = function (path) {
 
   return results;
 }
+
