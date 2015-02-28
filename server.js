@@ -49,7 +49,7 @@ mon.connect(dbInstance);
 
 
 // register models
-helpers.requireDirContent(__dirname + '/api/components', /_model.js/i)
+mon.registerAll(__dirname + '/api/components', /_model$/i);
 
 
 //////////////////////////////////////////////////////////////////////////////////

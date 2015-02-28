@@ -1,10 +1,3 @@
-//
-// Global Services
-//
-
-
-
-
 ////////////////////////////////////////////////////////////////////////
 //
 //  Session related service
@@ -97,6 +90,31 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', '$window', function (Co
 }]);
 
 
+// Open and close a loading spinner
+//
+simpleApp.service('Spinner', ['ngDialog', function (ngDialog) {
+  var instance    = null;
+  var defaultSpin = {
+    template        : '<div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>',
+    plain           : true,
+    showClose       : false,
+    closeByEscape   : false,
+    closeByDocument : false,
+    className       : 'ngdialog-theme-default spinner-container'
+  };
+
+  return {
+    open : function () {
+      instance = ngDialog.open(defaultSpin);
+    },
+    close : function () {
+      if (instance) {
+        instance.close();
+      }
+    }
+  }
+}]);
+
 ////////////////////////////////////////////////////////////////////////
 //
 //  Utilities service
@@ -107,79 +125,6 @@ simpleApp.service('Session', ['Cookie', 'Api', '$route', '$window', function (Co
 simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', '$location', function (Cookie, Api, $route, $window, $location) {
   var $dom = angular.element('html');
   return {
-
-    //
-    // Form helper
-    //
-
-
-    formHelper : function (formObj, dataModel) {
-      var $form = angular.element('form[name=' + formObj.$name + ']');
-      var form  = {
-        // validate and perform passed in action
-        apiAction : function (inputs, resourceReq, onSuccess) {
-          formObj.submitted = true;
-
-          if (form.validate()) {
-            resourceReq(inputs, onSuccess, form.resErrHandler);
-          }
-        },
-
-        // validate by pairing visible inputs with their angular model counterparts to find validation errors
-        validate : function () {
-          var inputsArr = form.visibleInputs();
-          var valErrors;
-
-          // only validate visible inputs
-          _.each(inputsArr, function ($input) {
-            var angInput = formObj[$input.attr('name')]; // pair name to angular input obj
-            if (angInput && Object.keys(angInput.$error || {}).length) {
-              valErrors =  true;
-            }
-          });
-
-          return !valErrors;
-        },
-
-        visibleInputs : function () {
-          return _.compact($form.find('input[ng-show]:not(.ng-hide), input:not([ng-show])').map(function () {
-            var $input = $(this);
-            // make sure our parent isnt hidden either
-            if (!$input.closest('[ng-show].ng-hide').length) { return $input; }
-          }));
-        },
-
-        // error handler which appends api errors to the form
-        resErrHandler : function (apiError) {
-          var errorObj = _.defaults(apiError.data || {}, {
-            error   : 'Failed to complete action',
-            details : []
-          });
-
-          // if its a validation error, set the error text for each problem input
-          if (errorObj.error === 'ValidationError') {
-            _.each(errorObj.details, function (valError) {
-              if (!(valError && valError.path && valError.message)) { return; }
-              var $input = $dom.find('.error[data-matches="' + valError.path + '"], .error[data-matches="inputs.' + valError.path + '"], .error[data-matches="fomr.' + valError.path + '"]');
-              $input.text(valError.message.capitalize());
-            });
-
-          // if its not a validation error, just display add the error to the form
-          } else {
-            formObj.globalError = errorObj.error;
-          }
-        },
-      }
-
-      return form;
-    },
-
-
-    //
-    // Miscellaneous utilities
-    //
-
-
     // prefix /# and redirect
 
     redirect : function (path) {
