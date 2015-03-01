@@ -6,6 +6,7 @@ module.exports = function (grunt) {
   require('colors');
 
   grunt.loadNpmTasks('grunt-shell-spawn');
+  grunt.loadTasks('tasks');
 
   var config  = require('config.json')();
 
@@ -67,6 +68,12 @@ module.exports = function (grunt) {
 
     // Project settings
     server: appConfig,
+
+    populateDemoData: {
+      options: {
+        async: true
+      }
+    },
 
 
     /***************************************************************************************************

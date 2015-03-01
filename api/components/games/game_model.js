@@ -23,6 +23,8 @@ module.exports = Mon.register('game', {
 
 },
 {
+  methods : {
+  },
   statics : {
     findById : function ( _id, callback ) {
       this.findOne({
@@ -64,16 +66,16 @@ module.exports = Mon.register('game', {
     create : function ( inputs, callback ) {
       validate(inputs, {
           home     : Joi.object().keys({
-            team_id : Joi.string().token().required(),
-            players : Joi.array().optional().includes(Joi.string().token()),
+            team_id : Joi.required(),
+            players : Joi.array().optional(),
             score   : Joi.number().integer()
           }),
           away     : Joi.object().keys({
-            team_id : Joi.string().token().required(),
-            players : Joi.array().optional().includes(Joi.string().token()),
+            team_id : Joi.required(),
+            players : Joi.array().optional(),
             score   : Joi.number().integer()
           }),
-          season_id : Joi.string().token().required(),
+          season_id : Joi.required(),
           refs : Joi.array().optional(),
           date_time : Joi.date().required(),
         },

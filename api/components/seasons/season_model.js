@@ -14,6 +14,21 @@ module.exports = Mon.register('season', {
 
 
 },{
+  methods : {
+    addGames : function ( games, callback ) {
+      var thisSeason = this;
+      games.forEach(function( game ){
+        if ( game && game['_id']) {
+          thisSeason.games.push( game['_id'] )
+        } else {
+          thisSeason.games.push( game )
+        }
+      });
+      this.save( function ( err, team ) {
+        return callback(err, team);
+      });
+    }
+  },
   statics : {
     findById : function ( _id, callback ) {
       this.findOne({
