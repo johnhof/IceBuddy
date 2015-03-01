@@ -489,7 +489,7 @@ module.exports = function (grunt) {
   ****************************************************************************************************/
 
   // run the app
-  grunt.registerMultiTask('serve', 'Starting app server...', function () {
+  grunt.registerTask('serve', 'Starting app server...', function () {
     grunt.task.run(['shell:serve']);
   });
 
@@ -515,6 +515,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dropdb', 'dropping the database...', function () {
     grunt.task.run(['shell:dropdb']);
   });
+
 
   // run tests
   grunt.registerTask('test', 'running API tests...', function (target) {

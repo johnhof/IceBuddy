@@ -3,7 +3,6 @@ var Mon = require('mongoman');
 var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
 var Player = Mon.model('player');
-var mongoose = require('mongoose');
 
 module.exports = function playerController (api) {
   return {
@@ -13,7 +12,6 @@ module.exports = function playerController (api) {
     //
     create : function (req, res, next) {
       var inputs = req.body;
-
       Player.create(inputs, function ( error, data ) {
         if ( error ) {
           return next(error);
