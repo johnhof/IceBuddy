@@ -4,8 +4,10 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
   require('colors');
+  var utilFunctions = require('./util.js');
 
   grunt.loadNpmTasks('grunt-shell-spawn');
+  grunt.loadTasks('tasks');
 
   var config  = require('config.json')();
 
@@ -67,6 +69,12 @@ module.exports = function (grunt) {
 
     // Project settings
     server: appConfig,
+
+    populateDemoData: {
+      options: {
+        async: true
+      }
+    },
 
 
     /***************************************************************************************************
@@ -471,9 +479,6 @@ module.exports = function (grunt) {
         options: {
           async: false
         }
-      },
-      populateDemoData: {
-        command: 'node util.js populateDemoData --clean',
       }
     }
   });
@@ -485,7 +490,7 @@ module.exports = function (grunt) {
   ****************************************************************************************************/
 
   // run the app
-  grunt.registerTask('serve', 'Starting app server...', function () {
+  grunt.registerMultiTask('serve', 'Starting app server...', function () {
     grunt.task.run(['shell:serve']);
   });
 
@@ -511,12 +516,6 @@ module.exports = function (grunt) {
   grunt.registerTask('dropdb', 'dropping the database...', function () {
     grunt.task.run(['shell:dropdb']);
   });
-
-  // Populate the database
-  grunt.registerTask('populateDemoData', 'Populating the database...', function () {
-    grunt.task.run(['shell:populateDemoData']);
-  });
-
 
   // run tests
   grunt.registerTask('test', 'running API tests...', function (target) {
