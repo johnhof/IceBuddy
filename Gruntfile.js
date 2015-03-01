@@ -4,7 +4,6 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
   require('colors');
-  var utilFunctions = require('./util.js');
 
   grunt.loadNpmTasks('grunt-shell-spawn');
   grunt.loadTasks('tasks');

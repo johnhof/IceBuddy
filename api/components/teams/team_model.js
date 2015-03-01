@@ -28,11 +28,12 @@ module.exports = Mon.register('team', {
       this.addByPlayerId(player['_id'], callback);
     },
     addPlayerIds : function ( players, callback ) {
+      var thisTeam = this;
       players.forEach(function( player ){
         if ( player && player['_id']) {
-          this.players.push( player['_id'] )
+          thisTeam.players.push( player['_id'] )
         } else {
-          this.players.push( player )
+          thisTeam.players.push( player )
         }
       });
       this.save( function ( err, team ) {

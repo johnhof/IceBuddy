@@ -55,7 +55,6 @@ module.exports = Mon.register('player', {
       });
     },
     create : function ( inputs, callback ) {
-      console.log('Hiiii???')
       validate(inputs, {
           name     : Joi.object().keys({
             first : Joi.string().required().alphanum().min(1).max(50),
@@ -63,17 +62,11 @@ module.exports = Mon.register('player', {
           })
         },
         function save (result, saveCallback) {
-          console.log('WEEEE', inputs)
-          console.log('callback? ', callback)
-
-          console.log('MON? ', Mon.save);
           Mon.save('player', inputs, callback, function ( player ) {
-            console.log('ok ... ')
             return saveCallback(null, player);
           });
         },
         function (error, data) {
-          console.log('MMEEEE')
           return callback(error, data);
         }
       );
