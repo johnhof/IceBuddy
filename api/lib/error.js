@@ -59,7 +59,6 @@ exports.errorGenerator.unAuth = function (seed, detail) { return exports.errorGe
 // middleware error handler
 //
 exports.errorHandler = function (error, req, res, next) {
-  console.log(error)
   if (!(error instanceof Error)) {
 
     // catch and handle raw mongoose errors
