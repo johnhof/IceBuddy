@@ -86,7 +86,7 @@ exports.errorHandler = function (error, req, res, next) {
 
 
   function sendErr (err) {
-    console.log((err.status + ' - ' + (err.error || 'Could not process request')).red);
+    console.log(((err.status + '').red + ' - ' + (err.error || 'Could not process request').yellow));
     res.status(err.status || 500).send({
       error   : err.error || 'Could not process request',
       details : err.details || null
