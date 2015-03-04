@@ -34,10 +34,15 @@ module.exports = function playerController (api) {
 
       // if a name was provided, use it in the search
       if (inputs.q) {
-        Player.search({
-          property : 'name.full',
-          search   : inputs.q
-        }, function (error, players) {
+
+        // uild search condition
+        inputs.condition = {
+          name : {
+            full : Mon.helpers.searchRegex(inputs.q)
+          }
+        };
+
+        Player.search(inputs, function (error, players) {
           if (error) { return next(error); }
 
           res.data = {
@@ -52,7 +57,7 @@ module.exports = function playerController (api) {
       } else {
         Player.recent(inputs, function (error, players) {
           if (error) { return next(error); }
-
+// console.log(players[0].name.full)
           res.data = {
             success : true,
             players : players || []

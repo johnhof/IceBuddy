@@ -71,7 +71,9 @@ function setupServer () {
   server.use(function init (req, res, next) {
     res.data = {};
 
-    process.stdout.write('  ' + (req.method).cyan.dim + ' ' + (req.url).grey.dim + ' ')
+    if (!~(req.url.indexOf('favicon'))) { // TEMP - just here to supress the favicon fallback until we have one
+      process.stdout.write('  ' + (req.method).cyan.dim + ' ' + (req.url).grey.dim + ' ')
+    }
 
     res.set({ 'Content-Type': 'application/json' });
 
@@ -87,7 +89,12 @@ function setupServer () {
   // any route not used by the API should return the standart page
   server.get('*', function (req, res) {
     res.set({ 'Content-Type': 'text/html; charset=utf-8' });
-    console.log('200'.green);
+
+
+    if (!~(req.url.indexOf('favicon'))) { // TEMP - just here to supress the favicon fallback until we have one
+      console.log('200'.green);
+    }
+
     res.sendFile(__dirname + '/dist/index.html');
   });
 

@@ -20,8 +20,9 @@ module.exports = Mon.register('player', {
   created : Mon().date().required().default(Date.now).fin()
 }, {
   virtuals :  {
-    fullName : {
+    'name.full' : {
       get : function (player) {
+        console.log(arguments)
         return player.name.first + ' ' + player.name.last;
       }
     }

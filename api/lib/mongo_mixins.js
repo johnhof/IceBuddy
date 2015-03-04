@@ -5,6 +5,22 @@ var _   = require('lodash');
 
 //////////////////////////////////////////////////////////////////////////////////
 //
+// Helpers
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+Mon.helpers = Mon.helpers || {};
+
+// Search Regex
+//
+// return a search compatible regex for the given string
+Mon.helpers.searchRegex = function (string) {
+  return new RegExp('(^|\\s+)' + (string || '').trim(), 'ig');
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////
+//
 // Statics
 //
 //////////////////////////////////////////////////////////////////////////////////
@@ -88,31 +104,16 @@ Mon.statics.recent = function (options) {
 Mon.statics.search = function (options) {
 
   // inputs = {
-  //   property : String, // property to match against - REQUIRED
-  //   search   : String, // search string - REQUIRED
-  //   page     : Number, // page number - OPTIONAL
-  //   count    : Number // documents per page - OPTIONAL
+  //   condition : Obj, // search condition - REQUIRED
+  //   page      : Number, // page number - OPTIONAL
+  //   count     : Number // documents per page - OPTIONAL
   // }
   return function (inputs, callback) {
-    var search   = {};
-    var property = null
-
-  // properties = inputs.property.split('.');
-  // function index (obj, i) {
-  //   if (properties.length - 1 <= index) {
-
-  //   }
-  //   return obj[i];
-  // }
-  // properties.property.split('.').reduce(index, obj)
-
-    search[inputs.property] = new RegExp('(^|\\s+)' + (inputs.search || '').trim(), 'ig');
-console.log(search)
-    this.find(search, {},  {
+    var property = null;
+console.log(inputs.condition)
+    this.find(inputs.condition, {},  {
       skip  : inputs.page || 0, // default to first page
       limit : inputs.count || 10 // default to 10 items per page
-    }).sort({
-      created : 'descending'
     }).exec(callback);
   }
 }
