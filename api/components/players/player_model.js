@@ -46,6 +46,7 @@ module.exports = Mon.register('player', {
 
     search : Mon.statics.search(),
 
+
     create : function ( inputs, callback ) {
       validate(inputs, {
           name     : Joi.object().keys({

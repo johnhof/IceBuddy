@@ -16,7 +16,6 @@ module.exports = Mon.register('team', {
   captains : Mon('Captains').array().fin(),
   //Array of user ids
   managers : Mon('Managers').array().fin(),
-
   created : Mon().date().required().default(Date.now).fin()
 }, {
   methods : {

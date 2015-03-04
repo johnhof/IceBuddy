@@ -47,12 +47,13 @@ mon.goose.connection.on("error", function (err) {
 var dbInstance = process.env.NODE_ENV === 'production' ? config.db.prod : config.db.dev;
 mon.connect(dbInstance);
 
-
 // register mixins
-require(__dirname + '/api/lib/mongo_mixins');
+require('./api/lib/mongo_mixins');
+
 
 // register models
 mon.registerAll(__dirname + '/api/components', /_model$/i);
+
 
 //////////////////////////////////////////////////////////////////////////////////
 //

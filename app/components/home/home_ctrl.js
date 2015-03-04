@@ -1,7 +1,6 @@
 simpleApp.controller('HomeCtrl', ['$scope', 'Session', 'Api', function ($scope, Session, Api) {
   // Session.requireSignIn();
 
-//http://www.nganimate.org/angularjs/ng-repeat/appear
 
   //
   // Team list
