@@ -21,10 +21,6 @@
     padding: $space;
     border-bottom: 1px solid $divider-color;
     display: flex;
-
-    &:last-of-type {
-      border: 0;
-    }
   }
 }
 

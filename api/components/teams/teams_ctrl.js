@@ -8,57 +8,96 @@ var Team = Mon.model('team');
 module.exports = function accountController (api) {
   return {
 
-    //
-    // Create
-    //
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Create
+//
+//////////////////////////////////////////////////////////////////////////////////
+
     create : function (req, res, next) {
       var inputs = req.body;
-      validate(inputs, {
-        name : Joi.string().required().min(1).max(50),
-      }, function save (result, callback) {
-        Mon.save('team', req.body, next, function ( team ) {
-          res.data = {
-            success : true,
-            team  : team,
-            message : 'Team ' + inputs.name + ' created'
-          };
-          return callback();
-        });
-      }, next);
-    },
-
-
-    //
-    // Read
-    //
-    read : function (req, res, next) {
-      var inputs = req.query;
-
-      Team.findByName(inputs, function ( error, data ) {
-        if ( error ) {
-          return next(error);
-        } else {
-          res.data = {
-              success : true,
-              teams  : data || []
-          }
-          return next();
-        }
+      Mon.save('team', req.body, next, function (team) {
+        res.data = {
+          success : true,
+          team    : team
+        };
+        return next();
       });
     },
 
 
-    //
-    // Update
-    //
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Read
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+
+    read : function (req, res, next) {
+      var inputs = req.query;
+
+      // if a name was provided, use it in the search
+      if (inputs.name) {
+
+        // build search condition
+        inputs.condition = { name : inputs.name };
+
+        // perform the search
+        Team.search(inputs, function (error, teams) {
+          if (error) {
+            return next(error);
+
+          } else {
+            res.data = {
+              success : true,
+              teams   : teams || [],
+            };
+
+            return next();
+          }
+        });
+
+      // otherwise, get the latest players
+      } else {
+
+        // get the most recent
+        Team.recent(inputs, function (error, teams) {
+          if (error) {
+            return next(error);
+
+          } else {
+            res.data = {
+              success : true,
+              teams   : teams || []
+            };
+
+            return next();
+          }
+
+        });
+      }
+    },
+
+
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Update
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+
     update : function (req, res, next) {
       return next();
     },
 
 
-    //
-    // Destroy
-    //
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Destroy
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+
     destroy : function (req, res, next) {
       return next();
     }

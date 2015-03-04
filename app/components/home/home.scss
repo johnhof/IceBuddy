@@ -79,6 +79,7 @@
    .card {
       height: 100%;
       width: 100%;
+      position: relative;
 
       header {
         display: flex;
@@ -107,7 +108,8 @@
 
 
       .vertical-list {
-        max-height: $space * 75; // 600px
+        position: relative;
+        height: $space * 55; // 440px - the last list element should be cut off for clatirty
 
         .no-result {
           display: flex;

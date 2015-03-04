@@ -71,10 +71,6 @@ function setupServer () {
   server.use(function init (req, res, next) {
     res.data = {};
 
-    if (!~(req.url.indexOf('favicon'))) { // TEMP - just here to supress the favicon fallback until we have one
-      process.stdout.write('  ' + (req.method).cyan.dim + ' ' + (req.url).grey.dim + ' ')
-    }
-
     res.set({ 'Content-Type': 'application/json' });
 
     return next();
@@ -90,9 +86,8 @@ function setupServer () {
   server.get('*', function (req, res) {
     res.set({ 'Content-Type': 'text/html; charset=utf-8' });
 
-
     if (!~(req.url.indexOf('favicon'))) { // TEMP - just here to supress the favicon fallback until we have one
-      console.log('200'.green);
+      console.log('  ' + (req.method).cyan.dim + ' ' + (req.url).grey.dim + ' 200'.green);
     }
 
     res.sendFile(__dirname + '/dist/index.html');

@@ -28,7 +28,7 @@ simpleApp.service('Api', ['$http',  '$resource', function ($http, $resource) {
     status  : { method : 'HEAD' },
     read    : { method : 'GET' },
     destroy : { method : 'DELETE'}
-   });
+  });
 
   //
   // Account
@@ -37,7 +37,25 @@ simpleApp.service('Api', ['$http',  '$resource', function ($http, $resource) {
     create : { method : 'POST' },
     read   : { method : 'GET' },
     update : { method : 'PUT' },
-   });
+  });
+
+  //
+  // Players
+  //
+  api.players = $resource('/players', null,  {
+    create : { method : 'POST' },
+    read   : { method : 'GET' },
+    update : { method : 'PUT' },
+  });
+
+  //
+  // Teams
+  //
+  api.teams = $resource('/teams', null,  {
+    create : { method : 'POST' },
+    read   : { method : 'GET' },
+    update : { method : 'PUT' },
+  });
 
   return api;
 }])

@@ -1,19 +1,23 @@
 var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
-var Mon = require('mongoman');
+var Mon      = require('mongoman');
 var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
-var Player = Mon.model('player');
+var Player   = Mon.model('player');
 
 module.exports = function playerController (api) {
   return {
 
-    //
-    // Create
-    //
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Create
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+
     create : function (req, res, next) {
       var inputs = req.body;
-      Player.create(inputs, function ( error, data ) {
-        if ( error ) {
+      Player.create(inputs, function (error, data) {
+        if (error) {
           return next(error);
         } else {
           res.data = {
@@ -26,52 +30,71 @@ module.exports = function playerController (api) {
     },
 
 
-    //
-    // Read
-    //
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Read
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+
     read : function (req, res, next) {
       var inputs = req.query;
 
       // if a name was provided, use it in the search
-      if (inputs.q) {
+      if (inputs.name) {
 
-        // uild search condition
+        var name = inputs.name.toName();
+
+        // build search condition
         inputs.condition = {
-          name : {
-            full : Mon.helpers.searchRegex(inputs.q)
-          }
+          'name.first' : name.first,
+          'name.last'  : name.last
         };
 
+        // perform the search
         Player.search(inputs, function (error, players) {
-          if (error) { return next(error); }
+          if (error) {
+            return next(error);
 
-          res.data = {
-            success : true,
-            players : players || []
-          };
+          } else {
+            res.data = {
+              success : true,
+              players : players || [],
+            };
 
-          return next();
+            return next();
+          }
         });
 
       // otherwise, get the latest players
       } else {
-        Player.recent(inputs, function (error, players) {
-          if (error) { return next(error); }
-// console.log(players[0].name.full)
-          res.data = {
-            success : true,
-            players : players || []
-          };
 
-          return next();
+        // get the most recent
+        Player.recent(inputs, function (error, players) {
+          if (error) {
+            return next(error);
+
+          } else {
+            res.data = {
+              success : true,
+              players : players || []
+            };
+
+            return next();
+          }
+
         });
       }
-
     },
 
-    //
-    // Update
-    //
+
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Update
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+
     update : function (req, res, next) {
       //
       // TODO : handle bulk updates (eg. add large number of players to a team)
@@ -80,9 +103,13 @@ module.exports = function playerController (api) {
     },
 
 
-    //
-    // Destroy
-    //
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Destroy
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+
     destroy : function (req, res, next) {
       return next();
     }

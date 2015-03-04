@@ -4,8 +4,12 @@ var colors = require('colors');
 var Mon = require('mongoman');
 var mongoose = require('mongoose');
 
-//Initialize connection ... 
+//Initialize connection ...
 Mon.connect();
+
+// register mixins
+require(__dirname + '/../api/lib/mongo_mixins');
+
 //Register all of the models
 Mon.registerAll(__dirname + '/../api/components', /_model$/i);
 
@@ -54,7 +58,7 @@ function addPlayersToTeam (teamPlayers, callback ) {
       return callback(error);
     });
   } else {
-    return callback("Did not receive proper Team or Players"); 
+    return callback("Did not receive proper Team or Players");
   }
 }
 
@@ -115,7 +119,7 @@ function createGame (teams, season, callback) {
 // Populate the database
 module.exports = function(grunt) {
 
-  
+
   grunt.registerTask('populateDemoData', 'Populating the database...', function(){
     var players = [
       {
@@ -222,7 +226,7 @@ module.exports = function(grunt) {
 
         // var chunkedPlayers = _.chunk(players, 5);
         var teamPlayers = [];
-        
+
         //Groups Players and Teams
         teams.forEach(function ( team, index ){
           teamPlayers.push({
@@ -247,19 +251,19 @@ module.exports = function(grunt) {
 
             async.parallel([
               function (callback) {
-                createGame(teams, season, callback);  
+                createGame(teams, season, callback);
               },
               function (callback) {
-                createGame(teams, season, callback);  
+                createGame(teams, season, callback);
               },
               function (callback) {
-                createGame(teams, season, callback);  
+                createGame(teams, season, callback);
               },
               function (callback) {
-                createGame(teams, season, callback);  
+                createGame(teams, season, callback);
               },
               function (callback) {
-                createGame(teams, season, callback);  
+                createGame(teams, season, callback);
               }
             ],
             function (err, games) {
@@ -269,7 +273,7 @@ module.exports = function(grunt) {
 
               console.log('Data Populated Succesfully'.green);
 
-              return done(null);  
+              return done(null);
             });
           });
         });

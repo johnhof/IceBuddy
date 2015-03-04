@@ -14,8 +14,22 @@ Mon.helpers = Mon.helpers || {};
 // Search Regex
 //
 // return a search compatible regex for the given string
-Mon.helpers.searchRegex = function (string) {
-  return new RegExp('(^|\\s+)' + (string || '').trim(), 'ig');
+var searchRegex = Mon.helpers.searchRegex = function (string) {
+  return {
+    $regex   :  new RegExp('^\\s*' + (string || '').trim() + '', 'i')
+  };
+}
+
+// Paginate
+//
+// return a pagination object
+var paginate = Mon.helpers.paginate = function (inputs) {
+  inputs.skip = inputs.skip || inputs.page;
+  inputs.limit = inputs.limit || inputs.count;
+  return _.defaults(inputs, {
+    skip  : 0, // default to first page
+    limit : 10 // default to 10 items per page
+  });
 }
 
 
@@ -88,10 +102,7 @@ Mon.statics.recent = function (options) {
   //   count : Number // documents per page - optional
   // }
   return function (inputs, callback) {
-    this.find({}, {},  {
-      skip  : inputs.page || 0, // default to first page
-      limit : inputs.count || 10 // default to 10 items per page
-    }).sort({
+    this.find({}, {}, paginate(inputs)).sort({
       created : 'descending'
     }).exec(callback);
   }
@@ -104,16 +115,19 @@ Mon.statics.recent = function (options) {
 Mon.statics.search = function (options) {
 
   // inputs = {
-  //   condition : Obj, // search condition - REQUIRED
+  //   condition : Object, //  Shallow - search condition - REQUIRED
   //   page      : Number, // page number - OPTIONAL
   //   count     : Number // documents per page - OPTIONAL
   // }
   return function (inputs, callback) {
-    var property = null;
-console.log(inputs.condition)
-    this.find(inputs.condition, {},  {
-      skip  : inputs.page || 0, // default to first page
-      limit : inputs.count || 10 // default to 10 items per page
-    }).exec(callback);
+    _.each(inputs.condition, function (value, key) {
+      if (value === undefined) {
+        delete inputs.condition[key];
+      } else if (_.isString(value)){
+        inputs.condition[key] = searchRegex(value);
+      }
+    });
+
+    this.find(inputs.condition, {}, paginate(inputs)).exec(callback);
   }
 }

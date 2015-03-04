@@ -56,9 +56,11 @@ module.exports = Mon.register('team', {
   statics : {
     findById   : Mon.statics.findyById({ errorMsg : 'No player regex the provided ID' }),
     updateById : Mon.statics.updateById({ errorMsg : 'No player regex the provided ID' }),
-    deleteById : Mon.statics.updateById({ errorMsg : 'No player regex the provided ID' }),
+    deleteById : Mon.statics.deleteById({ errorMsg : 'No player regex the provided ID' }),
 
     recent : Mon.statics.recent(),
+
+    search : Mon.statics.search(),
 
     create : function ( inputs, callback ) {
       validate(inputs, {

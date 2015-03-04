@@ -59,35 +59,30 @@ exports.errorGenerator.unAuth = function (seed, detail) { return exports.errorGe
 // middleware error handler
 //
 exports.errorHandler = function (error, req, res, next) {
-  if (!(error instanceof Error)) {
-
-    // catch and handle raw mongoose errors
-    if (error.message && !error.details) {
-      error.type = 'mongoose';
-      error = exports.errorGenerator(error);
-
-      // catch and handle raw joi errors
-    } else
-    return sendErr(error);
-
-  } else {
+  if (error instanceof Error) {
     if (error.name === 'ValidationError') {
-      error.type = 'joi';
-      error = exports.errorGenerator(error);
-      sendErr(error);
+      // duck type the val error
+      error.type = error.message && !error.details ? 'mongoose' : 'joi';
+      return sendErr(exports.errorGenerator(error));
+
     } else {
+
       sendErr({
-        error   : 'Internal server error'
+        error : 'Internal server error'
       });
 
       throw (error);
     }
+  } else {
+    return sendErr(error);
   }
 
 
   function sendErr (err) {
-    console.log(((err.status + '').red + ' - ' + (err.error || 'Could not process request').yellow));
-    res.status(err.status || 500).send({
+    var status = err.status || 500
+    console.log('  ' + (req.method).cyan.dim + ' ' + (req.url).grey.dim + ' ' + ((status + '').red + ' - ' + (err.error || 'Could not process request').yellow));
+
+    res.status(status).send({
       error   : err.error || 'Could not process request',
       details : err.details || null
     });

@@ -2,6 +2,7 @@
 
 .navbar {
   @include elevation(2);
+  z-index: 1000;
   height: $nav-height;
 
   &.navbar-default {
@@ -126,8 +127,18 @@
           background-color: $text-light-color;
         }
 
-        &:hover {
+        &:hover, &:focus {
           background-color: transparent;
+        }
+
+        &:not(.collapsed) {
+          .icon-bar {
+            background-color: $accent;
+
+            &:nth-of-type(even) {
+              opacity: 0;
+            }
+          }
         }
       }
 
@@ -136,8 +147,12 @@
         &.collapsing, &.collapse.in {
 
           @media (max-width: 768px) {
-            background: $text-light-color;
+            background: $base-color;
             box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
+
+            a {
+              color: $text-color;
+            }
           }
         }
       }

@@ -54,7 +54,7 @@ function search (stash, next) {
     it('should return a list of matching players', function (done) {
       test.request.get({
         route : '/players',
-        qs    : { name : stash.name },
+        qs    : { name : stash.name.first },
       }, function (response, body) {
         assert.notEqual(body.players.length, 0, 'No players found from the search');
 
