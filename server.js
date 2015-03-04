@@ -48,9 +48,11 @@ var dbInstance = process.env.NODE_ENV === 'production' ? config.db.prod : config
 mon.connect(dbInstance);
 
 
+// register mixins
+require(__dirname + '/api/lib/mongo_mixins');
+
 // register models
 mon.registerAll(__dirname + '/api/components', /_model$/i);
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //

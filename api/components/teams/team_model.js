@@ -15,7 +15,9 @@ module.exports = Mon.register('team', {
   //Array of player ids
   captains : Mon('Captains').array().fin(),
   //Array of user ids
-  managers : Mon('Managers').array().fin()
+  managers : Mon('Managers').array().fin(),
+
+  created : Mon().date().required().default(Date.now).fin()
 }, {
   methods : {
     addByPlayerId : function ( playerId, callback ) {
@@ -52,39 +54,12 @@ module.exports = Mon.register('team', {
     }
   },
   statics : {
-    findById : function ( _id, callback ) {
-      this.findOne({
-        '_id' : _id
-      }, function (error, team){
-          if (team) {
-            return callback(null, team);
-          } else {
-            return callback(Err.notFound('No team regex the provided ID'));
-          }
-      });
-    },
-    updateById : function ( _id, inputs, callback ) {
-      this.findOneAndUpdate({
-        _id : _id
-      }, inputs, function (error, team) {
-        if (team) {
-          return callback(null, team);
-        } else {
-          return callback(Err.notFound('No team regex the provided ID'));
-        }
-      });
-    },
-    deleteById : function ( _id, callback ) {
-      this.findOneAndRemove({
-        _id : _id
-      }, function (error, team){
-        if (team) {
-          return callback(null, team);
-        } else {
-          return callback(Err.notFound('No team regex the provided ID'));
-        }
-      });
-    },
+    findById   : Mon.statics.findyById({ errorMsg : 'No player regex the provided ID' }),
+    updateById : Mon.statics.updateById({ errorMsg : 'No player regex the provided ID' }),
+    deleteById : Mon.statics.updateById({ errorMsg : 'No player regex the provided ID' }),
+
+    recent : Mon.statics.recent(),
+
     create : function ( inputs, callback ) {
       validate(inputs, {
           name     : Joi.string().required().min(1).max(50),
