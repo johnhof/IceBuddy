@@ -11,7 +11,7 @@ module.exports = function (grunt) {
   var config  = require('config.json')();
 
   if (!config) {
-    console.log('!! No Config file loaded !!'.red);
+    console.log('!! No Config file loaded !!');
     process.kill();
   }
 

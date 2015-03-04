@@ -1,7 +1,6 @@
 simpleApp.controller('HomeCtrl', ['$scope', 'Session', function ($scope, Session) {
   // Session.requireSignIn();
 
-//http://www.nganimate.org/angularjs/ng-repeat/appear
 
   $scope.teams = [{
     logo   : null,
