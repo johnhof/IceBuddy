@@ -32,36 +32,17 @@ module.exports = function playerController (api) {
     read : function (req, res, next) {
       var inputs = req.query;
 
-      // if a name was provided, use it in the search
-      if (inputs.q) {
-        Player.search({
-          property : 'name.full',
-          search   : inputs.q
-        }, function (error, players) {
-          if (error) { return next(error); }
-
+      Player.findByName(inputs, function ( error, data ) {
+        if ( error ) {
+          return next(error);
+        } else {
           res.data = {
-            success : true,
-            players : players || []
-          };
-
+              success : true,
+              players  : data || null
+          }
           return next();
-        });
-
-      // otherwise, get the latest players
-      } else {
-        Player.recent(inputs, function (error, players) {
-          if (error) { return next(error); }
-
-          res.data = {
-            success : true,
-            players : players || []
-          };
-
-          return next();
-        });
-      }
-
+        }
+      });
     },
 
     //
