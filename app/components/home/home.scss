@@ -125,6 +125,10 @@
           cursor: pointer;
           color: $text-color;
 
+          &.view-more {
+            text-align: center;
+          }
+
           .leading {
             flex:1;
             padding: 0 $space;
