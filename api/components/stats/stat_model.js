@@ -39,39 +39,10 @@ module.exports = Mon.register('stat', {
   created : Mon().date().required().default(Date.now).fin()
 }, {
   statics : {
-    findById : function ( _id, callback ) {
-      this.findOne({
-        '_id' : _id
-      }, function (error, stat){
-          if (stat) {
-            return callback(null, stat);
-          } else {
-            return callback(Err.notFound('No stat regex the provided ID'));
-          }
-      });
-    },
-    updateById : function ( _id, inputs, callback ) {
-      this.findOneAndUpdate({
-        _id : _id
-      }, inputs, function (error, stat) {
-        if (stat) {
-          return callback(null, stat);
-        } else {
-          return callback(Err.notFound('No stat regex the provided ID'));
-        }
-      });
-    },
-    deleteById : function ( _id, callback ) {
-      this.findOneAndRemove({
-        _id : _id
-      }, function (error, stat){
-        if (stat) {
-          return callback(null, stat);
-        } else {
-          return callback(Err.notFound('No stat regex the provided ID'));
-        }
-      });
-    },
+    findById   : Mon.statics.findyById({ errorMsg : 'No player regex the provided ID' }),
+    updateById : Mon.statics.updateById({ errorMsg : 'No player regex the provided ID' }),
+    deleteById : Mon.statics.deleteById({ errorMsg : 'No player regex the provided ID' }),
+
     create : function ( inputs, callback ) {
       validate(inputs, {
         player_id  : Joi.string().token().required(),

@@ -22,15 +22,20 @@
         <div class="card">
           <header>
             <span>Teams</span>
-            <input type="text"  placeholder="Search">
+            <input type="text"  placeholder="Search" ng-model="teamSearch" ng-change="requestTeams(teamSearch)">
           </header>
 
 
           <section class="vertical-list">
+
+            <!-- Loading mask -->
+            <div class="simple-mask light" ng-show="activeTeamsRequest"></div>
+
             <!-- No Teams -->
             <div class="no-result" ng-show="!teams.length">No Result, try a new search</div>
+
             <!-- Team List -->
-            <a class="list-row ripple dark" ng-show="teams.length" ng-repeat="team in teams" >
+            <a class="list-row ripple dark animate" ng-show="teams.length" ng-repeat="team in teams">
               <div class="leading">
                 <img ng-if="team.logo" src="team.logo">
                 <sprite name="ion-android-image" size="48" ng-if="!team.logo"></sprite>
@@ -55,22 +60,27 @@
         <div class="card">
           <header>
             <span>Players</span>
-            <input type="text" placeholder="Search">
+            <input type="text" placeholder="Search" ng-model="playerSearch"ng-change="requestPlayers(playerSearch)">
           </header>
 
           <section class="vertical-list">
+
+            <!-- Loading mask -->
+            <div class="simple-mask light" ng-show="activePlayerssRequest"></div>
+
             <!-- No Players -->
             <div class="no-result" ng-show="!players.length">No Result, try a new search</div>
+
             <!-- Player List -->
-            <a class="list-row ripple dark" ng-show="players.length" ng-repeat="player in players">
+            <a class="list-row ripple dark animate" ng-show="players.length" ng-repeat="player in players">
               <div class="leading">
                 <img ng-if="team.logo" src="team.logo">
                 <sprite name="ion-android-image" size="48" ng-if="!team.logo"></sprite>
               </div>
               <div class="trailing">
                 <div class="title">
-                  {{player.name}}
-                  <span class="number">{{player.number}}</span>
+                  {{player.name.first}} {{player.name.last}}
+                  <span class="number">{{player.preferred_number}}</span>
                 </div>
                 <div class="content">
                   <div class="list">

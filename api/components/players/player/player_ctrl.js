@@ -1,5 +1,7 @@
-var Err = require(process.cwd() + '/api/lib/error').errorGenerator;
-var Mon = require('mongoman');
+var Err     = require(process.cwd() + '/api/lib/error').errorGenerator;
+var Mon     = require('mongoman');
+var helpers = require(process.cwd() + '/api/lib/helpers');
+
 
 var Player   = Mon.model('player');
 

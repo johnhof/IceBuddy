@@ -47,6 +47,9 @@ mon.goose.connection.on("error", function (err) {
 var dbInstance = process.env.NODE_ENV === 'production' ? config.db.prod : config.db.dev;
 mon.connect(dbInstance);
 
+// register mixins
+require('./api/lib/mongo_mixins');
+
 
 // register models
 mon.registerAll(__dirname + '/api/components', /_model$/i);
@@ -69,8 +72,6 @@ function setupServer () {
   server.use(function init (req, res, next) {
     res.data = {};
 
-    process.stdout.write('  ' + (req.method).cyan.dim + ' ' + (req.url).grey.dim + ' ')
-
     res.set({ 'Content-Type': 'application/json' });
 
     return next();
@@ -85,7 +86,11 @@ function setupServer () {
   // any route not used by the API should return the standart page
   server.get('*', function (req, res) {
     res.set({ 'Content-Type': 'text/html; charset=utf-8' });
-    console.log('200'.green);
+
+    if (!~(req.url.indexOf('favicon'))) { // TEMP - just here to supress the favicon fallback until we have one
+      console.log('  ' + (req.method).cyan.dim + ' ' + (req.url).grey.dim + ' 200'.green);
+    }
+
     res.sendFile(__dirname + '/dist/index.html');
   });
 

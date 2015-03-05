@@ -30,39 +30,10 @@ module.exports = Mon.register('season', {
     }
   },
   statics : {
-    findById : function ( _id, callback ) {
-      this.findOne({
-        '_id' : _id
-      }, function (error, season){
-          if (season) {
-            return callback(null, season);
-          } else {
-            return callback(Err.notFound('No season regex the provided ID'));
-          }
-      });
-    },
-    updateById : function ( _id, inputs, callback ) {
-      this.findOneAndUpdate({
-        _id : _id
-      }, inputs, function (error, season) {
-        if (season) {
-          return callback(null, season);
-        } else {
-          return callback(Err.notFound('No season regex the provided ID'));
-        }
-      });
-    },
-    deleteById : function ( _id, callback ) {
-      this.findOneAndRemove({
-        _id : _id
-      }, function (error, season){
-        if (season) {
-          return callback(null, season);
-        } else {
-          return callback(Err.notFound('No season regex the provided ID'));
-        }
-      });
-    },
+    findById   : Mon.statics.findyById({ errorMsg : 'No player regex the provided ID' }),
+    updateById : Mon.statics.updateById({ errorMsg : 'No player regex the provided ID' }),
+    deleteById : Mon.statics.deleteById({ errorMsg : 'No player regex the provided ID' }),
+
     create : function ( inputs, callback ) {
       validate(inputs, {
           name     : Joi.string().required().min(1).max(50),

@@ -26,43 +26,10 @@ module.exports = Mon.register('game', {
   methods : {
   },
   statics : {
-    findById : function ( _id, callback ) {
-      this.findOne({
-        '_id' : _id
-      }, function (error, game){
-          if (game) {
-            return callback(null, game);
-          } else {
-            return callback(Err.notFound('No game regex the provided ID'));
-          }
-      });
-    },
-    updateById : function ( _id, inputs, callback ) {
-      this.findOneAndUpdate({
-        _id : _id
-      }, inputs, function (error, game) {
-        if (game) {
-          return callback(null, game);
-        } else {
-          return callback(Err.notFound('No game regex the provided ID'));
-        }
-      });
-    },
-    deleteById : function ( _id, callback ) {
-      this.findOneAndRemove({
-        _id : _id
-      }, function (error, game){
-        if (game) {
-          var data = {
-            success : true,
-            game  : game
-          };
-          return callback(null, data);
-        } else {
-          return callback(Err.notFound('No game regex the provided ID'));
-        }
-      });
-    },
+    findById   : Mon.statics.findyById({ errorMsg : 'No player regex the provided ID' }),
+    updateById : Mon.statics.updateById({ errorMsg : 'No player regex the provided ID' }),
+    deleteById : Mon.statics.deleteById({ errorMsg : 'No player regex the provided ID' }),
+
     create : function ( inputs, callback ) {
       validate(inputs, {
           home     : Joi.object().keys({
