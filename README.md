@@ -99,6 +99,8 @@ If you get an `addr in use` error, run `killall node` to terminate active node s
 
 `gunt dropdb` - > drops the current local database
 
+`grunt populateDemoData`  - > Generates Demo data to be worked on
+
 ## API
 
 A few things are done automatically cut down on controller/model/router bloat:
