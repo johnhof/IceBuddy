@@ -83,8 +83,6 @@ General
    - `--prod` builds a production version (minified)
    - `--dev` builds a dev version (unminified/default)
 
-If you get an `addr in use` error, run `killall node` to terminate active node servers
-
 ## Useful grunt commands
 
 `grunt serve` -> run with the current build (no watch)
