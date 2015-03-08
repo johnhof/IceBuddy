@@ -4,7 +4,7 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "scripts":  {
+  "scripts": {
     "start": "node server",
     "test": "mocha 'test/**/*.js'"
   },
@@ -38,6 +38,7 @@
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.4.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-express-server": "^0.4.19",
     "grunt-filerev": "^0.2.1",
     "grunt-google-cdn": "^0.4.0",
     "grunt-mocha": "^0.4.11",

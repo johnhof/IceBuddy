@@ -76,6 +76,16 @@ module.exports = function (grunt) {
     },
 
 
+    express: {
+      options: {},
+      web: {
+        options: {
+          script: './server.js',
+        }
+      },
+    },
+
+
     /***************************************************************************************************
     *
     *  Watching tasks
@@ -113,10 +123,21 @@ module.exports = function (grunt) {
       livereload: {
         options: {},
         files: [
-          '<%= server.app %>/**/*.html',
-          'dist/styles/*.css',
-          '<%= server.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= server.dist %>/**/*',
         ]
+      },
+      web: {
+        files: [
+          'api/**/*.js',
+          'server.js',
+        ],
+        tasks: [
+          'express:web'
+        ],
+        options: {
+          nospawn: true,
+          atBegin: true,
+        }
       }
     },
 
@@ -415,35 +436,6 @@ module.exports = function (grunt) {
 
     /***************************************************************************************************
     *
-    *  Concurrency tasks
-    *
-    ****************************************************************************************************/
-
-    concurrent: {
-      serverDev : {
-        tasks : [
-          'watch',
-          'shell:serve'
-        ],
-        options: {
-          logConcurrentOutput: true
-        }
-      },
-      serverProd : {
-        tasks : [
-          'watch',
-          'shell:serveProd'
-        ],
-        options: {
-          logConcurrentOutput: true
-        }
-      }
-    },
-
-
-
-    /***************************************************************************************************
-    *
     *  shell tasks
     *
     ****************************************************************************************************/
@@ -462,13 +454,13 @@ module.exports = function (grunt) {
         }
       },
       serve: {
-        command: 'nodemon server.js -q --ignore "test/" --ignore "app/" --ignore "dist/"',
+        command: 'node server.js -q --ignore "test/" --ignore "app/" --ignore "dist/"',
         options: {
           async: false
         }
       },
       serveProd: {
-        command: 'NODE_ENV=production nodemon server.js -q --ignore "test/" --ignore "app/" --ignore "dist/"',
+        command: 'NODE_ENV=production node server.js -q --ignore "test/" --ignore "app/" --ignore "dist/"',
         options: {
           async: false
         }
@@ -500,13 +492,13 @@ module.exports = function (grunt) {
     if (prod) {
       grunt.task.run([
         'build-prod',
-        'concurrent:serverProd'
+        'watch'
       ]);
 
     } else {
       grunt.task.run([
         'build-dev',
-        'concurrent:serverDev'
+        'watch'
       ]);
     }
   });
