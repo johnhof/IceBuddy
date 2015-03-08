@@ -37,7 +37,6 @@ module.exports = function accountController (api) {
     // IF season_id AND team_id are both present, this query will return every game played by a team during this season
     read : function (req, res, next) {
       var inputs = req.query;
-
       if ( inputs.season_id && inputs.team_id ) {
         Game.findByTeamIdSeasonId(inputs, function ( error, data ) {
           if ( error ) {
@@ -74,7 +73,11 @@ module.exports = function accountController (api) {
             return next();
           }
         });
+      } else {
+        return next('Season_id or Team_id are required in this query');
       }
+
+      console.log('Out?')
     },
 
 

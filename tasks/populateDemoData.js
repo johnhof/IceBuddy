@@ -91,12 +91,12 @@ function createGame (teams, season, callback) {
 
   var game = {
     home : {
-      team_id : homeTeam['_id'],
+      team : homeTeam['_id'],
       players : homeTeam.players,
       score   : homeScore
     },
     away : {
-      team_id : awayTeam['_id'],
+      team : awayTeam['_id'],
       players : awayTeam.players,
       score   : awayScore
     },

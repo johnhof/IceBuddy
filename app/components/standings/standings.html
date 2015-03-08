@@ -1,0 +1,32 @@
+<section id="standings" ng-controller="StandingsCtrl">
+
+  <h1>Standings</h1>
+
+  <select ng-model="selectedSeason" ng-options="season as season.name for season in seasons" ng-change="requestGames()"></select>
+
+  <section>
+    <div id="standingsHeader">
+      <span class="standingsHeaderCol">Team</span>
+      <span class="standingsHeaderCol">W</span>
+      <span class="standingsHeaderCol">L</span>
+      <span class="standingsHeaderCol">T</span>
+      <span class="standingsHeaderCol">P</span>
+      <span class="standingsHeaderCol">GF</span>
+      <span class="standingsHeaderCol">GA</span>
+      <span class="standingsHeaderCol">GD</span>
+    </div>
+    <div class="standingsRow" ng-repeat="(standing, team) in standings">
+      <span class="standingsDataCol">{{team}}</span>
+      <span class="standingsDataCol">{{standing[team].w}}</span>
+      <span class="standingsDataCol">{{standing[team].l}}</span>
+      <span class="standingsDataCol">{{standing[team].t}}</span>
+      <span class="standingsDataCol">{{standing[team].p}}</span>
+      <span class="standingsDataCol">{{standing[team].gf}}</span>
+      <span class="standingsDataCol">{{standing[team].ga}}</span>
+      <span class="standingsDataCol">{{standing[team].gd}}</span>
+    </div>
+
+  </section>
+  
+
+</section>
