@@ -318,4 +318,4 @@ $accent-fallback // A200
 - animation
     - Ripple effect on click
 - options
-    - `.dark` class in conjustion will cause dark ripple
+    - `.dark` class in conjunction will cause dark ripple
