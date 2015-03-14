@@ -196,10 +196,10 @@ module.exports = function(grunt) {
 
     var teams = [
       {
-        name : "Puck Buddies TEST"
+        name : "Puck Buddies"
       },
       {
-        name : "Other Guys TEST"
+        name : "Other Guys"
       }
     ];
 

@@ -2,17 +2,8 @@ simpleApp.controller('StandingsCtrl', ['$scope', 'Session', 'Api', function ($sc
 
   // define games request
   $scope.games = [];
-  $scope.standings = [{
-    myTeam : {
-      w: 2,
-      l: 1,
-      t: 0,
-      p: 4,
-      gf: 10,
-      ga: 7,
-      gd: 3
-    }
-  }];
+  $scope.standings = [];
+
   $scope.requestGames = function () {
     $scope.activeGamesRequest = true;
 
@@ -32,50 +23,72 @@ simpleApp.controller('StandingsCtrl', ['$scope', 'Session', 'Api', function ($sc
       $scope.activeSeasonsRequest = false;
     });
   }
-
   // invoke Seasons request
   $scope.requestSeasons();
 
+  $scope.orderKey = 'p';
+  $scope.reverse = 'true';
+  $scope.previousKey = 'p';
+
+  $scope.sortStandings = function ( team ) {
+    if ( $scope.orderKey ) {
+      $scope.previousKey = $scope.orderKey;
+      if ( $scope.reverse ) {
+        return team[$scope.orderKey];
+      } else {
+        return -team[$scope.orderKey];
+      }
+    } else {
+      return team.p;
+    }
+
+
+  }
+
   function processGames ( games ) {
     var teams = [];
+    var lookUp = {};
     games.forEach(function (game) {
       var homeName = game.home.team.name;
       var homeScore = parseInt(game.home.score, 10);
       var awayName = game.away.team.name;
       var awayScore = parseInt(game.away.score, 10);
+      var homeKey = (lookUp[homeName] !== undefined) ? lookUp[homeName] : null;
+      var awayKey = (lookUp[awayName] !== undefined) ? lookUp[awayName] : null;
 
-      if ( !teams[homeName] ) {
-        teams[homeName] = {w:0,l:0,t:0,p:0,gf:0,ga:0,gd:0};
+      if ( homeKey === null ) {
+        lookUp[homeName] = teams.push({name: homeName, w:0,l:0,t:0,p:0,gf:0,ga:0,gd:0}) - 1;
+        homeKey = lookUp[homeName];
       }
-      if ( !teams[awayName] ) {
-        teams[awayName] = {w:0,l:0,t:0,p:0,gf:0,ga:0,gd:0};
+      if ( awayKey === null ) {
+        lookUp[awayName] = teams.push({name: awayName, w:0,l:0,t:0,p:0,gf:0,ga:0,gd:0}) - 1; 
+        awayKey = lookUp[awayName];
       }
 
-      teams[homeName].gf += homeScore;
-      teams[homeName].ga += awayScore;
-      teams[homeName].gd += homeScore - awayScore;
+      teams[homeKey].gf += homeScore;
+      teams[homeKey].ga += awayScore;
+      teams[homeKey].gd += homeScore - awayScore;
 
-      teams[awayName].gf += awayScore;
-      teams[awayName].ga += homeScore;
-      teams[awayName].gd += awayScore - homeScore;
+      teams[awayKey].gf += awayScore;
+      teams[awayKey].ga += homeScore;
+      teams[awayKey].gd += awayScore - homeScore;
 
 
       if ( homeScore > awayScore ) {
-        teams[homeName].w++;
-        teams[homeName].p += 2; 
-        teams[awayName].l++;
+        teams[homeKey].w++;
+        teams[homeKey].p += 2; 
+        teams[awayKey].l++;
       } else if ( homeScore < awayScore ) {
-        teams[homeName].l++;
-        teams[awayName].w++;
-        teams[awayName].p += 2; 
+        teams[homeKey].l++;
+        teams[awayKey].w++;
+        teams[awayKey].p += 2; 
       } else {
-        teams[homeName].t++;
-        teams[awayName].t++;
-        teams[homeName].p++;
-        teams[awayName].p++;
+        teams[homeKey].t++;
+        teams[awayKey].t++;
+        teams[homeKey].p++;
+        teams[awayKey].p++;
       }
     });
-
     return teams;
   }
 

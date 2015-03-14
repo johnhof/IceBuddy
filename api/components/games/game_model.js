@@ -32,7 +32,6 @@ module.exports = Mon.register('game', {
 
     create : function ( inputs, callback ) {
       Mon.save('game', inputs, callback, function ( game ) {
-        console.log('Game??? ', game)
         return callback(null, game);
       });
     },
@@ -95,17 +94,16 @@ module.exports = Mon.register('game', {
       //All Games this season
       var thisGame = this;
 
-      console.log(' what is this ', this)
       thisGame.find(inputs)
-      .populate('home.team')
-      .populate('away.team')
-      .exec(function (error, games) {
-        if ( error ) {
-          return callback(error);
-        } else {
-          return callback(null, games);
-        }
-      });
+        .populate('home.team')
+        .populate('away.team')
+        .exec(function (error, games) {
+          if ( error ) {
+            return callback(error);
+          } else {
+            return callback(null, games);
+          }
+        });
       
     }
   }

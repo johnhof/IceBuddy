@@ -76,8 +76,6 @@ module.exports = function accountController (api) {
       } else {
         return next('Season_id or Team_id are required in this query');
       }
-
-      console.log('Out?')
     },
 
 

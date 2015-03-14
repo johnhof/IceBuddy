@@ -1,1 +1,146 @@
 @import 'variables';
+
+
+header {
+  display: flex;
+
+  span {
+    flex: 2;
+    padding: $space $space;
+    @include title-text();
+    border-top-left-radius: $radius;
+    background-color: $accent;
+    color: $text-light-color;
+    text-align: left;
+  }
+
+
+  input {
+    flex: 3;
+    width: 100%;
+    border-top-right-radius: $radius;
+
+    &:hover, &:focus {
+      border-top-right-radius: $radius;
+    }
+  }
+}
+  
+
+#standingsContainer {
+  padding: $space;
+}
+
+.seasonSelector {
+  padding: $space;
+  margin: $space;
+}
+
+#standings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  
+
+  .col {
+    height: 25px;
+    width: 9%;
+    margin: auto;
+    display: inline-block;
+
+    &.colname {
+      width: 25%;
+    }
+  }
+
+  .standingsHeaderCol {
+    font-size: 1.5rem !important;
+    font-weight: bold;
+  }
+
+  .vertical-list {
+    position: relative;
+    height: $space * 55; // 440px - the last list element should be cut off for clatirty
+
+    .no-result {
+      display: flex;
+      height: $space * 8; // 64;
+      @include subhead-text();
+      color: $secondary-text-color;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .list-row {
+      padding: ($space * 2) 0;
+      cursor: pointer;
+      color: $text-color;
+
+      &.view-more {
+        text-align: center;
+      }
+
+      .leading {
+        flex:1;
+        padding: 0 $space;
+        display: flex;
+        justify-content: center;
+
+        > * {
+          display: flex;
+          align-items: center;
+        }
+
+        span {
+          color: $disabled-color;
+        }
+      }
+
+      .trailing {
+        flex: 5;
+        padding-right: $space;
+
+        .title {
+          @include body-bold-text();
+          margin-bottom: $space;
+
+          .number {
+            float: right;
+            color: $secondary-text-color;
+            padding: 0 $space;
+
+            &:before {
+              content: "#";
+              padding-right: $space / 2;
+            }
+          }
+        }
+
+        .content {
+          @include body-text();
+
+          .list {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            span {
+              color: $secondary-text-color;
+
+              &:after {
+                content: ",";
+                margin-right: $space / 2;
+              }
+
+              &:last-of-type:after {
+                content: "";
+                margin: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
