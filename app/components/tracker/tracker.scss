@@ -118,18 +118,15 @@
     }
 
     .actions .teams {
-      border-bottom: $border;
-
       span {
+        border: 0;
+        border-top: ($space / 2) solid transparent;
+        border-bottom: ($space / 2) solid $divider-color;
         cursor: pointer;
-        background-color: $primary-light;
-        color: $text-light-color;
 
         &.active {
-          color: $text-light-color;
+          border-bottom: ($space / 2) solid $accent;
           cursor: initial;
-          background-color: $accent;
-          border-bottom: none;
         }
       }
     }
