@@ -20,6 +20,13 @@ html {
   height: 100%;
 }
 
+body {
+  min-height: 100%;
+  top: 0;
+  position: absolute;
+  width: 100%;
+}
+
 h1, h2, h3, h4 {
   margin: 5px 0;
 }
@@ -40,8 +47,11 @@ a {
 
 #main-content {
   margin: auto;
-  margin-top: $nav-height;
+  height: 100%;
+  padding-top: $nav-height;
   color: $text-color;
+  position: absolute;
+  width: 100%;
 }
 
 #background-filter {

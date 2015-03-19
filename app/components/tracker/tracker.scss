@@ -5,6 +5,8 @@
   @include elevation(1);
   background-color: white;
   min-height: 100%;
+  position: relative;
+  width: 100%;
 
   .state-header {
     @include elevation(1);
@@ -45,16 +47,25 @@
 
   .actions {
     width: 100%;
+    padding-top: ($space * 4);
 
     .teams {
       display: flex;
 
+      div {
+        @include border-between;
+        @include center();
+        padding-bottom: $space * 2;
+        flex: 1;
+      }
+
       span {
         @include center();
         @include title-text();
-        @include border-between();
-        flex: 1;
-        padding: $space;
+        border-bottom: ($space / 2) solid $divider-color;
+        margin: $space;
+        width: $space * 34;
+        padding: $space * 2;
       }
     }
 
@@ -67,19 +78,19 @@
     }
 
     .action-set {
-      @include border-between();
+      @include border-between;
       width: 100%;
       display: block;
+      padding-bottom: ($space * 4);
 
       section {
         @include center();
         display: block;
-        padding-bottom: $space * 6;
         width: 100%;
 
         .button {
           margin: auto;
-          margin-top: ($space * 6);
+          margin-top: ($space * 8);
           width: $space * 34;
 
           &:first-of-type {
@@ -117,17 +128,32 @@
       display: none !important;
     }
 
-    .actions .teams {
-      span {
-        border: 0;
-        border-top: ($space / 2) solid transparent;
-        border-bottom: ($space / 2) solid $divider-color;
-        cursor: pointer;
+    .actions {
+      padding-top: 0;
 
-        &.active {
-          border-bottom: ($space / 2) solid $accent;
-          cursor: initial;
+      .teams {
+
+        div {
+          padding-top: $space;
+          cursor: pointer;
+          border-top: ($space / 2) solid transparent;
+          border-bottom: ($space / 2) solid $divider-color;
+
+          span {
+            padding: 0;
+            margin: 0;
+            border: 0;
+          }
+
+          &.active {
+            border-bottom: ($space / 2) solid $accent;
+            cursor: initial;
+          }
         }
+      }
+
+      .action-set {
+        padding-bottom: 0;
       }
     }
   }
