@@ -30,6 +30,7 @@
         &.active {
           background-color: $accent;
           color: $text-light-color;
+          cursor: initial;
         }
       }
     }
@@ -125,9 +126,9 @@
         color: $text-light-color;
 
         &.active {
-          color: $text-color;
+          color: $text-light-color;
           cursor: initial;
-          background-color: inherit;
+          background-color: $accent;
           border-bottom: none;
         }
       }
