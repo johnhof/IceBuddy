@@ -32,17 +32,35 @@ module.exports = function accountController (api) {
     //
     read : function (req, res, next) {
       var inputs = req.query;
-      Season.findByName(inputs, function ( error, data ) {
-        if ( error ) {
-          return next(error);
-        } else {
-          res.data = {
-              success : true,
-              seasons  : data || []
+      if ( inputs.name ) {
+        Season.findByName(inputs, function ( error, seasons ) {
+          if ( error ) {
+            return next(error);
+          } else {
+            res.data = {
+                success : true,
+                seasons  : seasons || []
+            }
+            return next();
           }
-          return next();
-        }
-      });
+        });
+      } else {
+        // get the most recent
+        Season.recent(inputs, function (error, seasons) {
+          if (error) {
+            return next(error);
+
+          } else {
+            res.data = {
+              success : true,
+              seasons : seasons || []
+            };
+
+            return next();
+          }
+
+        });
+      }
     },
 
 

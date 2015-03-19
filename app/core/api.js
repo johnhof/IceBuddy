@@ -57,5 +57,23 @@ simpleApp.service('Api', ['$http',  '$resource', function ($http, $resource) {
     update : { method : 'PUT' },
   });
 
+  //
+  // Seasons
+  //
+  api.seasons = $resource('/seasons', null,  {
+    create : { method : 'POST' },
+    read   : { method : 'GET' },
+    update : { method : 'PUT' },
+  });
+
+  //
+  // Games
+  //
+  api.games = $resource('/games', null,  {
+    create : { method : 'POST' },
+    read   : { method : 'GET' },
+    update : { method : 'PUT' },
+  });
+
   return api;
 }])
