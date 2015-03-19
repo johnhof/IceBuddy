@@ -10,7 +10,6 @@
 
 .card {
   background-color: $base-color;
-  @include elevation(1);
   border-radius: 2px;
 }
 

@@ -33,10 +33,14 @@ a {
   }
 }
 
+* {
+  outline: none;
+  box-sizing: border-box;
+}
 
 #main-content {
   margin: auto;
-  margin-top: 70px;
+  margin-top: $nav-height;
   color: $text-color;
 }
 

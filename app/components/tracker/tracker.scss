@@ -1,0 +1,136 @@
+@import 'variables';
+
+
+#tracker-content {
+  @include elevation(1);
+  background-color: white;
+  min-height: 100%;
+
+  .state-header {
+    @include elevation(1);
+
+    .periods {
+      border-bottom: $border;
+      width: 100%;
+      display: flex;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      span {
+        @include center();
+        @include border-between();
+        flex: 1;
+        padding: $space 0;
+        background-color: $divider-color;
+        background-color: $primary-light;
+        color: $text-light-color;
+
+        &.active {
+          background-color: $accent;
+          color: $text-light-color;
+        }
+      }
+    }
+
+    .timekeeper {
+      @include center();
+      @include title-text();
+      color: $secondary-text-color;
+      padding: $space 0;
+    }
+  }
+
+  .actions {
+    width: 100%;
+
+    .teams {
+      display: flex;
+
+      span {
+        @include center();
+        @include title-text();
+        @include border-between();
+        flex: 1;
+        padding: $space;
+      }
+    }
+
+    .buttons {
+      display: flex;
+
+      .home, .away {
+        flex: 1;
+      }
+    }
+
+    .action-set {
+      @include border-between();
+      width: 100%;
+      display: block;
+
+      section {
+        @include center();
+        display: block;
+        padding-bottom: $space * 6;
+        width: 100%;
+
+        .button {
+          margin: auto;
+          margin-top: ($space * 6);
+          width: $space * 34;
+
+          &:first-of-type {
+            margin-top: $space * 4;
+          }
+        }
+
+        .goal {
+          background-color: $ternary;
+        }
+
+        .penalty {
+          background-color: $accent-fallback;
+        }
+
+        .shot {
+          background-color: $primary-light;
+        }
+      }
+    }
+  }
+
+
+
+  .mobile {
+    display: none !important;
+  }
+
+  @media (max-width: 600px) {
+    .mobile {
+      display: block !important;
+    }
+
+    .desktop {
+      display: none !important;
+    }
+
+    .actions .teams {
+      border-bottom: $border;
+
+      span {
+        cursor: pointer;
+        background-color: $primary-light;
+        color: $text-light-color;
+
+        &.active {
+          color: $text-color;
+          cursor: initial;
+          background-color: inherit;
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

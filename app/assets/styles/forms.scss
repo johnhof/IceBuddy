@@ -1,21 +1,25 @@
 @import 'variables';
 
 .button {
-  border-radius: $radius;
-  width: 100%;
   @include elevation(1);
   @include button-text();
+  @include center();
+  border-radius: $radius;
+  width: 100%;
   background: $accent;
   color: $text-light-color;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
+  border: 0;
+  padding: $space;
 
   &[type="submit"], &[active="true"] {
     background: $accent;
     color: $text-light-color;
     outline: 0;
+  }
+
+  &:hover {
+    @include elevation(2);
   }
 }
 

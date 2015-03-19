@@ -8,17 +8,24 @@ simpleApp.config(['$routeProvider', function ($routeProvider) {
       controller  : 'HomeCtrl'
     }).
 
-    //session
+    // session
     when('/session', {
       templateUrl : 'views/session.html',
       controller  : 'SessionCtrl'
     }).
 
-    //session
+    // teams
     when('/teams', {
       templateUrl : 'views/teams.html',
       controller  : 'TeamsCtrl'
     }).
+
+    // tracker
+    when('/tracker', {
+      templateUrl : 'views/tracker.html',
+      controller  : 'TrackerCtrl'
+    }).
+
 
     // 404
     otherwise({

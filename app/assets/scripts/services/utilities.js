@@ -134,6 +134,10 @@ simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', '$location', f
 
     reload : function () {
       $route.reload();
+    },
+
+    partial : function (name) {
+      return '../views/_' + name + '.html';
     }
   }
 }])

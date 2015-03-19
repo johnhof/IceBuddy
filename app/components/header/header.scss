@@ -3,6 +3,7 @@
 .navbar {
   @include elevation(2);
   z-index: 1000;
+  position: absolute;
   height: $nav-height;
 
   &.navbar-default {
@@ -18,10 +19,9 @@
         color: $text-light-color;
 
         a {
+          @include center();
           color: $text-light-color;
-          padding: 25px 15px;
           height: $nav-height;
-          display: inline-block;
 
           &.flush {
             padding: 25px 0;
@@ -34,12 +34,13 @@
       }
 
      .open > a {
-       background-color: inherit;
+      @include center();
+      background-color: inherit;
 
-       &:hover, &:focus {
+      &:hover, &:focus {
         color: inherit;
-       }
-     }
+      }
+    }
 
       ul li {
         display: flex;
@@ -48,6 +49,7 @@
         padding: 0;
 
         a {
+          @include center();
           color: inherit;
         }
       }
@@ -69,10 +71,7 @@
           }
 
           a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
+            @include center();
             width: 100%;
             color: $text-color;
 
@@ -91,15 +90,14 @@
       .collapse {
         @media (min-width: 768px) {
           a {
-            padding: 25px 15px;
+            @include center();
             height: $nav-height;
-            display: inline-block;
 
             &:hover {
             }
 
             &.flush {
-              padding: 25px 0;
+              @include center();
 
               &:first-of-type {
                 padding-left: 15px;
@@ -151,6 +149,7 @@
             box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
 
             a {
+              @include center();
               color: $text-color;
             }
           }
