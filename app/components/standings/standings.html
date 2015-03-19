@@ -4,9 +4,6 @@
     <span>Standings</span> 
   </header>
 
-  <select ng-model="selectedSeason" class="card seasonSelector" ng-options="season as season.name for season in seasons" ng-change="requestGames()">
-    <option value="">Select a Season</option>
-  </select>
 <!-- 
   <ul ng-model="selectedSeason" role="menu">
     <li class="ripple"> Select A Season</li>
@@ -14,6 +11,11 @@
   </ul> -->
 
   <section id="standings" class="card vertical-list">
+    <header> 
+      <select ng-model="selectedSeason" class="card seasonSelector" ng-options="season as season.name for season in seasons" ng-change="requestGames()">
+        <option value="">Select a Season</option>
+      </select>
+    </header>
     <div id="standingsHeader" class="list-row">
       <span ngclass="headerName" class="standingsHeaderCol col colname" ng-click="orderKey='name';reverse=!reverse">Team</span>
       <span class="standingsHeaderCol col colw" ng-click="orderKey='w';reverse=!reverse">W</span>
