@@ -136,6 +136,7 @@
         div {
           padding-top: $space;
           cursor: pointer;
+          border: 0;
           border-top: ($space / 2) solid transparent;
           border-bottom: ($space / 2) solid $divider-color;
 
