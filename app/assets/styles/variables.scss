@@ -71,6 +71,7 @@ $radius: 2px;
 }
 @mixin body-text () {
   font-size: 14px;
+  font-weight: initial;
 }
 @mixin body-bold-text () {
   font-size: 14px;
@@ -155,4 +156,37 @@ $border-light: 1px solid $divider-light-color;
   &:first-of-type {
     border-left: 0;
   }
+}
+
+@mixin padding-x ($left, $between, $right) {
+  padding-left: ($between / 2);
+  padding-right: ($between / 2);
+
+  &:first-of-type { padding-left: $left; }
+  &:last-of-type { padding-right: $right; }
+}
+
+@mixin padding-y ($top, $between, $bottom) {
+  padding-top: ($between / 2);
+  padding-bottom: ($between / 2);
+
+  &:first-of-type { padding-top: $top; }
+  &:last-of-type { padding-bottom: $bottom; }
+
+}
+
+@mixin margin-x ($left, $between, $right) {
+  margin-left: ($between / 2);
+  margin-right: ($between / 2);
+
+  &:first-of-type { margin-left: $left; }
+  &:last-of-type { margin-right: $right; }
+}
+
+@mixin margin-y ($top, $between, $bottom) {
+  margin-top: ($between / 2);
+  margin-bottom: ($between / 2);
+
+  &:first-of-type { margin-top: $top; }
+  &:last-of-type { margin-bottom: $bottom; }
 }

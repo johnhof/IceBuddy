@@ -45,8 +45,8 @@
   }
 
   .actions {
+    @include elevation(1);
     width: 100%;
-    padding-top: ($space * 4);
     text-transform: uppercase;
     min-height: 70%;
     position: relative;
@@ -58,17 +58,23 @@
         @include border-between;
         @include center();
         padding-bottom: $space * 2;
+        padding-top: ($space * 4);
         flex: 1;
         cursor: initial;
       }
 
-      span {
+      span, {
         @include center();
         @include title-text();
         border-bottom: ($space / 2) solid $divider-color;
-        margin: $space;
-        width: $space * 34;
-        padding: $space * 2;
+        padding: ($space * 2);
+
+        @include padding-x(($space * 8), ($space * 3), ($space * 8));
+
+        &.goal-count {
+          width: initial;
+          color: $primary-light;
+        }
       }
     }
 
@@ -123,6 +129,47 @@
     }
   }
 
+  .summary {
+    margin: auto;
+    margin-top: ($space * 2);
+    max-width: 800px;
+    padding-bottom: ($space * 4);
+
+    h1 {
+      text-align: center;
+      padding-bottom: ($space * 4);
+    }
+
+    .events {
+      .event {
+        display: flex;
+        padding: $space;
+
+        .number {
+          @include body-text;
+        }
+
+        .details {
+          flex: 2;
+        }
+
+        .timing {
+          text-align: right;
+        }
+
+        > span {
+          flex: 1;
+          overflow: hidden;
+          white-space: nowrap;
+          text-align: center;
+          text-align: left;
+          @include body-bold-text;
+          padding: 0 ($space / 2);
+        }
+      }
+    }
+  }
+
 
 
   .mobile {
@@ -139,10 +186,7 @@
     }
 
     .actions {
-      padding-top: 0;
-
       .teams {
-
         div {
           padding-top: $space;
           cursor: pointer;
@@ -152,6 +196,7 @@
 
           span {
             padding: 0;
+            @include padding-x(0, ($space * 3), 0);
             margin: 0;
             border: 0;
           }

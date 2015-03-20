@@ -157,11 +157,6 @@
                 float: right;
                 color: $secondary-text-color;
                 padding: 0 $space;
-
-                &:before {
-                  content: "#";
-                  padding-right: $space / 2;
-                }
               }
             }
 

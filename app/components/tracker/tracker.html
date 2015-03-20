@@ -16,8 +16,12 @@
     <!-- Team display/select -->
 
     <header class="teams">
-      <div class="home active"><span>home</span></div>
-      <div class="away ripple"><span>away</span></div>
+      <div class="home active">
+        <span>home</span><span class="goal-count">{{home.goals.length}}</span>
+      </div>
+      <div class="away ripple">
+        <span>away</span><span class="goal-count">{{away.goals.length}}</span>
+      </div>
     </header>
 
     <!-- Desktop -->
@@ -33,6 +37,23 @@
       <actionblock></actionblock>
     </div>
 
+  </section>
+
+  <section class="summary">
+    <h1>Game Summary</h1>
+    <div class="events vertical-list">
+      <div class="event list-row">
+        <span class="team">Home</span>
+        <span class="type">G:<span class="number format">21</span></span>
+        <span  class="details">
+          A: <span class="number format">15</span>, <span class="number format">55</span>
+        </span>
+        <span class="timing">
+          <span class="period">P1</span>
+          <span class="time">12:00</span>
+        </span>
+      </div>
+    </div>
   </section>
 
 </div>

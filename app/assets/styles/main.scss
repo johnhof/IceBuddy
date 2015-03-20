@@ -26,7 +26,12 @@ body {
 }
 
 h1, h2, h3, h4 {
-  margin: 5px 0;
+  margin: 0;
+  padding: $space;
+}
+
+h1 {
+  @include title-text;
 }
 
 a {
@@ -175,6 +180,13 @@ a {
   }
 }
 
+
+.number.format {
+  &:before {
+    content: "#";
+    padding-right: ($space / 2);
+  }
+}
 ////////////////////////////////////////////////////////////////////////
 //
 //  Bootstrap overrides
