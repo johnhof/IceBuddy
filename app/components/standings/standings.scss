@@ -3,6 +3,8 @@
 
 #standingsContainer {
 
+  background-color: #FFF;
+
   header {
     display: flex;
     @include elevation(2);
@@ -56,7 +58,10 @@
       display: inline-block;
 
       &.colname {
-        width: 25%;
+      width: 25%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       }
     }
 
