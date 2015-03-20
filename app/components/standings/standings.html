@@ -1,0 +1,45 @@
+<section id="standingsContainer" ng-controller="StandingsCtrl">
+
+  <header>
+    <span>Standings</span>
+  </header>
+
+<!--
+  <ul ng-model="selectedSeason" role="menu">
+    <li class="ripple"> Select A Season</li>
+    <li ng-repeat="season in seasons" ng-click="requestGames(season)" class="ripple">{{season.name}}</li>
+  </ul> -->
+
+  <div class="container">
+    <section id="standings" class="vertical-list">
+
+      <select ng-model="selectedSeason" class="seasonSelector" ng-options="season as season.name for season in seasons" ng-change="requestGames()">
+        <option value="" disabled>Select a Season</option>
+      </select>
+
+      <div id="standingsHeader" class="list-row">
+        <span ngclass="headerName" class="standingsHeaderCol col colname" ng-click="orderKey='name';reverse=!reverse">Team</span>
+        <span class="standingsHeaderCol col colw" ng-click="orderKey='w';reverse=!reverse">W</span>
+        <span class="standingsHeaderCol col coll" ng-click="orderKey='l';reverse=!reverse">L</span>
+        <span class="standingsHeaderCol col colt" ng-click="orderKey='t';reverse=!reverse">T</span>
+        <span class="standingsHeaderCol col colp" ng-click="orderKey='p';reverse=!reverse">P</span>
+        <span class="standingsHeaderCol col colgf" ng-click="orderKey='gf';reverse=!reverse">GF</span>
+        <span class="standingsHeaderCol col colga" ng-click="orderKey='ga';reverse=!reverse">GA</span>
+        <span class="standingsHeaderCol col colgd" ng-click="orderKey='gd';reverse=!reverse">GD</span>
+      </div>
+      <div class="standingsRow list-row ripple dark animate" ng-repeat="team in standings | orderBy:sortStandings:orderKey:reverse">
+        <span class="standingsDataCol col colname">{{team.name}}</span>
+        <span class="standingsDataCol col colw">{{team.w}}</span>
+        <span class="standingsDataCol col coll">{{team.l}}</span>
+        <span class="standingsDataCol col colt">{{team.t}}</span>
+        <span class="standingsDataCol col colp">{{team.p}}</span>
+        <span class="standingsDataCol col colgf">{{team.gf}}</span>
+        <span class="standingsDataCol col colga">{{team.ga}}</span>
+        <span class="standingsDataCol col colgd">{{team.gd}}</span>
+      </div>
+
+    </section>
+  </div>
+
+
+</section>

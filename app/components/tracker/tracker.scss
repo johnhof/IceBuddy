@@ -2,7 +2,6 @@
 
 
 #tracker-content {
-  @include elevation(1);
   background-color: white;
   min-height: 100%;
   position: relative;
@@ -49,6 +48,8 @@
     width: 100%;
     padding-top: ($space * 4);
     text-transform: uppercase;
+    min-height: 70%;
+    position: relative;
 
     .teams {
       display: flex;
@@ -58,6 +59,7 @@
         @include center();
         padding-bottom: $space * 2;
         flex: 1;
+        cursor: initial;
       }
 
       span {
@@ -88,15 +90,21 @@
         @include center();
         display: block;
         width: 100%;
+        padding: 8% 0;
 
         .button {
-          margin: auto;
-          margin-top: ($space * 8);
+          margin: 10% auto;
           min-width: $space * 34;
-          width: 65%;
+          padding: $space * 2;
+          width: 75%;
 
           &:first-of-type {
             margin-top: $space * 4;
+            margin-top: 0;
+          }
+
+          &:last-of-type {
+            margin-bottom: 0;
           }
         }
 

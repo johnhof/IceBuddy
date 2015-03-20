@@ -6,12 +6,12 @@ var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 
 module.exports = Mon.register('game', {
   home: {
-    team_id: Mon('Home Team Id').string().required().fin(),
+    team: Mon('Home Team Id').schema('team').required().fin(),
     players: Mon('Home Team Players').array().default([]).fin(),
     score  : Mon('Home Team score').string().required().fin()
   },
   away: {
-    team_id: Mon('Away Team Id').string().required().fin(),
+    team: Mon('Away Team Id').schema('team').required().fin(),
     players: Mon('Away Team Players').array().default([]).fin(),
     score  : Mon('Away Team score').number().required().fin()
   },
@@ -31,63 +31,38 @@ module.exports = Mon.register('game', {
     deleteById : Mon.statics.deleteById({ errorMsg : 'No player regex the provided ID' }),
 
     create : function ( inputs, callback ) {
-      validate(inputs, {
-          home     : Joi.object().keys({
-            team_id : Joi.required(),
-            players : Joi.array().optional(),
-            score   : Joi.number().integer()
-          }),
-          away     : Joi.object().keys({
-            team_id : Joi.required(),
-            players : Joi.array().optional(),
-            score   : Joi.number().integer()
-          }),
-          season_id : Joi.required(),
-          refs : Joi.array().optional(),
-          date_time : Joi.date().required(),
-        },
-        function save (result, saveCallback) {
-          Mon.save('game', inputs, callback, function ( game ) {
-            return saveCallback(null, game);
-          });
-        }, callback
-      );
+      Mon.save('game', inputs, callback, function ( game ) {
+        return callback(null, game);
+      });
     },
     findByTeamIdSeasonId : function ( inputs, callback ) {
       var thisGame = this;
 
-      validate(inputs, {
-          team_id : Joi.string().token().required(),
-          season_id : Joi.string().token().required()
-      } , function (result, findCallback) {
-          thisGame.find({
-                $and: [
-                    {
-                      season_id : inputs.season_id
-                    },
-                    {
-                      $or : [
-                          {
-                            'home.team_id' : inputs.team_id
-                          },
-                          {
-                            'away.team_id' : inputs.team_id
-                          }
-                      ]
-                    }
-                  ]
-          }, function (error, games) {
-            if ( error ) {
-              return callback(error);
-            } else {
-              return findCallback(null, games);
-            }
-          });
-        },
-        function (error, data) {
-          return callback(error, data);
+      thisGame.find({
+        $and: [
+          {
+            season_id : inputs.season_id
+          }, {
+            $or : [
+              {
+                'home.team' : inputs.team_id
+              },
+              {
+                'away.team' : inputs.team_id
+              }
+            ]
+          }
+        ]
+      })
+      .populate('home.team')
+      .populate('away.team')
+      .exec(function (error, games) {
+        if ( error ) {
+          return callback(error);
+        } else {
+          return callback(null, games);
         }
-      );
+      });
     },
     findByTeamId : function ( inputs, callback ) {
       //All Games this team has participated in
@@ -99,10 +74,10 @@ module.exports = Mon.register('game', {
           thisGame.find({
               $or : [
                       {
-                        'home.team_id' : inputs.team_id
+                        'home.team' : inputs.team_id
                       },
                       {
-                        'away.team_id' : inputs.team_id
+                        'away.team' : inputs.team_id
                       }
                     ]
             }, function (error, games) {
@@ -119,18 +94,17 @@ module.exports = Mon.register('game', {
       //All Games this season
       var thisGame = this;
 
-      validate(inputs, {
-          season_id : Joi.string().token().required()
-      } , function (result, findCallback) {
-          thisGame.find(inputs, function (error, games) {
-            if ( error ) {
-              return callback(error);
-            } else {
-              return findCallback(null, games);
-            }
-          });
-        }, callback
-      );
+      thisGame.find(inputs)
+        .populate('home.team')
+        .populate('away.team')
+        .exec(function (error, games) {
+          if ( error ) {
+            return callback(error);
+          } else {
+            return callback(null, games);
+          }
+        });
+      
     }
   }
 });

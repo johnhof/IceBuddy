@@ -79,6 +79,16 @@ input {
   }
 }
 
+select {
+  option {
+    padding: $space;
+
+    &[disabled] {
+      display: none;
+    }
+  }
+}
+
 a.button {
   display: flex;
   align-items: center;
