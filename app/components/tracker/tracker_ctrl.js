@@ -1,4 +1,4 @@
-var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', '$routeParams', 'Utils', 'Session', 'Api', 'GameTracker', function ($scope, $routeParams, Utils, Session, Api, GameTracker) {
+var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', '$routeParams', 'Utils', 'Session', 'Api', function ($scope, $routeParams, Utils, Session, Api) {
 
   // $scope.game = new Game();
 
