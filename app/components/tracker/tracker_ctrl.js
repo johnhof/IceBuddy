@@ -1,13 +1,8 @@
-var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', '$routeParams', 'Utils', 'Session', 'Api', function ($scope, $routeParams, Utils, Session, Api) {
+var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', '$routeParams', 'Utils', 'Session', 'Api', 'GameTracker' function ($scope, $routeParams, Utils, Session, Api, GameTracker) {
 
-  $scope.home = new Team('home');
-  $scope.away = new Team('away');
+  $scope.game = new Game();
 
 
-  function Team (name) {
-    this.name  = name;
-    this.goals = [];
-  }
 }]);
 
 trackerCtrl.directive('actionblock', ['Utils', function (Utils) {
