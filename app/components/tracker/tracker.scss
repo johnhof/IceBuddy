@@ -1,0 +1,216 @@
+@import 'variables';
+
+
+#tracker-content {
+  background-color: white;
+  min-height: 100%;
+  position: relative;
+  width: 100%;
+
+  .state-header {
+    @include elevation(1);
+
+    .periods {
+      @include title-text();
+      border-bottom: $border;
+      width: 100%;
+      display: flex;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      span {
+        @include center();
+        @include border-between();
+        flex: 1;
+        padding: ($space / 2) 0;
+        background-color: $accent-fallback;
+        color: $text-light-color;
+
+        &.active {
+          background-color: $accent;
+          color: $text-light-color;
+          cursor: initial;
+        }
+      }
+    }
+
+    .timekeeper {
+      @include center();
+      @include title-text();
+      color: $secondary-text-color;
+      padding: $space 0;
+    }
+  }
+
+  .actions {
+    @include elevation(1);
+    width: 100%;
+    text-transform: uppercase;
+    min-height: 70%;
+    position: relative;
+
+    .teams {
+      display: flex;
+
+      div {
+        @include border-between;
+        @include center();
+        padding-bottom: $space * 2;
+        padding-top: ($space * 4);
+        flex: 1;
+        cursor: initial;
+      }
+
+      span, {
+        @include center();
+        @include title-text();
+        border-bottom: ($space / 2) solid $divider-color;
+        padding: ($space * 2);
+
+        @include padding-x(($space * 8), ($space * 3), ($space * 8));
+
+        &.goal-count {
+          width: initial;
+          color: $primary-light;
+        }
+      }
+    }
+
+    .button-sets {
+      display: flex;
+
+      .home, .away {
+        flex: 1;
+      }
+    }
+
+    .action-set {
+      @include border-between;
+      width: 100%;
+      display: block;
+      padding-bottom: ($space * 4);
+
+      section {
+        @include center();
+        display: block;
+        width: 100%;
+        padding: 8% 0;
+
+        .button {
+          margin: 10% auto;
+          min-width: $space * 34;
+          padding: $space * 2;
+          width: 75%;
+
+          &:first-of-type {
+            margin-top: $space * 4;
+            margin-top: 0;
+          }
+
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+        }
+
+        .goal {
+          background-color: $ternary;
+        }
+
+        .penalty {
+          background-color: $accent-fallback;
+        }
+
+        .shot {
+          background-color: $primary-light;
+        }
+      }
+    }
+  }
+
+  .summary {
+    margin: auto;
+    margin-top: ($space * 2);
+    max-width: 800px;
+    padding-bottom: ($space * 4);
+
+    h1 {
+      text-align: center;
+      padding-bottom: ($space * 4);
+    }
+
+    .events {
+      .event {
+        display: flex;
+        padding: $space;
+
+        .number {
+          @include body-text;
+        }
+
+        .details {
+          flex: 2;
+        }
+
+        .timing {
+          text-align: right;
+        }
+
+        > span {
+          flex: 1;
+          overflow: hidden;
+          white-space: nowrap;
+          text-align: center;
+          text-align: left;
+          @include body-bold-text;
+          padding: 0 ($space / 2);
+        }
+      }
+    }
+  }
+
+
+
+  .mobile {
+    display: none !important;
+  }
+
+  @media (max-width: 600px) {
+    .mobile {
+      display: block !important;
+    }
+
+    .desktop {
+      display: none !important;
+    }
+
+    .actions {
+      .teams {
+        div {
+          padding-top: $space;
+          cursor: pointer;
+          border: 0;
+          border-top: ($space / 2) solid transparent;
+          border-bottom: ($space / 2) solid $divider-color;
+
+          span {
+            padding: 0;
+            @include padding-x(0, ($space * 3), 0);
+            margin: 0;
+            border: 0;
+          }
+
+          &.active {
+            border-bottom: ($space / 2) solid $accent;
+            cursor: initial;
+          }
+        }
+      }
+
+      .action-set {
+        padding-bottom: 0;
+      }
+    }
+  }
+}

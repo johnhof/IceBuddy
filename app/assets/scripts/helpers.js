@@ -15,3 +15,7 @@ _.findValue = function (obj, namespace, defaultValue) {
 
   return (typeof obj !== 'undefined' ? obj : defaultValue);
 },
+
+Number.prototype.isInt = function () {
+  return this === parseInt(this, 10);
+}

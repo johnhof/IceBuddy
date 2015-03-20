@@ -14,7 +14,7 @@
     <section id="standings" class="vertical-list">
 
       <select ng-model="selectedSeason" class="seasonSelector" ng-options="season as season.name for season in seasons" ng-change="requestGames()">
-        <option value="">Select a Season</option>
+        <option value="" disabled>Select a Season</option>
       </select>
 
       <div id="standingsHeader" class="list-row">

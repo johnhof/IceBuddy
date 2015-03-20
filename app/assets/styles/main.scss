@@ -10,18 +10,28 @@ html, body {
   padding: 0;
   margin: 0;
   background :none;
-  // font-family: 'Open Sans', sans-serif;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
 html {
   background-color: $divider-color;
-  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  top: 0;
+  position: absolute;
+  width: 100%;
 }
 
 h1, h2, h3, h4 {
-  margin: 5px 0;
+  margin: 0;
+  padding: $space;
+}
+
+h1 {
+  @include title-text;
 }
 
 a {
@@ -33,11 +43,18 @@ a {
   }
 }
 
+* {
+  outline: none;
+  box-sizing: border-box;
+}
 
 #main-content {
   margin: auto;
-  margin-top: 70px;
+  height: 100%;
+  padding-top: $nav-height;
   color: $text-color;
+  position: absolute;
+  width: 100%;
 }
 
 #background-filter {
@@ -163,6 +180,13 @@ a {
   }
 }
 
+
+.number.format {
+  &:before {
+    content: "#";
+    padding-right: ($space / 2);
+  }
+}
 ////////////////////////////////////////////////////////////////////////
 //
 //  Bootstrap overrides

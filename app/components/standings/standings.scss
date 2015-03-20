@@ -2,12 +2,16 @@
 
 
 #standingsContainer {
+  background-color: white;
+  min-height: 100%;
+  position: relative;
+  width: 100%;
 
   background-color: #FFF;
 
   header {
     display: flex;
-    @include elevation(2);
+    @include elevation(1);
 
     span {
       flex: 2;
