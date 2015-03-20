@@ -30,9 +30,10 @@ module.exports = Mon.register('season', {
     }
   },
   statics : {
-    findById   : Mon.statics.findyById({ errorMsg : 'No player regex the provided ID' }),
-    updateById : Mon.statics.updateById({ errorMsg : 'No player regex the provided ID' }),
-    deleteById : Mon.statics.deleteById({ errorMsg : 'No player regex the provided ID' }),
+    findById   : Mon.statics.findyById({ errorMsg : 'No season regex the provided ID' }),
+    updateById : Mon.statics.updateById({ errorMsg : 'No season regex the provided ID' }),
+    deleteById : Mon.statics.deleteById({ errorMsg : 'No season regex the provided ID' }),
+    recent : Mon.statics.recent(),
 
     create : function ( inputs, callback ) {
       validate(inputs, {

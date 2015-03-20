@@ -14,7 +14,13 @@ simpleApp.config(['$routeProvider', function ($routeProvider) {
       controller  : 'SessionCtrl'
     }).
 
-    //session
+    //Standings
+    when('/standings', {
+      templateUrl : 'views/standings.html',
+      controller  : 'StandingsCtrl'
+    }).
+
+    //Teams
     when('/teams', {
       templateUrl : 'views/teams.html',
       controller  : 'TeamsCtrl'
