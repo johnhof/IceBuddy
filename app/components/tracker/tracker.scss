@@ -12,6 +12,7 @@
     @include elevation(1);
 
     .periods {
+      @include title-text();
       border-bottom: $border;
       width: 100%;
       display: flex;
@@ -24,9 +25,8 @@
         @include center();
         @include border-between();
         flex: 1;
-        padding: $space 0;
-        background-color: $divider-color;
-        background-color: $primary-light;
+        padding: ($space / 2) 0;
+        background-color: $accent-fallback;
         color: $text-light-color;
 
         &.active {
@@ -48,6 +48,7 @@
   .actions {
     width: 100%;
     padding-top: ($space * 4);
+    text-transform: uppercase;
 
     .teams {
       display: flex;
@@ -69,7 +70,7 @@
       }
     }
 
-    .buttons {
+    .button-sets {
       display: flex;
 
       .home, .away {
@@ -91,7 +92,8 @@
         .button {
           margin: auto;
           margin-top: ($space * 8);
-          width: $space * 34;
+          min-width: $space * 34;
+          width: 65%;
 
           &:first-of-type {
             margin-top: $space * 4;
