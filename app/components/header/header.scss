@@ -3,7 +3,7 @@
 .navbar {
   @include elevation(2);
   z-index: 1000;
-  position: absolute;
+  position: fixed;
   height: $nav-height;
 
   &.navbar-default {
