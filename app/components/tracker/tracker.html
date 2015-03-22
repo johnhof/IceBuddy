@@ -1,15 +1,51 @@
 <div id="tracker-content">
   <header class="state-header">
+
+    <!-- Periods -->
+
     <div class="periods">
       <span class="active">1</span>
       <span class="ripple">2</span>
       <span class="ripple">3</span>
     </div>
+
+    <!-- Time Keepr -->
+
     <div class="timekeeper">
-      <span>20:00</span>
+
+      <!-- Left actions -->
+      <span class="action" ng-if="!timer.editing" ng-click="timer.edit.start()">
+        <sprite name="ion-edit" size="18"></sprite>
+      </span>
+      <span class="action" ng-if="timer.editing" ng-click="timer.edit.cancel()">
+        <sprite name="ion-close" size="18"></sprite>
+      </span>
+
+      <!-- Time -->
+      <span ng-if="!timer.editing"->{{game.period.timer.remaining | date: 'mm:ss'}}</span>
+
+<!--
+      <span>
+        <stepper ng-model="timer.editing.minutes" min="0" max="20"></stepper>
+        <stepper ng-model="timer.editing.seconds" min="0" max="20"></stepper>
+      </span>
+-->
+
+      <!-- Right actions -->
+      <span class="action" ng-if="!game.period.timer.active && !timer.editing" ng-click="timer.start()">
+        <sprite name="ion-play" size="18"></sprite>
+      </span>
+      <span class="action" ng-if="game.period.timer.active"  ng-click="timer.stop()">
+        <sprite name="ion-pause" size="18"></sprite>
+      </span>
+      <span class="action" ng-if="timer.editing" ng-click="timer.edit.submit()">
+        <sprite name="ion-android-done" size="24"></sprite>
+      </span>
     </div>
   </header>
 
+
+  <!-- actions -->
 
   <section class="actions">
 

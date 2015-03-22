@@ -41,6 +41,15 @@
       @include title-text();
       color: $secondary-text-color;
       padding: $space 0;
+
+      > span {
+        @include padding-x(10%, 10%, 10%);
+      }
+
+      // since actions may toggle icons, fix the width to a reasonable size
+      .action {
+        width: 15px;
+      }
     }
   }
 

@@ -313,8 +313,8 @@ module.exports = function (grunt) {
           '<%= server.dist %>/scripts/main.js': [
             '<%= server.app %>/core/app.js',
             '<%= server.app %>/core/api.js',
-            '<%= server.app %>/scripts/services.js',
-            '<%= server.app %>/scripts/helpers.js',
+            '<%= server.app %>/services.js',
+            '<%= server.app %>/helpers.js',
             '<%= server.app %>/**/*.js'
           ]
         }

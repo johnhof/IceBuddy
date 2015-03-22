@@ -9,7 +9,7 @@ simpleApp.directive('sprite', ['Utils', function (Utils) {
       href : '@',
       name : '@'
     },
-    template : '<span class="sprite {{name}} size-{{size}}" ng-click="spriteTab(href)"></span>',
+    template : '<span class="sprite {{name}} size-{{size}}"  target="__blank"></span>',
     link     : function (scope, element, attrs) {
       scope.href = attrs.href;
       scope.name = attrs.name;
