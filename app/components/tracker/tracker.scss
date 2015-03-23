@@ -274,9 +274,20 @@
 
 .team-select-prompt {
 
+  header {
+    padding-top: $space * 2;
+    padding-left: $space * 2;
+  }
+
   .leading {
     border: $border;
     margin-bottom: $space;
+    background-color: $primary;
+    color: $text-light-color;
+
+    .placeholder {
+      color: inherit;
+    }
   }
 
   .selection-display {
