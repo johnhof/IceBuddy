@@ -273,9 +273,14 @@
 
 
 .team-select-prompt {
+
+  .leading {
+    border: $border;
+    margin-bottom: $space;
+  }
+
   .selection-display {
     display: flex;
-    padding-bottom: $space * 2;
 
     .team {
       flex: 1;
