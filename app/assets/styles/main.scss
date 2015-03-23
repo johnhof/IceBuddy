@@ -48,6 +48,7 @@ a {
   box-sizing: border-box;
 }
 
+
 #main-content {
   margin: auto;
   height: 100%;
@@ -193,6 +194,10 @@ span.action {
     cursor: pointer;
     color: $accent-fallback;
   }
+}
+
+.center {
+  @include center;
 }
 
 ////////////////////////////////////////////////////////////////////////

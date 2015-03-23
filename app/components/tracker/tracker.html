@@ -4,9 +4,9 @@
     <!-- Periods -->
 
     <div class="periods">
-      <span class="active">1</span>
-      <span class="ripple">2</span>
-      <span class="ripple">3</span>
+      <span ng-click="periodSelect(1)" ng-class="game.periodNum == 1 ? 'active' : 'ripple'">1</span>
+      <span ng-click="periodSelect(2)" ng-class="game.periodNum == 2 ? 'active' : 'ripple'">2</span>
+      <span ng-click="periodSelect(3)" ng-class="game.periodNum == 3 ? 'active' : 'ripple'">3</span>
     </div>
 
     <!-- Time Keepr -->
@@ -14,31 +14,32 @@
     <div class="timekeeper">
 
       <!-- Left actions -->
-      <span class="action" ng-if="!timer.editing" ng-click="timer.edit.start()">
+      <span class="action" ng-if="!timer.edit.active" ng-click="timer.edit.start()">
         <sprite name="ion-edit" size="18"></sprite>
       </span>
-      <span class="action" ng-if="timer.editing" ng-click="timer.edit.cancel()">
+      <span class="action" ng-if="timer.edit.active" ng-click="timer.edit.cancel()">
         <sprite name="ion-close" size="18"></sprite>
       </span>
 
       <!-- Time -->
-      <span ng-if="!timer.editing"->{{game.period.timer.remaining | date: 'mm:ss'}}</span>
+      <span ng-hide="timer.edit.active" class="display">{{game.period.timer.remaining | date: 'mm:ss'}}</span>
 
-<!--
-      <span>
-        <stepper ng-model="timer.editing.minutes" min="0" max="20"></stepper>
-        <stepper ng-model="timer.editing.seconds" min="0" max="20"></stepper>
+
+      <span ng-show="timer.edit.active" class="editor">
+        <stepper min="0" max="20" ng-model="timer.edit.value.minutes"></stepper>
+        <span class="colon">:</span>
+        <stepper min="0" max="59" ng-model="timer.edit.value.seconds"></stepper>
       </span>
--->
+
 
       <!-- Right actions -->
-      <span class="action" ng-if="!game.period.timer.active && !timer.editing" ng-click="timer.start()">
+      <span class="action" ng-if="!game.period.timer.active && !timer.edit.active" ng-click="timer.start()">
         <sprite name="ion-play" size="18"></sprite>
       </span>
       <span class="action" ng-if="game.period.timer.active"  ng-click="timer.stop()">
         <sprite name="ion-pause" size="18"></sprite>
       </span>
-      <span class="action" ng-if="timer.editing" ng-click="timer.edit.submit()">
+      <span class="action" ng-if="timer.edit.active" ng-click="timer.edit.submit()">
         <sprite name="ion-android-done" size="24"></sprite>
       </span>
     </div>
@@ -52,12 +53,13 @@
     <!-- Team display/select -->
 
     <header class="teams">
-      <div class="home active">
+      <div class="home" ng-click="activeTeam='home'">
         <span>home</span><span class="goal-count">0</span>
       </div>
-      <div class="away ripple dark">
+      <div class="away" ng-click="activeTeam='away'">
         <span>away</span><span class="goal-count">0</span>
       </div>
+       <span class="selection-highlight" ng-class="activeTeam == 'away' ? 'right' : 'left'"></span>
     </header>
 
     <!-- Desktop -->

@@ -1,0 +1,35 @@
+@import 'variables';
+
+.ngdialog.ngdialog-theme-default {
+  .ngdialog-content {
+    @include elevation(4);
+    border-radius: $radius;
+    background-color: $base-color;
+    background-color: $base-color;
+
+    header {
+      @include headline-text;
+      text-align: center;
+      margin-bottom: $space * 3;
+      line-height: 125%;
+    }
+
+    p {
+      text-align: center;
+    }
+
+    .button {
+      &.confirm {
+        background-color: $primary;
+      }
+
+      &.cancel {
+        background-color: $accent;
+      }
+    }
+  }
+
+  .ngdialog-overlay {
+    opacity: 0;
+  }
+}

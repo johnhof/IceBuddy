@@ -77,10 +77,11 @@ simpleApp.service('Timer', [function () {
   //   set   : function // manually set the time of the timer
   // }
   //
-  function Timer (time, callback) {
+  function Timer (time, callback, onTimeout) {
     this.interval  = null; // keep the interval for garbage collection
     this.active    = false;
     this.callback  = callback;
+    this.onTimeout = onTimeout;
 
     this.remaining = 0;
     this.minutes   = 0;
@@ -99,18 +100,26 @@ simpleApp.service('Timer', [function () {
     }
   }
 
-  Timer.prototype.start = function (callback) {
+  Timer.prototype.start = function (onTimeout) {
+    this.onTimeout = onTimeout;
+  }
+
+  Timer.prototype.start = function (callback, onTimeout) {
     // if there's time remaining, and there isn't already an active timer
     if (this.remaining > 0 && !this.interval) {
-      var _this       = this; // for nested scopes
-      var isFirstStep = true;
+      var _this         = this; // for nested scopes
+      var isFirstStep   = true;
+      var timeOutCalled = false;
 
       // set active to true and start the interval
       this.active = true;
 
+      this.onTimeout = onTimeout;
+
       // invoke and call interval
       step()
       this.interval = setInterval(step, _second);
+
 
       function step () {
 
@@ -125,6 +134,11 @@ simpleApp.service('Timer', [function () {
         // if the timer reaches 0, stop it
         if (_this.remaining <= 0) {
           _this.stop();
+
+          if (_this.onTimeout && !timeOutCalled) {
+            _this.onTimeout();
+            timeOutCalled = true;
+          }
         }
 
         if (callback && !isFirstStep) {
@@ -132,7 +146,7 @@ simpleApp.service('Timer', [function () {
         } else {
           isFirstStep = false;
         }
-      } // yo dawg, i heard you like scope
+      }
     }
   }
 

@@ -77,6 +77,14 @@ input {
       outline: 0;
     }
   }
+
+  &[type="number"] {
+
+    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
 }
 
 select {
@@ -112,6 +120,15 @@ form.ng-submitted {
   .error {
     font-weight: bold;
     display: block;
+  }
+}
+
+.button-wrap {
+  display: flex;
+
+  > button, > .button {
+    flex: 1;
+    @include margin-x(0, $space, 0);
   }
 }
 

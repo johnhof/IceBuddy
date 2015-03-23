@@ -43,15 +43,13 @@ simpleApp.service('Game', ['Timer', function (Timer) {
       new Period()
     ];
 
-    return {
-      periods   : periods,
-      periodNum : 1,
-      period    : periods[1],
-      teams     : {
-        home : new Team(),
-        away : new Team()
-      }
-    };
+    this.periods   = periods;
+    this.periodNum = 1;
+    this.period    = periods[1];
+    this.teams     = {
+      home : new Team(),
+      away : new Team()
+    }
   }
 
   Game.prototype.currentScore = function () {
@@ -61,9 +59,15 @@ simpleApp.service('Game', ['Timer', function (Timer) {
     };
   }
 
-  Game.prototype.setPeriod = function (period) {
-    if (period >= 1 && period <= 3 && period.isInt()) {
-      this.periiod = period;
+  Game.prototype.setPeriod = function (periodNum) {
+    periodNum = Math.floor(periodNum);
+
+    if (periodNum >= 1 && periodNum <= 3) {
+      this.periodNum = periodNum;
+      this.period    = this.periods[periodNum - 1];
+
+      this.period.timer.set({ minutes : 20 });
+
     } else {
       return false;
     }
@@ -149,8 +153,8 @@ simpleApp.service('Game', ['Timer', function (Timer) {
     // });
 
     return {
-      sumamry: [],
-      timer : new Timer({ minutes : 20 })
+      sumamry : [],
+      timer   : new Timer({ minutes : 20 })
     }
   }
 

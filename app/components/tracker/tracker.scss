@@ -43,12 +43,23 @@
       padding: $space 0;
 
       > span {
-        @include padding-x(10%, 10%, 10%);
+        @include padding-x(10%, 5%, 10%);
+        display: flex;
+        justify-content: center;
+
+
+        &.display, &.editor {
+          width: 25%;
+        }
+
+        &.editor {
+          @include subhead-text;
+        }
       }
 
-      // since actions may toggle icons, fix the width to a reasonable size
-      .action {
-        width: 15px;
+      .colon {
+        align-self: center;
+        padding: 0 ($space / 2);
       }
     }
   }
@@ -62,6 +73,7 @@
 
     .teams {
       display: flex;
+      position: relative;
 
       div {
         @include border-between;
@@ -84,6 +96,10 @@
           width: initial;
           color: $primary-light;
         }
+      }
+
+      .selection-highlight {
+        display: none;
       }
     }
 
@@ -181,23 +197,21 @@
 
 
 
-  .mobile {
-    display: none !important;
+
+  @media (min-width: 600px) {
+    .mobile { display: none; }
+    .ripple-effect {
+      display: none !important;
+    }
   }
 
   @media (max-width: 600px) {
-    .mobile {
-      display: block !important;
-    }
-
-    .desktop {
-      display: none !important;
-    }
+    .actions .button-sets.desktop { display: none; }
 
     .actions {
       .teams {
         div {
-          padding-top: $space;
+          padding: ($space * 2) inherit;
           cursor: pointer;
           border: 0;
           border-top: ($space / 2) solid transparent;
@@ -209,10 +223,24 @@
             margin: 0;
             border: 0;
           }
+        }
 
-          &.active {
-            border-bottom: ($space / 2) solid $accent;
-            cursor: initial;
+        .selection-highlight {
+          position:absolute;
+          display: none;
+          bottom: 0;
+          border-bottom: ($space / 2) solid $accent;
+          width: 50%;
+          transition: 0.5s;
+
+          &.left {
+            display: block;
+            left: 0;
+          }
+
+          &.right {
+            display: block;
+            left: 50%;
           }
         }
       }

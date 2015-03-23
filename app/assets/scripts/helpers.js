@@ -14,8 +14,4 @@ _.findValue = function (obj, namespace, defaultValue) {
   while (keys.length && (obj = obj[keys.pop()]) !== undefined) {}
 
   return (typeof obj !== 'undefined' ? obj : defaultValue);
-},
-
-Number.prototype.isInt = function () {
-  return this === parseInt(this, 10);
 }

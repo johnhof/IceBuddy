@@ -1,0 +1,8 @@
+<div id="period-transition-modal">
+  <header class="">{{periodModal.message}}</header>
+  <p>You can select a period using the buttons below the header.</p>
+  <div class="button-wrap">
+    <button class="button cancel" ng-click="closeThisDialog()">No</button>
+    <button class="button confirm" ng-click="transitionPeriod(periodModal.nextPeriod) && closeThisDialog()">Yes</button>
+  </div>
+</div>
