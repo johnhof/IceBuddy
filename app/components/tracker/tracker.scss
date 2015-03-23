@@ -37,10 +37,16 @@
     }
 
     .timekeeper {
-      @include center();
-      @include title-text();
+      @include center;
+      @include title-text;
+      @include ease(.35s);
       color: $secondary-text-color;
       padding: $space 0;
+      height: $space * 7;
+
+      &.editing {
+        height: $space * 10;
+      }
 
       > span {
         @include padding-x(10%, 5%, 10%);
@@ -50,6 +56,10 @@
 
         &.display, &.editor {
           width: 25%;
+        }
+
+        &.display {
+          @include headline-text;
         }
 
         &.editor {
@@ -208,6 +218,12 @@
   @media (max-width: 600px) {
     .actions .button-sets.desktop { display: none; }
 
+    .state-header .timekeeper > span {
+      &.editor, &.display {
+        width: 35%;
+      }
+    }
+
     .actions {
       .teams {
         div {
@@ -217,6 +233,10 @@
           border-top: ($space / 2) solid transparent;
           border-bottom: ($space / 2) solid $divider-color;
 
+          &.active {
+            cursor: initial;
+          }
+
           span {
             padding: 0;
             @include padding-x(0, ($space * 3), 0);
@@ -225,13 +245,14 @@
           }
         }
 
+
         .selection-highlight {
+          @include ease;
           position:absolute;
           display: none;
           bottom: 0;
           border-bottom: ($space / 2) solid $accent;
           width: 50%;
-          transition: 0.5s;
 
           &.left {
             display: block;

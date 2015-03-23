@@ -11,7 +11,7 @@
 
     <!-- Time Keepr -->
 
-    <div class="timekeeper">
+    <div class="timekeeper" ng-class="timer.edit.active?'editing':''">
 
       <!-- Left actions -->
       <span class="action" ng-if="!timer.edit.active" ng-click="timer.edit.start()">
@@ -53,10 +53,10 @@
     <!-- Team display/select -->
 
     <header class="teams">
-      <div class="home" ng-click="activeTeam='home'">
+      <div class="home" ng-class="activeTeam == 'home' ? 'active' : 'ripple dark'" ng-click="activeTeam='home'">
         <span>home</span><span class="goal-count">0</span>
       </div>
-      <div class="away" ng-click="activeTeam='away'">
+      <div class="away" ng-class="activeTeam == 'away' ? 'active' : 'ripple dark'" ng-click="activeTeam='away'">
         <span>away</span><span class="goal-count">0</span>
       </div>
        <span class="selection-highlight" ng-class="activeTeam == 'away' ? 'right' : 'left'"></span>

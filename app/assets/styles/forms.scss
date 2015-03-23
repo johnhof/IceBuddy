@@ -11,6 +11,7 @@
   cursor: pointer;
   border: 0;
   padding: $space;
+  @include ease(0.25s);
 
   &[type="submit"], &[active="true"] {
     background: $accent;
