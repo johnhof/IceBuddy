@@ -11,6 +11,33 @@
 .card {
   background-color: $base-color;
   border-radius: 2px;
+
+
+  .content {
+    padding: $space * 2;
+  }
+
+  .actions {
+    @include button-text;
+    border-top: $border;
+    width: 100%;
+    display: flex;
+
+    .confirm {
+      color: $accent;
+    }
+
+    > div, > span {
+      padding: ($space * 1.5) ($space * 3);
+      cursor: pointer;
+      min-width: 50px;
+      text-align: center;
+
+      &:hover {
+        background-color: $filter-color;
+      }
+    }
+  }
 }
 
 .vertical-list {

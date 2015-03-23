@@ -48,33 +48,36 @@
 }
 
 input {
+  $input-border: 2px;
   &[type="email"], &[type="password"], &[type="text"] {
+    @include body-text;
     padding-left: 10px;
     border: 1px solid transparent;
-    border-bottom: 1px solid $divider-color;
+    border-bottom: $input-border solid $divider-color;
+    width: 100%;
 
     &:active {
-      border: 1px solid $accent;
+      border-bottom: $input-border solid $accent;
       outline: 0;
 
       &:hover {
-        border: 1px solid $accent;
+        border-bottom: $input-border solid $accent;
         outline: 0;
       }
     }
 
     &:focus {
-      border: 1px solid $accent;
+      border-bottom: $input-border solid $accent;
       outline: 0;
 
       &:hover {
-        border: 1px solid $accent;
+        border-bottom: $input-border solid $accent;
         outline: 0;
       }
     }
 
     &:hover {
-      border: 1px solid $divider-color;
+      border-bottom: $input-border solid $divider-color;
       outline: 0;
     }
   }

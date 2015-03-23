@@ -2,18 +2,81 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
 
   $scope.game = new Game();
 
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  //  Team Management
+  //
+  ////////////////////////////////////////////////////////////////////////
+
+  $scope.teamSelectModal = {
+    teamList : [],
+    search   : function (name) {
+      Api.teams.read({ name : name }, function (result) {
+        $scope.teamSelectModal.teamList = result && result.teams ? result.teams : [];
+      });
+    },
+    open : function (selectType) {
+      $scope.teamSelectModal.selectType = selectType;
+      $scope.teamSelectModal.search();
+
+      ngDialog.open({
+        templateUrl     : Utils.partial('team_select_prompt'),
+        showClose       : false,
+        closeByDocument : false,
+        scope           : $scope
+      });
+    }
+  }
+
+  $scope.setTeams = function (teams) {
+
+  }
+
   ////////////////////////////////////////////////////////////////////////
   //
   //  Action helpers
   //
   ////////////////////////////////////////////////////////////////////////
 
-  $scope.activeTeam = 'home;'
+  $scope.activeTeam = 'home';
+
+  $scope.eventModal = {
+    message    : '',
+    nextPeriod : null,
+    open       : function () {
+      ngDialog.open({
+        templateUrl : Utils.partial('event_details_prompt'),
+        scope       : $scope
+      });
+    }
+  }
+
+  $scope.newEvent = function (type, team) {
+    $scope.timer.stop();
+    $scope.eventModal.title = 'New ' + type;
+
+    var type = type.toLowerCase();
+
+    if (type === 'goal') {
+
+    } else if (type === 'penalty') {
+
+    } else if (type === 'shot') {
+
+    }
+
+    $scope.eventModal.open();
+  }
+
+  $scope.saveEvent = function (team) {
+    $scope.eventModal.open();
+  }
 
 
   ////////////////////////////////////////////////////////////////////////
   //
-  //  Period helpers
+  //  Period Management
   //
   ////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +93,8 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   }
 
   $scope.periodModal = {
-    message    : '',
+    title      : '',
+    subText    : '',
     nextPeriod : null,
     open       : function () {
       $scope.timer.stop();
@@ -44,10 +108,10 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
 
   $scope.periodSelect = function (number) {
     if (number !== $scope.game.periodNum) {
-      $scope.periodModal.message = 'Transition to ' + periodPrint(number) + ' period?';
+      $scope.periodModal.title = 'Transition to ' + periodPrint(number) + ' period';
 
       if (number < $scope.game.periodNum) {
-        $scope.periodModal.message += ' Stats from the remaining periods will be lost!';
+        $scope.periodModal.subText = ' Stats from the remaining periods will be lost!';
       }
 
       $scope.periodModal.nextPeriod = number;
@@ -61,12 +125,12 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   //
 
   function periodTimeout () {
-    $scope.periodModal.message = periodPrint($scope.game.periodNum) + ' period over.'
+    $scope.periodModal.title = periodPrint($scope.game.periodNum) + ' period over'
 
     if ($scope.game.periodNum < 3) {
-      $scope.periodModal.message += ' Start ' + periodPrint($scope.game.periodNum + 1) + ' period?';
+      $scope.periodModal.subText = 'Start ' + periodPrint($scope.game.periodNum + 1) + ' period?';
     } else if ($scope.game.periodNum == 3) {
-      $scope.periodModal.message += ' finalize game?';
+      $scope.periodModal.subText = 'Finalize game?';
     }
 
     $scope.periodModal.nextPeriod = $scope.game.periodNum + 1;
@@ -84,7 +148,7 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
 
   ////////////////////////////////////////////////////////////////////////
   //
-  //  Timer helpers
+  //  Timer Management
   //
   ////////////////////////////////////////////////////////////////////////
 
@@ -143,6 +207,23 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   function apply () {
     $scope.$apply();
   }
+
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  //  Initialization
+  //
+  ////////////////////////////////////////////////////////////////////////
+
+
+  // if there is a cached game
+  if (true) {
+    $scope.teamSelectModal.open();
+
+  // if there is a cached game, apply it
+  } else {
+
+  }
 }]);
 
 trackerCtrl.directive('actionblock', ['Utils', function (Utils) {
@@ -151,8 +232,5 @@ trackerCtrl.directive('actionblock', ['Utils', function (Utils) {
     scope       : true,
     replace     : true,
     templateUrl : Utils.partial('action_block'),
-    link        : function (scope, element, attrs) {
-      scope.target = attrs.target;
-    }
   };
 }]);

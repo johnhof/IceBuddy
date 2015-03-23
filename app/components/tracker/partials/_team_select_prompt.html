@@ -1,0 +1,28 @@
+<div class="team-select-prompt">
+  <div class="content">
+    <header>Select Teams</header>
+    <div class="selection-display">
+      <div class="team">
+        <h3>Home</h3>
+        <span ng-show="teamSelectModal.home">{{teamSelectModal.home.name}}</span>
+        <span class="placeholder" ng-hide="teamSelectModal.home">Not Selected</span>
+      </div>
+      <div class="team">
+        <h3>Away</h3>
+        <span ng-show="teamSelectModal.away">{{teamSelectModal.away.name}}</span>
+        <span class="placeholder" ng-hide="teamSelectModal.away">Not Selected</span>
+      </div>
+    </div>
+    <input type="text" placeholder="Search" ng-model="teamSelectModal.searchTerm" ng-change="teamSelectModal.search(teamSelectModal.searchTerm)">
+    <div class="vertical-list">
+      <div class="list-row ripple dark team" ng-repeat="team in teamSelectModal.teamList">
+        <span class="name">{{team.name}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="continue" ng-click="closeThisDialog()">Base Teams</div>
+    <div class="confirm" ng-click="transitionPeriod(periodModal.nextPeriod) && closeThisDialog()">
+    Use Selected</div>
+  </div>
+</div>

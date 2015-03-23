@@ -75,7 +75,7 @@ $radius: 2px;
 }
 @mixin body-bold-text () {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
 }
 @mixin subhead-text () {
   font-size: 16px;
@@ -113,6 +113,7 @@ $base-color: #FFF;
 $anti-base-color: #000;
 
 // Shades
+$filter-color: rgba(0, 0, 0, 0.06);
 $divider-color: rgba(0, 0, 0, 0.12);
 $disabled-color: rgba(0, 0, 0, 0.26);
 $secondary-text-color: rgba(0, 0, 0, 0.54);

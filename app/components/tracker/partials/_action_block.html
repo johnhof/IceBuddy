@@ -1,7 +1,7 @@
 <div id="{{target}}" class="action-set">
   <section>
-    <button class="button ripple goal">Goal</button>
-    <button class="button ripple penalty">Penalty</button>
-    <button class="button ripple shot">Shot</button>
+    <button class="button ripple goal" ng-click="newEvent('Goal', target)">Goal</button>
+    <button class="button ripple penalty" ng-click="newEvent('Penalty', target)">Penalty</button>
+    <button class="button ripple shot" ng-click="newEvent('Shot', target)">Shot</button>
   </section>
 </div>

@@ -4,9 +4,13 @@
   text-align:  center;
   display: inline-block;
 
-  > span, > input  {
+  > span, > input[type="text"]  {
     display: block;
     text-align: center;
+
+    &:focus, &:active, &:hover {
+      border: $border;
+    }
   }
 
   input {

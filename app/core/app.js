@@ -21,8 +21,7 @@ simpleApp.constant('Patterns', {
 
 simpleApp.config(['ngDialogProvider', function (ngDialogProvider) {
     ngDialogProvider.setDefaults({
-        className       : 'ngdialog-theme-default',
-        closeByEscape   : true,
-        overlay         : false
+      className     : 'ngdialog-theme-default',
+      closeByEscape : true,
     });
 }]);

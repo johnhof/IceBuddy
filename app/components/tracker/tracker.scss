@@ -206,8 +206,6 @@
   }
 
 
-
-
   @media (min-width: 600px) {
     .mobile { display: none; }
     .ripple-effect {
@@ -215,7 +213,7 @@
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 601px) {
     .actions .button-sets.desktop { display: none; }
 
     .state-header .timekeeper > span {
@@ -269,6 +267,18 @@
       .action-set {
         padding-bottom: 0;
       }
+    }
+  }
+}
+
+
+.team-select-prompt {
+  .selection-display {
+    display: flex;
+    padding-bottom: $space * 2;
+
+    .team {
+      flex: 1;
     }
   }
 }

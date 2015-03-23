@@ -27,11 +27,18 @@ body {
 
 h1, h2, h3, h4 {
   margin: 0;
-  padding: $space;
 }
 
 h1 {
   @include title-text;
+}
+
+h2 {
+  @include subhead-text;
+}
+
+h3 {
+  @include body-bold-text;
 }
 
 a {
@@ -198,6 +205,10 @@ span.action {
 
 .center {
   @include center;
+}
+
+.placeholder {
+  color: $disabled-color;
 }
 
 ////////////////////////////////////////////////////////////////////////
