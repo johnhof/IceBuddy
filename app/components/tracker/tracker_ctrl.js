@@ -9,9 +9,31 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   //
   ////////////////////////////////////////////////////////////////////////
 
+  activeTeam = {
+    type   : 'home',
+    object : $scope.game.teams.home,
+    set    : function (type) {
+      if (type === 'away' || type === 'home') {
+        activeTeam.type = type;
+        activeTeam.object = Scope.game.teams[type];
+      }
+    }
+  }
+
+
   $scope.teamSelectModal = {
-    teamList : [],
-    search   : function (name) {
+    teamList   : [],
+    activeTeam : 'home',
+    teams      : {
+      home       : null,
+      away       : null
+    },
+    setTeam : function (teamType, team) {
+      if ((teamType === 'home' || teamType === 'away')) {
+        $scope.teamSelectModal.teams[teamType] = team;
+      }
+    },
+    search     : function (name) {
       Api.teams.read({ name : name }, function (result) {
         $scope.teamSelectModal.teamList = result && result.teams ? result.teams : [];
       });
@@ -26,11 +48,12 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
         closeByDocument : false,
         scope           : $scope
       });
+    },
+    saveTeam : function () {
+      $scope.game.setTeams($scope.teamSelectModal.teams || {});
+      console.log($scope.game.teams);
+      return true;
     }
-  }
-
-  $scope.setTeams = function (teams) {
-
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -39,7 +62,8 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   //
   ////////////////////////////////////////////////////////////////////////
 
-  $scope.activeTeam = 'home';
+  $scope.activeTeamType = 'home';
+  $scope.activeTeamType = 'home';
 
   $scope.eventModal = {
     message    : '',
@@ -232,5 +256,7 @@ trackerCtrl.directive('actionblock', ['Utils', function (Utils) {
     scope       : true,
     replace     : true,
     templateUrl : Utils.partial('action_block'),
+    link        : function (scope, element, attrs) {
+    }
   };
 }]);

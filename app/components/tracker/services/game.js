@@ -52,6 +52,19 @@ simpleApp.service('Game', ['Timer', function (Timer) {
     }
   }
 
+  Game.prototype.setTeams = function (teams) {
+    if (teams) {
+      if (teams.home) {
+        this.teams.home.name      = teams.home.name;
+        this.teams.home.sourceObj = teams.home;
+      }
+      if (teams.away) {
+        this.teams.away.name      = teams.away.name;
+        this.teams.away.sourceObj = teams.away;
+      }
+    }
+  }
+
   Game.prototype.currentScore = function () {
     return {
       home : teams.home.goals.length,
@@ -183,6 +196,7 @@ simpleApp.service('Game', ['Timer', function (Timer) {
 
   function Team (name) {
     this.name      = name;
+    this.sourceObj = null;
     this.goals     = [];
     this.roster    = [];
     this.shots     = [];

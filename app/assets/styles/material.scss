@@ -47,5 +47,9 @@
     padding: $space;
     border-bottom: 1px solid $divider-color;
     display: flex;
+
+    &:hover {
+      background-color: $filter-color;
+    }
   }
 }

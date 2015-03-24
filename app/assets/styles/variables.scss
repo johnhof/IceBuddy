@@ -145,11 +145,11 @@ $ternary: #66bb6a; // 500
 $border: 1px solid $divider-color;
 $border-light: 1px solid $divider-light-color;
 
-@mixin ease($duration: 0.5s) {
-  -webkit-transition: all $duration cubic-bezier(.42,0,.58,1);
-  -moz-transition: all $duration cubic-bezier(.42,0,.58,1);
-  -o-transition: all $duration cubic-bezier(.42,0,.58,1);
-  transition: all $duration cubic-bezier(.42,0,.58,1);
+@mixin ease($duration: 0.5s, $restrict: all) {
+  -webkit-transition: $restrict $duration cubic-bezier(.42,0,.58,1);
+  -moz-transition: $restrict $duration cubic-bezier(.42,0,.58,1);
+  -o-transition: $restrict $duration cubic-bezier(.42,0,.58,1);
+  transition: $restrict $duration cubic-bezier(.42,0,.58,1);
 }
 
 @mixin ease-in($duration: 0.25s) {
@@ -165,8 +165,8 @@ $border-light: 1px solid $divider-light-color;
   align-items: center;
 }
 
-@mixin border-between() {
-  border-left: 1px solid $divider-color;
+@mixin border-between($color: $divider-color) {
+  border-left: 1px solid $color;
 
   &:first-of-type {
     border-left: 0;
@@ -204,4 +204,10 @@ $border-light: 1px solid $divider-light-color;
 
   &:first-of-type { margin-top: $top; }
   &:last-of-type { margin-bottom: $bottom; }
+}
+
+@mixin ellipsis () {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

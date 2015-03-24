@@ -144,20 +144,6 @@ a {
   }
 }
 
-.sprite {
-  font-size: 32;
-  transition: 0.25s ease-in-out all;
-
-  &.size-16 { font-size: 16px; }
-  &.size-18 { font-size: 18px; }
-  &.size-21 { font-size: 21px; }
-  &.size-24 { font-size: 24px; }
-  &.size-32 { font-size: 32px; }
-  &.size-48 { font-size: 48px; }
-  &.size-64 { font-size: 64px; }
-  &.size-96 { font-size: 96px; }
-}
-
 .divider {
   background-color: $divider-color;
   margin: $space 0;
@@ -209,6 +195,27 @@ span.action {
 
 .placeholder {
   color: $disabled-color;
+}
+
+
+// Container must be relative!
+.select-slider {
+  @include ease;
+  position:absolute;
+  display: none;
+  bottom: 0;
+  border-bottom: ($space / 2) solid $accent;
+  width: 50%;
+
+  &.left {
+    display: block;
+    left: 0;
+  }
+
+  &.right {
+    display: block;
+    left: 50%;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////

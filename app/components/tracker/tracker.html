@@ -53,26 +53,26 @@
     <!-- Team display/select -->
 
     <header class="teams">
-      <div class="home" ng-class="activeTeam == 'home' ? 'active' : 'ripple dark'" ng-click="activeTeam='home'">
+      <div class="home" ng-class="activeTeam.type == 'home' ? 'active' : 'ripple dark'" ng-click="activeTeam.set('home')">
         <span>home</span><span class="goal-count">0</span>
       </div>
-      <div class="away" ng-class="activeTeam == 'away' ? 'active' : 'ripple dark'" ng-click="activeTeam='away'">
+      <div class="away" ng-class="activeTeam.type == 'away' ? 'active' : 'ripple dark'" ng-click="activeTeam.set('away')">
         <span>away</span><span class="goal-count">0</span>
       </div>
-       <span class="selection-highlight" ng-class="activeTeam == 'away' ? 'right' : 'left'"></span>
+       <span class="select-slider" ng-class="activeTeam.type == 'away' ? 'right' : 'left'"></span>
     </header>
 
     <!-- Desktop -->
 
     <div class="button-sets desktop">
-      <actionblock target="home"></actionblock>
-      <actionblock target="away"></actionblock>
+      <actionblock target="home" team="{{game.teams.home}}"></actionblock>
+      <actionblock target="away" team="{{game.teams.away}}"></actionblock>
     </div>
 
     <!-- Mobile -->
 
     <div class="mobile">
-      <actionblock target="{{activeTeam}}"></actionblock>
+      <actionblock target="{{activeTeam.type}}" team="{{activeTeam.object}}"></actionblock>
     </div>
 
   </section>
