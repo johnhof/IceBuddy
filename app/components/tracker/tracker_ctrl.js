@@ -22,41 +22,46 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   //
   ////////////////////////////////////////////////////////////////////////
 
-  $scope.activeTeam = {
-    type   : 'home',
-    object : $scope.game.teams.home,
-    set    : function (type) {
+  // Active team toggle - sets header team being displayed
+  $scope.activeTeam = new (function () {
+    this.type   = 'home';
+    this.object = $scope.game.teams.home;
+
+    this.set = function (type) {
       if (type === 'away' || type === 'home') {
-        $scope.activeTeam.type = type;
-        $scope.activeTeam.object = $scope.game.teams[type];
+        this.type = type;
+        this.object = $scope.game.teams[type];
       }
     }
-  }
+  });
 
+  // Team selection modal - manages team selection
+  $scope.teamSelectModal = new (function () {
+    this.teamList   = [];
+    this.activeTeam = null;
+    this.isEdit     = false;
+    this.teams      = {
+      home : null,
+      away : null
+    };
 
-  $scope.teamSelectModal = {
-    teamList   : [],
-    activeTeam : null,
-    isEdit     : false,
-    teams      : {
-      home       : null,
-      away       : null
-    },
-    setTeam : function (teamType, team) {
+    this.setTeam = function (teamType, team) {
       if ((teamType === 'home' || teamType === 'away')) {
-        $scope.teamSelectModal.teams[teamType] = team;
+        this.teams[teamType] = team;
       }
-    },
-    search     : function (name) {
+    }
+
+    this.search = function (name) {
       Api.teams.read({ name : name }, function (result) {
-        $scope.teamSelectModal.teamList = result && result.teams ? result.teams : [];
-      });
-    },
-    open : function (selectType) {
-      $scope.isEdit = !!selectType;
-      $scope.teamSelectModal.activeTeam = selectType || 'home';
-      $scope.teamSelectModal.selectType = selectType;
-      $scope.teamSelectModal.search();
+        this.teamList = result && result.teams ? result.teams : [];
+      }.bind(this));
+    }
+
+    this.open = function (selectType) {
+      this.isEdit = !!selectType;
+      this.activeTeam = selectType || 'home';
+      this.selectType = selectType;
+      this.search();
 
       ngDialog.open({
         templateUrl     : Utils.partial('team_select_modal'),
@@ -64,14 +69,15 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
         closeByDocument : false,
         scope           : $scope
       });
-    },
-    saveTeam : function () {
-      $scope.teamSelectModal.teams.home = $scope.teamSelectModal.teams.home || null;
-      $scope.teamSelectModal.teams.away = $scope.teamSelectModal.teams.away || null;
-      $scope.game.setTeams($scope.teamSelectModal.teams || {});
+    }
+
+    this.saveTeam = function () {
+      this.teams.home = this.teams.home || null;
+      this.teams.away = this.teams.away || null;
+      $scope.game.setTeams(this.teams || {});
       return true;
     }
-  }
+  })();
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -79,18 +85,21 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   //
   ////////////////////////////////////////////////////////////////////////
 
-  $scope.activeTeamType = 'home';
 
-  $scope.eventModal = {
-    message    : '',
-    nextPeriod : null,
-    open       : function () {
+  // Event modal - event selection and saving
+  $scope.eventModal = new (function () {
+    this.message    = '';
+    this.nextPeriod = null;
+
+    // TODO : actually implement this
+
+    this.open = function () {
       ngDialog.open({
         templateUrl : Utils.partial('event_details_modal'),
         scope       : $scope
       });
     }
-  }
+  })();
 
   $scope.newEvent = function (type, team) {
     $scope.timer.stop();
@@ -132,11 +141,12 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
     return true;
   }
 
-  $scope.periodModal = {
-    title      : '',
-    subText    : '',
-    nextPeriod : null,
-    open       : function () {
+  $scope.periodModal = new (function () {
+    this.title      = '';
+    this.subText    = '';
+    this.nextPeriod = null;
+
+    this.open = function () {
       $scope.timer.stop();
       ngDialog.open({
         templateUrl : Utils.partial('period_transition_modal'),
@@ -144,7 +154,7 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
         scope       : $scope
       });
     }
-  }
+  });
 
   $scope.periodSelect = function (number) {
     if (number !== $scope.game.periodNum) {
@@ -192,49 +202,49 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   //
   ////////////////////////////////////////////////////////////////////////
 
-  $scope.timer = {
+  $scope.timer = new (function () {
 
     // wrapper to start timer
-    start  :function () {
+    this.start = function () {
       $scope.game.period.timer.start(apply, periodTimeout);
     },
 
     // wrapper to stop timer
-    stop : function () {
+    this.stop = function () {
       $scope.game.period.timer.stop();
     },
 
     // edit used to keep state, manage functionality when time is being set
-    edit : {
-      active :  false,
-      value  : {
+    this.edit = new (function () {
+      this.active =  false;
+      this.value  = {
         minutes : null,
         seconds : null
-      },
+      }
 
       // init the edit values, set the edit.active state to true
-      start : function () {
+      this.start = function () {
         $scope.game.period.timer.stop();
-        $scope.timer.edit.active = true;
-        $scope.timer.edit.value.minutes = $scope.game.period.timer.minutes;
-        $scope.timer.edit.value.seconds = $scope.game.period.timer.seconds;
-      },
+        this.active = true;
+        this.value.minutes = $scope.game.period.timer.minutes;
+        this.value.seconds = $scope.game.period.timer.seconds;
+      }
 
       // apply the edit timer values to the game. close edit state
-      submit : function () {
-        $scope.timer.edit.active = false;
+      this.submit = function () {
+        this.active = false;
         $scope.game.period.timer.set({
-          minutes : $scope.timer.edit.value.minutes,
-          seconds : $scope.timer.edit.value.seconds
+          minutes : this.value.minutes,
+          seconds : this.value.seconds
         });
-      },
+      }
 
       // close edit state, do not apply values
-      cancel : function () {
-        $scope.timer.edit.active = false;
-      },
-    }
-  }
+      this.cancel = function () {
+        this.active = false;
+      }
+    })();
+  })();
 
   ////////////////////////////////////////////////////////////////////////
   //
