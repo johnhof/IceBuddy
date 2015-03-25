@@ -41,8 +41,13 @@
   <!-- Actions -->
 
   <div class="actions">
-    <div class="continue" ng-click="closeThisDialog()">Default</div>
+    <div class="continue" ng-click="closeThisDialog()">
+      <span ng-if="!isEdit">Default</span>
+      <span ng-if="isEdit">Cancel</span>
+    </div>
     <div class="confirm" ng-click="teamSelectModal.saveTeam() && closeThisDialog()">
-    Use Selected</div>
+      <span ng-if="!isEdit">Use Selected</span>
+      <span ng-if="isEdit">Apply Teams</span>
+    </div>
   </div>
 </div>

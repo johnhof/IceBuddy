@@ -159,6 +159,13 @@ $border-light: 1px solid $divider-light-color;
   transition: all $duration ease-in ($duration * 2);
 }
 
+@mixin clear-ease() {
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
 @mixin center() {
   display: flex;
   justify-content: center;

@@ -42,11 +42,13 @@ h3 {
 }
 
 a {
+  color: inherit;
   cursor: pointer;
 
   &:hover {
-    color: $blue;
+    color: $accent;
     text-decoration: none;
+    @include ease;
   }
 }
 

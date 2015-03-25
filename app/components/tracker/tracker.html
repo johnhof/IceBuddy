@@ -51,7 +51,6 @@
   <section class="actions">
 
     <!-- Team display/select -->
-
     <header class="teams">
       <div class="home" ng-class="activeTeam.type == 'home' ? 'active' : 'ripple dark'" ng-click="activeTeam.set('home')">
         <span>home</span><span class="goal-count">0</span>
@@ -62,35 +61,20 @@
        <span class="select-slider" ng-class="activeTeam.type == 'away' ? 'right' : 'left'"></span>
     </header>
 
-    <!-- Desktop -->
-
+    <!-- Actions -->
     <div class="button-sets desktop">
-      <actionblock target="home" team="{{game.teams.home}}"></actionblock>
-      <actionblock target="away" team="{{game.teams.away}}"></actionblock>
-    </div>
-
-    <!-- Mobile -->
-
-    <div class="mobile">
-      <actionblock target="{{activeTeam.type}}" team="{{activeTeam.object}}"></actionblock>
+      <actionblock target="home" ng-hide="displaySingleAction && activeTeam.type == 'away'"></actionblock>
+      <actionblock target="away" ng-hide="displaySingleAction && activeTeam.type == 'home'"></actionblock>
     </div>
 
   </section>
 
+  <!-- Game Summary -->
+
   <section class="summary">
     <h1>Game Summary</h1>
     <div class="events vertical-list">
-      <div class="event list-row">
-        <span class="team">Home</span>
-        <span class="type">G:<span class="number format">21</span></span>
-        <span  class="details">
-          A: <span class="number format">15</span>, <span class="number format">55</span>
-        </span>
-        <span class="timing">
-          <span class="period">P1</span>
-          <span class="time">12:00</span>
-        </span>
-      </div>
+      <eventitem></eventitem>
     </div>
   </section>
 

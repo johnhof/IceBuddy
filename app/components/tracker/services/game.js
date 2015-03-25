@@ -27,12 +27,13 @@ simpleApp.service('Game', ['Timer', function (Timer) {
   //   remaining : Number, // number in milliseconds remaining
   //
   //   // prototyped
+  //   setTeams     : function, // set the teams for the game
   //   currentScore : function, // get the current score { home: Number, away: Numere}
   //   setPeriod    : function, // set the period
-  //   shot         : function // track a shot
-  //   goal         : function // track a goal
-  //   penalty      : function // track a penalty
-  //   event        : function // track an event
+  //   shot         : function, // track a shot
+  //   goal         : function, // track a goal
+  //   penalty      : function, // track a penalty
+  //   event        : function, // track an event
   //   finalize     : function // return a clean object for DB storage
   // }
   //
@@ -52,14 +53,21 @@ simpleApp.service('Game', ['Timer', function (Timer) {
     }
   }
 
+  // Expect:
+  // {
+  //   home : Object, // `null` or `false` remove the current team
+  //   away : Object, // `null` or `false` remove the current team
+  // }
+  //
+  // Set the teams for the game
   Game.prototype.setTeams = function (teams) {
     if (teams) {
-      if (teams.home) {
-        this.teams.home.name      = teams.home.name;
+      if (teams.home !== undefined) {
+        this.teams.home.name      = teams.home && teams.home.name ? teams.home.name : null;
         this.teams.home.sourceObj = teams.home;
       }
-      if (teams.away) {
-        this.teams.away.name      = teams.away.name;
+      if (teams.away !== undefined) {
+        this.teams.away.name      = teams.away && teams.away.name ? teams.away.name : null;
         this.teams.away.sourceObj = teams.away;
       }
     }

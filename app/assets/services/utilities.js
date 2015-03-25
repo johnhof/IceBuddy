@@ -122,9 +122,9 @@ simpleApp.service('Spinner', ['ngDialog', function (ngDialog) {
 ////////////////////////////////////////////////////////////////////////
 
 // A collection of general purpose utilities
-simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', '$location', function (Cookie, Api, $route, $window, $location) {
+simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', '$location', 'Sizes', function (Cookie, Api, $route, $window, $location, Sizes) {
   var $dom = angular.element('html');
-  return {
+  var utils = {
     // prefix /# and redirect
 
     redirect : function (path) {
@@ -138,6 +138,32 @@ simpleApp.service('Utils', ['Cookie', 'Api', '$route', '$window', '$location', f
 
     partial : function (name) {
       return '../views/_' + name + '.html';
-    }
+    },
+
+    displayType : function (win) {
+      return $window.innerWidth <= Sizes.mobileBreak ? 'mobile' : 'desktop'
+    },
+
+    onResize : function (scope, callback) {
+      var w = angular.element($window);
+
+      scope.getWindowDimensions = function () {
+        return {
+          height      : $window.innerHeight,
+          width       : $window.innerWidth,
+          displayType : utils.displayType(w) // mobile or desktop
+        };
+      };
+
+      scope.$watch(scope.getWindowDimensions, function (newSize, oldSize) {
+        return callback(newSize, oldSize, newSize.displayType !== oldSize.displayType);
+      }, true);
+
+      w.bind('resize', function () {
+        scope.$apply();
+      });
+    },
   }
+
+  return utils
 }])

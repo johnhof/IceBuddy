@@ -9,13 +9,26 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   //
   ////////////////////////////////////////////////////////////////////////
 
-  activeTeam = {
+
+  // keep track of whether or not to display both actions based on width
+  Utils.onResize($scope, function (newSize) {
+    $scope.displaySingleAction = (newSize.width <= 600);
+  });
+
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  //  Team Management
+  //
+  ////////////////////////////////////////////////////////////////////////
+
+  $scope.activeTeam = {
     type   : 'home',
     object : $scope.game.teams.home,
     set    : function (type) {
       if (type === 'away' || type === 'home') {
-        activeTeam.type = type;
-        activeTeam.object = Scope.game.teams[type];
+        $scope.activeTeam.type = type;
+        $scope.activeTeam.object = $scope.game.teams[type];
       }
     }
   }
@@ -23,7 +36,8 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
 
   $scope.teamSelectModal = {
     teamList   : [],
-    activeTeam : 'home',
+    activeTeam : null,
+    isEdit     : false,
     teams      : {
       home       : null,
       away       : null
@@ -39,19 +53,22 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
       });
     },
     open : function (selectType) {
+      $scope.isEdit = !!selectType;
+      $scope.teamSelectModal.activeTeam = selectType || 'home';
       $scope.teamSelectModal.selectType = selectType;
       $scope.teamSelectModal.search();
 
       ngDialog.open({
-        templateUrl     : Utils.partial('team_select_prompt'),
+        templateUrl     : Utils.partial('team_select_modal'),
         showClose       : false,
         closeByDocument : false,
         scope           : $scope
       });
     },
     saveTeam : function () {
+      $scope.teamSelectModal.teams.home = $scope.teamSelectModal.teams.home || null;
+      $scope.teamSelectModal.teams.away = $scope.teamSelectModal.teams.away || null;
       $scope.game.setTeams($scope.teamSelectModal.teams || {});
-      console.log($scope.game.teams);
       return true;
     }
   }
@@ -63,14 +80,13 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   ////////////////////////////////////////////////////////////////////////
 
   $scope.activeTeamType = 'home';
-  $scope.activeTeamType = 'home';
 
   $scope.eventModal = {
     message    : '',
     nextPeriod : null,
     open       : function () {
       ngDialog.open({
-        templateUrl : Utils.partial('event_details_prompt'),
+        templateUrl : Utils.partial('event_details_modal'),
         scope       : $scope
       });
     }
@@ -123,7 +139,7 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
     open       : function () {
       $scope.timer.stop();
       ngDialog.open({
-        templateUrl : Utils.partial('period_transition_prompt'),
+        templateUrl : Utils.partial('period_transition_modal'),
         showClose   : false,
         scope       : $scope
       });
@@ -250,13 +266,39 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   }
 }]);
 
+
+////////////////////////////////////////////////////////////////////////
+//
+//  Directives
+//
+////////////////////////////////////////////////////////////////////////
+
+
 trackerCtrl.directive('actionblock', ['Utils', function (Utils) {
   return {
     restrict    : 'E',
-    scope       : true,
     replace     : true,
     templateUrl : Utils.partial('action_block'),
-    link        : function (scope, element, attrs) {
+    scope       : true,
+    link        : function(scope, element, attrs) {
+      if (attrs.target && scope.game.teams[attrs.target]) {
+        scope.target = attrs.target;
+        scope.team = scope.game.teams[attrs.target];
+      }
+    }
+  };p
+}]);
+
+
+trackerCtrl.directive('eventitem', ['Utils', function (Utils) {
+  return {
+    restrict    : 'E',
+    replace     : true,
+    templateUrl : Utils.partial('game_event_row'),
+    scope       : {
+      event : '@event'
+    },
+    link : function (scope, element, attrs) {
     }
   };
 }]);

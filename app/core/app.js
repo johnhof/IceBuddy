@@ -39,6 +39,12 @@ simpleApp.constant('Patterns', {
 });
 
 
+simpleApp.constant('Sizes', {
+  headerHeight : 56,
+  mobileBreak  : 768
+});
+
+
 simpleApp.config(['ngDialogProvider', function (ngDialogProvider) {
     ngDialogProvider.setDefaults({
       className     : 'ngdialog-theme-default',
