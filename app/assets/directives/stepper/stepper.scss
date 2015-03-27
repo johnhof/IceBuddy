@@ -1,0 +1,27 @@
+@import 'variables';
+
+.stepper {
+  text-align:  center;
+  display: inline-block;
+
+  > span, > input[type="text"]  {
+    display: block;
+    text-align: center;
+  }
+
+  > input[type="text"] {
+    &:focus, &:active, &:hover {
+      border: $border;
+    }
+  }
+
+  input {
+    border: $border;
+    padding: 0;
+  }
+
+  .sprite {
+    @include center;
+    height: $space * 2;
+  }
+}

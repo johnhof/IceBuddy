@@ -83,8 +83,8 @@ function setupServer () {
   // register error handler
   server.use(Err.errorHandler);
 
-  // any route not used by the API should return the standart page
-  server.get('*', function (req, res) {
+  // root should return the application
+  server.get('/', function (req, res) {
     res.set({ 'Content-Type': 'text/html; charset=utf-8' });
 
     if (!~(req.url.indexOf('favicon'))) { // TEMP - just here to supress the favicon fallback until we have one
@@ -93,6 +93,12 @@ function setupServer () {
 
     res.sendFile(__dirname + '/dist/index.html');
   });
+
+  // any route not used by the API should redirect home
+  server.get('*', function (req, res) {
+   res.redirect('/');
+  });
+
 
   //
   //start server

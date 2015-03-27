@@ -10,8 +10,34 @@
 
 .card {
   background-color: $base-color;
-  @include elevation(1);
   border-radius: 2px;
+
+
+  .content {
+    padding: $space * 2;
+  }
+
+  .actions {
+    @include button-text;
+    border-top: $border;
+    width: 100%;
+    display: flex;
+
+    .confirm {
+      color: $accent;
+    }
+
+    > div, > span {
+      padding: ($space * 1.5) ($space * 3);
+      cursor: pointer;
+      min-width: 50px;
+      text-align: center;
+
+      &:hover {
+        background-color: $filter-color;
+      }
+    }
+  }
 }
 
 .vertical-list {
@@ -21,44 +47,10 @@
     padding: $space;
     border-bottom: 1px solid $divider-color;
     display: flex;
-  }
-}
 
-////////////////////////////////////////////////////////////////////////
-//
-//  Ripple
-//
-////////////////////////////////////////////////////////////////////////
-
-
-.ripple {
-  overflow:hidden;
-  position: relative;
-}
-
-.ripple-effect {
-  position: absolute;
-  border-radius: 50%;
-  width: 5px;
-  height: 5px;
-  background: white;
-
-  &.dark {
-    background: black;
-  }
-
-
-  animation: ripple-animation 1s;
-}
-
-
-@keyframes ripple-animation {
-  from {
-    transform: scale(1);
-    opacity: 0.4;
-  }
-  to {
-    transform: scale(500);
-    opacity: 0;
+    &:hover {
+      background-color: $filter-color;
+      @include ease;
+    }
   }
 }

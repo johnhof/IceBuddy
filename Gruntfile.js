@@ -50,15 +50,15 @@ module.exports = function (grunt) {
         expand  : true,
         dot     : true,
         flatten : true,
-        src     : '<%= server.app %>/components/**/*.html',
+        src     : '<%= server.app %>/**/*.html',
         dest    : '<%= server.dist %>/views'
       },
       partials : {
         expand  : true,
         dot     : true,
         flatten : true,
-        src     :'<%= server.app %>/assets/partials/**/*.html',
-        dest    : '<%= server.dist %>/partials'
+        src     :'<%= server.app %>/**/*.html',
+        dest    : '<%= server.dist %>'
       }
     }
   }
@@ -313,8 +313,8 @@ module.exports = function (grunt) {
           '<%= server.dist %>/scripts/main.js': [
             '<%= server.app %>/core/app.js',
             '<%= server.app %>/core/api.js',
-            '<%= server.app %>/scripts/services.js',
-            '<%= server.app %>/scripts/helpers.js',
+            '<%= server.app %>/services.js',
+            '<%= server.app %>/helpers.js',
             '<%= server.app %>/**/*.js'
           ]
         }

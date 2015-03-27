@@ -157,11 +157,6 @@
                 float: right;
                 color: $secondary-text-color;
                 padding: 0 $space;
-
-                &:before {
-                  content: "#";
-                  padding-right: $space / 2;
-                }
               }
             }
 
@@ -169,9 +164,7 @@
               @include body-text();
 
               .list {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                @include ellipsis;
 
                 span {
                   color: $secondary-text-color;

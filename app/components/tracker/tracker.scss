@@ -1,0 +1,311 @@
+@import 'variables';
+
+
+#tracker-content {
+  background-color: white;
+  min-height: 100%;
+  position: relative;
+  width: 100%;
+
+  .state-header {
+    @include elevation(1);
+
+    .periods {
+      @include title-text();
+      border-bottom: $border;
+      width: 100%;
+      display: flex;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      span {
+        @include center();
+        @include border-between();
+        flex: 1;
+        padding: ($space / 2) 0;
+        background-color: $accent-fallback;
+        color: $text-light-color;
+
+        &.active {
+          background-color: $accent;
+          color: $text-light-color;
+          cursor: initial;
+        }
+      }
+    }
+
+    .timekeeper {
+      @include center;
+      @include title-text;
+      @include ease(.35s);
+      color: $secondary-text-color;
+      padding: $space 0;
+      height: $space * 7;
+
+      &.editing {
+        height: $space * 10;
+      }
+
+      > span {
+        @include padding-x(10%, 5%, 10%);
+        display: flex;
+        justify-content: center;
+
+
+        &.display, &.editor {
+          width: 25%;
+        }
+
+        &.display {
+          @include headline-text;
+        }
+
+        &.editor {
+          @include subhead-text;
+        }
+      }
+
+      .colon {
+        align-self: center;
+        padding: 0 ($space / 2);
+      }
+    }
+  }
+
+  .actions {
+    @include elevation(1);
+    width: 100%;
+    text-transform: uppercase;
+    min-height: 70%;
+    position: relative;
+
+    .teams {
+      display: flex;
+      position: relative;
+
+      div {
+        @include border-between;
+        @include center;
+        padding-top: ($space * 2);
+        flex: 1;
+        cursor: initial;
+      }
+
+      span, {
+        @include center;
+        @include title-text;
+        @include padding-x(($space * 8), ($space * 3), ($space * 8));
+        padding: ($space * 2);
+
+        &.goal-count {
+          width: initial;
+          color: $primary-light;
+        }
+      }
+
+      .selection-highlight {
+        display: none;
+      }
+    }
+
+    .button-sets {
+      display: flex;
+
+      .home, .away {
+        flex: 1;
+      }
+    }
+
+    .action-set {
+      @include border-between;
+      width: 100%;
+      display: block;
+      padding-bottom: ($space * 4);
+
+      header {
+        @include title-text;
+        text-align: center;
+        text-transform: none;
+        color: $secondary-text-color;
+        border-top: 2px solid $divider-color;
+        border-bottom: 2px solid $divider-color;
+        margin: auto;
+        min-width: $space * 34;
+        padding: $space;
+        width: 75%;
+      }
+
+      section {
+        @include center();
+        display: block;
+        width: 100%;
+        padding: 8% 0;
+
+        .button {
+          margin: 10% auto;
+          min-width: $space * 34;
+          padding: $space * 2;
+          width: 75%;
+
+          &:first-of-type {
+            margin-top: $space * 4;
+            margin-top: 0;
+          }
+
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+        }
+
+        .goal {
+          background-color: $ternary;
+        }
+
+        .penalty {
+          background-color: $accent-fallback;
+        }
+
+        .shot {
+          background-color: $primary-light;
+        }
+      }
+    }
+  }
+
+  .summary {
+    margin: auto;
+    margin-top: ($space * 2);
+    max-width: 800px;
+    padding-bottom: ($space * 4);
+
+    h1 {
+      text-align: center;
+      padding-bottom: ($space * 4);
+    }
+
+    .events {
+      .event {
+        display: flex;
+        padding: $space;
+
+        .number {
+          @include body-text;
+        }
+
+        .details {
+          flex: 2;
+        }
+
+        .timing {
+          text-align: right;
+        }
+
+        > span {
+          flex: 1;
+          overflow: hidden;
+          white-space: nowrap;
+          text-align: center;
+          text-align: left;
+          @include body-bold-text;
+          padding: 0 ($space / 2);
+        }
+      }
+    }
+  }
+
+
+  @media (min-width: 600px) {
+    .mobile { display: none; }
+    .ripple-effect {
+      display: none !important;
+    }
+
+    .actions {
+      .teams {
+        .select-slider {
+          display: none;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 601px) {
+    .state-header .timekeeper > span {
+      &.editor, &.display {
+        width: 35%;
+      }
+    }
+
+    .actions {
+      .teams {
+        div {
+          padding: ($space * 2) inherit;
+          cursor: pointer;
+          border: 0;
+          border-top: ($space / 2) solid transparent;
+          border-bottom: ($space / 2) solid $divider-color;
+
+          &.active {
+            cursor: initial;
+          }
+
+          span {
+            padding: 0;
+            @include padding-x(0, ($space * 3), 0);
+            margin: 0;
+            border: 0;
+          }
+        }
+      }
+
+      .action-set {
+        padding-bottom: 0;
+
+        header {
+          border-top: 0;
+        }
+      }
+    }
+  }
+}
+
+
+.team-select-prompt {
+  header {
+    padding-top: $space * 2;
+    padding-left: $space * 2;
+  }
+
+  .list-row:hover {
+     @include clear-ease();
+  }
+
+  .leading {
+    margin-bottom: $space;
+    position: relative;
+
+    .team {
+      padding: $space;
+      border-top: 1px solid $divider-color;
+      border-bottom: ($space / 2) solid $divider-color;
+
+      h3 {
+        .sprite {
+          float: right;
+          transition: none;
+          margin-right: $space;
+        }
+      }
+    }
+  }
+
+  .selection-display {
+    display: flex;
+
+    .team {
+      flex: 1;
+    }
+  }
+}

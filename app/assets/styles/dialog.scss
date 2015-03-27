@@ -1,0 +1,51 @@
+@import 'variables';
+
+.ngdialog.ngdialog-theme-default {
+  .ngdialog-content {
+    @include elevation(4);
+    padding: 0;
+    border-radius: $radius;
+    background-color: $base-color;
+    min-width: 320 - ($space * 2);
+    max-width: 600px;
+    width: 90%;
+
+    header {
+      @include headline-text;
+      color: $primary;
+      margin-bottom: $space * 3;
+    }
+
+    h1, h2, h3 {
+      margin-bottom: $space;
+    }
+
+    p {
+      @include caption-text;
+      margin: 0;
+    }
+
+    .content {
+      padding: $space * 2;
+    }
+
+    .actions {
+      @include button-text;
+      border-top: $border;
+      width: 100%;
+      display: flex;
+
+      .confirm {
+        color: $accent;
+      }
+
+      > div, > span {
+        padding: ($space * 1.5) 0;
+        @include padding-x(($space * 3), ($space * 3), ($space * 3));
+        cursor: pointer;
+        min-width: 50px;
+
+      }
+    }
+  }
+}

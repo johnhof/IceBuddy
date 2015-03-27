@@ -4,6 +4,30 @@
 //
 ////////////////////////////////////////////////////////////////////////
 
+
+simpleApp.directive('number', [function () {
+  return {
+    restrict : 'A',
+    link     : function(scope, element, attrs, ctrl) {
+      // prevent non integer values
+      element.on('keydown', function (e) {
+        var whiteListed = ~_.indexOf([46, 8, 9, 27, 13, 110, 190], e.keyCode);
+        whiteListed = whiteListed || (e.keyCode == 65 && e.ctrlKey === true); // Ctrl A
+        whiteListed = whiteListed || (e.keyCode >= 35 && e.keyCode <= 40); // Arrows
+        whiteListed = whiteListed || (!e.shiftKey && (e.keyCode > 47 && e.keyCode < 58)); // Standard Numbers
+        whiteListed = whiteListed || (e.keyCode > 95 && e.keyCode < 106); // Number pad
+
+        // prevent non-whiteListed keypresses
+        if (!whiteListed) {
+          return e.preventDefault();
+        }
+      });
+    }
+  };
+}]);
+
+
+
 simpleApp.directive('email', ['Patterns', function (Patterns) {
   return {
     require: 'ngModel',

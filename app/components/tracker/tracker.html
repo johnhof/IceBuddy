@@ -1,0 +1,81 @@
+<div id="tracker-content">
+  <header class="state-header">
+
+    <!-- Periods -->
+
+    <div class="periods">
+      <span ng-click="periodSelect(1)" ng-class="game.periodNum == 1 ? 'active' : 'ripple'">1</span>
+      <span ng-click="periodSelect(2)" ng-class="game.periodNum == 2 ? 'active' : 'ripple'">2</span>
+      <span ng-click="periodSelect(3)" ng-class="game.periodNum == 3 ? 'active' : 'ripple'">3</span>
+    </div>
+
+    <!-- Time Keepr -->
+
+    <div class="timekeeper" ng-class="timer.edit.active?'editing':''">
+
+      <!-- Left actions -->
+      <span class="action" ng-if="!timer.edit.active" ng-click="timer.edit.start()">
+        <sprite name="ion-edit" size="18"></sprite>
+      </span>
+      <span class="action" ng-if="timer.edit.active" ng-click="timer.edit.cancel()">
+        <sprite name="ion-close" size="18"></sprite>
+      </span>
+
+      <!-- Time -->
+      <span ng-hide="timer.edit.active" class="display">{{game.period.timer.remaining | date: 'mm:ss'}}</span>
+
+
+      <span ng-show="timer.edit.active" class="editor">
+        <stepper min="0" max="20" ng-model="timer.edit.value.minutes"></stepper>
+        <span class="colon">:</span>
+        <stepper min="0" max="59" ng-model="timer.edit.value.seconds"></stepper>
+      </span>
+
+
+      <!-- Right actions -->
+      <span class="action" ng-if="!game.period.timer.active && !timer.edit.active" ng-click="timer.start()">
+        <sprite name="ion-play" size="18"></sprite>
+      </span>
+      <span class="action" ng-if="game.period.timer.active"  ng-click="timer.stop()">
+        <sprite name="ion-pause" size="18"></sprite>
+      </span>
+      <span class="action" ng-if="timer.edit.active" ng-click="timer.edit.submit()">
+        <sprite name="ion-android-done" size="24"></sprite>
+      </span>
+    </div>
+  </header>
+
+
+  <!-- actions -->
+
+  <section class="actions">
+
+    <!-- Team display/select -->
+    <header class="teams">
+      <div class="home" ng-class="activeTeam.type == 'home' ? 'active' : 'ripple dark'" ng-click="activeTeam.set('home')">
+        <span>home</span><span class="goal-count">0</span>
+      </div>
+      <div class="away" ng-class="activeTeam.type == 'away' ? 'active' : 'ripple dark'" ng-click="activeTeam.set('away')">
+        <span>away</span><span class="goal-count">0</span>
+      </div>
+       <span class="select-slider" ng-class="activeTeam.type == 'away' ? 'right' : 'left'"></span>
+    </header>
+
+    <!-- Actions -->
+    <div class="button-sets desktop">
+      <actionblock target="home" ng-hide="displaySingleAction && activeTeam.type == 'away'"></actionblock>
+      <actionblock target="away" ng-hide="displaySingleAction && activeTeam.type == 'home'"></actionblock>
+    </div>
+
+  </section>
+
+  <!-- Game Summary -->
+
+  <section class="summary">
+    <h1>Game Summary</h1>
+    <div class="events vertical-list">
+      <eventitem></eventitem>
+    </div>
+  </section>
+
+</div>

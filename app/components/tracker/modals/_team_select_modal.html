@@ -1,0 +1,53 @@
+<div class="team-select-prompt">
+  <header>Select Teams</header>
+
+  <!-- Teams -->
+
+  <div class="leading">
+    <div class="selection-display">
+
+      <!-- Home -->
+
+      <div class="team home"  ng-class="teamSelectModal.activeTeam == 'home' ? 'active' : 'ripple dark'" ng-click="teamSelectModal.activeTeam='home'">
+
+        <h3>Home<sprite name="ion-close" size="14" ng-show="teamSelectModal.teams.home.name" ng-click="teamSelectModal.setTeam('home')"></sprite></h3>
+
+        <span ng-show="teamSelectModal.teams.home">{{teamSelectModal.teams.home.name}}</span>
+        <span class="placeholder" ng-hide="teamSelectModal.teams.home">Default</span>
+      </div>
+
+      <!-- Away -->
+
+      <div class="team away"  ng-class="teamSelectModal.activeTeam == 'away' ? 'active' : 'ripple dark'" ng-click="teamSelectModal.activeTeam='away'">
+
+        <h3>Away<sprite name="ion-close" size="14" ng-show="teamSelectModal.teams.away" ng-click="teamSelectModal.setTeam('away')"></sprite></h3>
+
+        <span ng-show="teamSelectModal.teams.away">{{teamSelectModal.teams.away.name}}</span>
+        <span class="placeholder" ng-hide="teamSelectModal.teams.away">Default</span>
+      </div>
+       <span class="select-slider" ng-class="teamSelectModal.activeTeam == 'away' ? 'right' : 'left'"></span>
+    </div>
+  </div>
+
+  <!-- Search -->
+
+  <input type="text" placeholder="Search" ng-model="teamSelectModal.searchTerm" ng-change="teamSelectModal.search(teamSelectModal.searchTerm)">
+  <div class="vertical-list">
+    <div class="list-row ripple dark team" ng-repeat="team in teamSelectModal.teamList" ng-click="teamSelectModal.setTeam(teamSelectModal.activeTeam, team)" ng-if="team._id !== teamSelectModal.teams.home._id && team._id !== teamSelectModal.teams.away._id">
+      <span class="name">{{team.name}}</span>
+    </div>
+  </div>
+
+  <!-- Actions -->
+
+  <div class="actions">
+    <div class="continue" ng-click="closeThisDialog()">
+      <span ng-if="!teamSelectModal.isEdit">Default</span>
+      <span ng-if="teamSelectModal.isEdit">Cancel</span>
+    </div>
+    <div class="confirm" ng-click="teamSelectModal.saveTeam() && closeThisDialog()">
+      <span ng-if="!teamSelectModal.isEdit">Use Selected</span>
+      <span ng-if="teamSelectModal.isEdit">Apply Teams</span>
+    </div>
+  </div>
+</div>

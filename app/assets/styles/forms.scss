@@ -1,21 +1,26 @@
 @import 'variables';
 
 .button {
-  border-radius: $radius;
-  width: 100%;
   @include elevation(1);
   @include button-text();
+  @include center();
+  border-radius: $radius;
+  width: 100%;
   background: $accent;
   color: $text-light-color;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
+  border: 0;
+  padding: $space;
+  @include ease(0.25s);
 
   &[type="submit"], &[active="true"] {
     background: $accent;
     color: $text-light-color;
     outline: 0;
+  }
+
+  &:hover {
+    @include elevation(2);
   }
 }
 
@@ -43,34 +48,55 @@
 }
 
 input {
+  $input-border: 2px;
   &[type="email"], &[type="password"], &[type="text"] {
+    @include body-text;
     padding-left: 10px;
     border: 1px solid transparent;
-    border-bottom: 1px solid $divider-color;
+    border-bottom: $input-border solid $divider-color;
+    width: 100%;
 
     &:active {
-      border: 1px solid $accent;
+      border-bottom: $input-border solid $accent;
       outline: 0;
 
       &:hover {
-        border: 1px solid $accent;
+        border-bottom: $input-border solid $accent;
         outline: 0;
       }
     }
 
     &:focus {
-      border: 1px solid $accent;
+      border-bottom: $input-border solid $accent;
       outline: 0;
 
       &:hover {
-        border: 1px solid $accent;
+        border-bottom: $input-border solid $accent;
         outline: 0;
       }
     }
 
     &:hover {
-      border: 1px solid $divider-color;
+      border-bottom: $input-border solid $divider-color;
       outline: 0;
+    }
+  }
+
+  &[type="number"] {
+
+    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
+
+select {
+  option {
+    padding: $space;
+
+    &[disabled] {
+      display: none;
     }
   }
 }
@@ -98,6 +124,15 @@ form.ng-submitted {
   .error {
     font-weight: bold;
     display: block;
+  }
+}
+
+.button-wrap {
+  display: flex;
+
+  > button, > .button {
+    flex: 1;
+    @include margin-x(0, $space, 0);
   }
 }
 

@@ -10,34 +10,61 @@ html, body {
   padding: 0;
   margin: 0;
   background :none;
-  // font-family: 'Open Sans', sans-serif;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
 
 html {
   background-color: $divider-color;
-  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  top: 0;
+  position: absolute;
+  width: 100%;
 }
 
 h1, h2, h3, h4 {
-  margin: 5px 0;
+  margin: 0;
+}
+
+h1 {
+  @include title-text;
+}
+
+h2 {
+  @include subhead-text;
+}
+
+h3 {
+  @include body-bold-text;
 }
 
 a {
+  color: inherit;
   cursor: pointer;
 
   &:hover {
-    color: $blue;
+    color: $accent;
     text-decoration: none;
+    @include ease;
   }
+}
+
+* {
+  outline: none;
+  box-sizing: border-box;
 }
 
 
 #main-content {
   margin: auto;
-  margin-top: 70px;
+  height: 100%;
+  padding-top: $nav-height;
   color: $text-color;
+  position: absolute;
+  width: 100%;
 }
 
 #background-filter {
@@ -119,20 +146,6 @@ a {
   }
 }
 
-.sprite {
-  font-size: 32;
-  transition: 0.25s ease-in-out all;
-
-  &.size-16 { font-size: 16px; }
-  &.size-18 { font-size: 18px; }
-  &.size-21 { font-size: 21px; }
-  &.size-24 { font-size: 24px; }
-  &.size-32 { font-size: 32px; }
-  &.size-48 { font-size: 48px; }
-  &.size-64 { font-size: 64px; }
-  &.size-96 { font-size: 96px; }
-}
-
 .divider {
   background-color: $divider-color;
   margin: $space 0;
@@ -160,6 +173,50 @@ a {
 
   &.dark {
     background-color: $anti-base-color;
+  }
+}
+
+
+.number.format {
+  &:before {
+    content: "#";
+    padding-right: ($space / 2);
+  }
+}
+
+span.action {
+  &:hover {
+    cursor: pointer;
+    color: $accent-fallback;
+  }
+}
+
+.center {
+  @include center;
+}
+
+.placeholder {
+  color: $disabled-color;
+}
+
+
+// Container must be relative!
+.select-slider {
+  @include ease;
+  position:absolute;
+  display: none;
+  bottom: 0;
+  border-bottom: ($space / 2) solid $accent;
+  width: 50%;
+
+  &.left {
+    display: block;
+    left: 0;
+  }
+
+  &.right {
+    display: block;
+    left: 50%;
   }
 }
 
