@@ -5,13 +5,13 @@ var validate = require(process.cwd() + '/api/lib/validate');
 var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 
 var Player = Mon.model('player');
-
+console.log(Mon().objectId().ref('player').fin())
 module.exports = Mon.register('team', {
   name : Mon('Team name').string().required().min(1).max(50).fin(),
   //(http://docs.mongodb.org/manual/tutorial/model-referenced-one-to-many-relationships-between-documents/)
   //This will be an array of season ids
   seasons : Mon('Seasons').array().fin(),
-  players : Mon('Team Players').array().fin(),
+  players : [Mon().objectId().ref('player').fin()],
   //Array of player ids
   captains : Mon('Captains').array().fin(),
   //Array of user ids
@@ -53,13 +53,24 @@ module.exports = Mon.register('team', {
     }
   },
   statics : {
-    findById   : Mon.statics.findyById({ errorMsg : 'No player regex the provided ID' }),
     updateById : Mon.statics.updateById({ errorMsg : 'No player regex the provided ID' }),
     deleteById : Mon.statics.deleteById({ errorMsg : 'No player regex the provided ID' }),
+    findById   : Mon.statics.findyById({
+      errorMsg : 'No player regex the provided ID',
+      populate : {
+        path  : 'players',
+        model : 'player'
+      }
+    }),
 
     recent : Mon.statics.recent(),
 
-    search : Mon.statics.search(),
+    search : Mon.statics.search({
+      populate : {
+        path  : 'players',
+        model : 'player'
+      }
+    }),
 
     create : function ( inputs, callback ) {
       validate(inputs, {

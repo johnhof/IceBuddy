@@ -1,6 +1,8 @@
-var Mon = require('mongoman');
-var Err = require('./error');
-var _   = require('lodash');
+var Mon   = require('mongoman');
+var Err   = require('./error');
+var _     = require('lodash');
+var async = require('async');
+var _     = require('lodash');
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -32,6 +34,17 @@ var paginate = Mon.helpers.paginate = function (inputs) {
   });
 }
 
+// PopulateArray
+//
+// populate the array with populate object specified
+var populateArray = Mon.helpers.populateArray = function (docArray, inputs, callback) {
+  async.parallel(_.map(docArray, function (doc) {
+    return function (callback) {
+      Mon.model(inputs.model).populate(doc, { path: inputs.path }, callback);
+    }
+  }), callback);
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////
 //
@@ -50,13 +63,19 @@ Mon.statics = Mon.statics || {};
 //
 Mon.statics.findyById = function (options) {
   return function (_id, callback) {
-    this.findOne({ _id : _id }, function (error, doc) {
+    function onComplete (error, doc) {
       if (doc) {
         return callback(null, doc);
       } else {
         return callback(Err.notFound(options.errorMsg || 'No document found for the prodided ID'));
       }
-    });
+    }
+
+    if (options.populate) {
+      this.findOne({ _id : _id }).populate(options.populate).exec(onComplete);
+    } else {
+      this.findOne({ _id : _id }, onComplete);
+    }
   }
 }
 

@@ -88,12 +88,87 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
 
   // Event modal - event selection and saving
   $scope.eventModal = new (function () {
-    this.message    = '';
-    this.nextPeriod = null;
+    this.teams        = $scope.game.teams; // easier access to teams in the modal
+    this.searchTerm   = ''; // player name or number being searched
+    this.selectList   = []; // is a player being selected
+    this.roles        = []; // set of roles in this event
+    this.roleSelect   = null;
+    this.activeTeam   = {
+      type   : $scope.activeTeam.type, // home || away
+      object : this.teams[$scope.activeTeam.type] // currently active team
+    }
 
-    // TODO : actually implement this
+    // set the team the even is bound to
+    this.setActiveTeam = function (teamType) {
+      if ((teamType === 'home' || teamType === 'away')) {
+        this.activeTeam.type = teamType;
+        this.activeTeam.object = this.teams[teamType];
+      }
+    }
 
-    this.open = function () {
+    // set teh role selection to active and set teh role the play er is bound to
+    this.activeRoleSelect = function (role) {
+      this.roleSelect = role;
+
+      // if a select was not passed in, assume it's a player select
+      if (!role.from) {
+        this.selectLis = this.activeTeam.object.players
+      } else {
+        this.selectList = role.select;
+      }
+    }
+
+    // set teh role selection to active and set teh role the play er is bound to
+    this.setRole = function (selection) {
+      this.roleSelect.selected = selection;
+      console.log(selection)
+      console.log(this.roleSelect.selected)
+    }
+
+    this.open = function (type) {
+      this.roleSelect = null;
+      type = (type || '').toLowerCase();
+
+      // Goal
+      if (type === 'goal') {
+        this.roles = [{
+            title    : 'Scorer',
+            selected : null,
+          }, {
+            title    : 'Assist 1',
+            selected : null,
+          }, {
+            title    : 'Assist 2',
+            selected : null,
+          }
+        ];
+
+      // Penalty
+      } else if (type === 'penalty') {
+        this.roles = [{
+          title    : 'Player',
+          selected : null,
+        }, {
+          title    : 'PIM',
+          selected : null,
+          select     : [{
+              name  : 'Major',
+            }, {
+              name  : 'Minor',
+            }, {
+              name  : 'Misconduct',
+            }
+          ]
+        }];
+
+      // Shot
+      } else if (type === 'shot') {
+        this.roles = [{
+          title   : 'shooter',
+          shooter : null
+        }];
+      }
+
       ngDialog.open({
         templateUrl : Utils.partial('event_details_modal'),
         scope       : $scope
@@ -102,20 +177,14 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
   })();
 
   $scope.newEvent = function (type, team) {
-    $scope.timer.stop();
-    $scope.eventModal.title = 'New ' + type;
+    type = (type || '').toLowerCase();
 
-    var type = type.toLowerCase();
-
-    if (type === 'goal') {
-
-    } else if (type === 'penalty') {
-
-    } else if (type === 'shot') {
-
+    if (type !== 'shot') {
+      $scope.timer.stop();
     }
 
-    $scope.eventModal.open();
+    $scope.eventModal.title = 'New ' + type;
+    $scope.eventModal.open(type);
   }
 
   $scope.saveEvent = function (team) {

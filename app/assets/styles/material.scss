@@ -50,7 +50,6 @@
 
     &:hover {
       background-color: $filter-color;
-      @include ease;
     }
   }
 }

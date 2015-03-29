@@ -246,9 +246,14 @@
           border: 0;
           border-top: ($space / 2) solid transparent;
           border-bottom: ($space / 2) solid $divider-color;
+          @include ease-background;
 
           &.active {
             cursor: initial;
+          }
+
+          &:not(.active):hover {
+            background-color: $filter-color;
           }
 
           span {
@@ -272,7 +277,7 @@
 }
 
 
-.team-select-prompt {
+.team-select-prompt, .event-details-prompt {
   header {
     padding-top: $space * 2;
     padding-left: $space * 2;
@@ -283,13 +288,22 @@
   }
 
   .leading {
-    margin-bottom: $space;
     position: relative;
 
     .team {
+      @include ease-background;
       padding: $space;
       border-top: 1px solid $divider-color;
       border-bottom: ($space / 2) solid $divider-color;
+      cursor: pointer;
+
+      &.active {
+        cursor: initial;
+      }
+
+      &:not(.active):hover {
+        background-color: $filter-color;
+      }
 
       h3 {
         .sprite {
@@ -299,6 +313,48 @@
         }
       }
     }
+  }
+
+  .list-row {
+    .number {
+      @include body-bold-text;
+      margin-right: $space;
+    }
+  }
+
+  .search {
+    margin-top: $space;
+  }
+
+  .role-wrap {
+    display: flex;
+
+    .role {
+      @include border-between;
+      @include ease-background;
+      flex: 1;
+      padding: $space;
+      cursor: pointer;
+
+       &:hover {
+          background-color: $filter-color;
+       }
+
+      &.active {
+        color: $text-light-color;
+        background-color: $primary-light;
+        cursor: initial;
+
+        .placeholder {
+          color: $secondary-text-light-color;
+        }
+      }
+    }
+  }
+
+  .role-search {
+    padding-top: $space;
+    border-top: $border;
   }
 
   .selection-display {

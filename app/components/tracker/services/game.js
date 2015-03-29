@@ -61,15 +61,13 @@ simpleApp.service('Game', ['Timer', function (Timer) {
   //
   // Set the teams for the game
   Game.prototype.setTeams = function (teams) {
-    if (teams) {
-      if (teams.home !== undefined) {
-        this.teams.home.name      = teams.home && teams.home.name ? teams.home.name : null;
-        this.teams.home.sourceObj = teams.home;
-      }
-      if (teams.away !== undefined) {
-        this.teams.away.name      = teams.away && teams.away.name ? teams.away.name : null;
-        this.teams.away.sourceObj = teams.away;
-      }
+    teams = teams || {};
+
+    if (teams.home !== undefined) {
+      this.teams.home.applyTeamObj(teams.home || {});
+    }
+    if (teams.away !== undefined) {
+      this.teams.away.applyTeamObj(teams.away || {});
     }
   }
 
@@ -206,10 +204,15 @@ simpleApp.service('Game', ['Timer', function (Timer) {
     this.name      = name;
     this.sourceObj = null;
     this.goals     = [];
-    this.roster    = [];
+    this.players   = [];
     this.shots     = [];
     this.penalties = [];
+  }
 
+  Team.prototype.applyTeamObj = function (rawTeam) {
+    this.name      = rawTeam.name;
+    this.players   = rawTeam.players;
+    this.sourceObj = rawTeam;
   }
 
 
@@ -222,9 +225,9 @@ simpleApp.service('Game', ['Timer', function (Timer) {
 
   function Shot (shot) {
     this.player = shot.player || null;
-    this.goal    = shot.goal || false;
-    this.time    = shot.time || null;
-    this.period  = shot.period || null;
+    this.goal   = shot.goal || false;
+    this.time   = shot.time || null;
+    this.period = shot.period || null;
   }
 
 

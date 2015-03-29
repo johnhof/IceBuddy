@@ -25,13 +25,17 @@
         <span ng-show="teamSelectModal.teams.away">{{teamSelectModal.teams.away.name}}</span>
         <span class="placeholder" ng-hide="teamSelectModal.teams.away">Default</span>
       </div>
-       <span class="select-slider" ng-class="teamSelectModal.activeTeam == 'away' ? 'right' : 'left'"></span>
+
+      <!-- Slider -->
+
+      <span class="select-slider" ng-class="teamSelectModal.activeTeam == 'away' ? 'right' : 'left'"></span>
     </div>
   </div>
 
   <!-- Search -->
 
-  <input type="text" placeholder="Search" ng-model="teamSelectModal.searchTerm" ng-change="teamSelectModal.search(teamSelectModal.searchTerm)">
+  <input type="text" placeholder="Search" ng-model="teamSelectModal.searchTerm" ng-change="teamSelectModal.search(teamSelectModal.searchTerm)" class="search">
+
   <div class="vertical-list">
     <div class="list-row ripple dark team" ng-repeat="team in teamSelectModal.teamList" ng-click="teamSelectModal.setTeam(teamSelectModal.activeTeam, team)" ng-if="team._id !== teamSelectModal.teams.home._id && team._id !== teamSelectModal.teams.away._id">
       <span class="name">{{team.name}}</span>

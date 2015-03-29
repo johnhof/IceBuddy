@@ -1,9 +1,65 @@
-<div>
-  <div class="content">
-    <header>{{eventModal.title}}</header>
+<div class="event-details-prompt">
+  <header>{{eventModal.title}}</header>
+
+  <!-- Teams -->
+
+  <div class="leading">
+    <div class="selection-display">
+
+      <!-- Home -->
+
+      <div class="team home" ng-class="eventModal.activeTeam.type == 'home' ? 'active' : ''" ng-click="eventModal.setActiveTeam('home')">
+        <h3>Home</h3>
+        <span ng-show="eventModal.teams.home.name">{{eventModal.teams.home.name}}</span>
+        <span class="placeholder" ng-hide="eventModal.teams.home.name">Default</span>
+      </div>
+
+      <!-- Away -->
+
+      <div class="team away" ng-class="eventModal.activeTeam.type == 'away' ? 'active' : ''" ng-click="eventModal.setActiveTeam('away')">
+        <h3>Away</h3>
+        <span ng-show="eventModal.teams.away.name">{{eventModal.teams.away.name}}</span>
+        <span class="placeholder" ng-hide="eventModal.teams.away.name">Default</span>
+      </div>
+
+      <!-- Slider -->
+
+      <span class="select-slider" ng-class="eventModal.activeTeam.type == 'away' ? 'right' : 'left'"></span>
+    </div>
   </div>
+
+  <!-- Plauer/Role Pairing -->
+
+  <div class="role-wrap" ng-show="eventModal.activeTeam.object.players">
+    <div class="role" ng-repeat="role in eventModal.roles" ng-click="eventModal.activeRoleSelect(role.title)" ng-class="eventModal.roleSelect == role.title ? 'active' : ''">
+      <h3>{{role.title}}</h3>
+      <div class="player" ng-show="role.selected">
+        <span class="number">{{role.selected.player.number}}</span>
+        <span class="name">{{role.selected.player.name}}</span>
+      </div>
+      <div ng-hide="role.selected" class="placeholder">Select</div>
+    </div>
+  </div>
+
+
+  <!-- Search Players -->
+
+  <div ng-show="eventModal.roleSelect">
+    <input type="text" placeholder="Search" ng-model="eventModal.searchTerm" class="role-search">
+
+    <div class="vertical-list">
+      <div class="list-row ripple dark team" ng-repeat="player in eventModal.activeTeam.object.players | filter : eventModal.searchTerm | orderBy : '-preferred_number' : true" ng-click="eventModal.setRole(player)">
+        <span class="number">{{player.preferred_number}}</span>
+        <span class="name">{{player.name.first}} {{player.name.last}}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+
   <div class="actions">
-    <div class="cancel" ng-click="closeThisDialog()">Cancel</div>
-    <div class="confirm">Save</div>
+    <div class="continue" ng-click="closeThisDialog()">Cancel</span>
+    </div>
+    <div class="confirm" ng-click="eventModal.saveTeam() && closeThisDialog()">Finalize</div>
   </div>
 </div>

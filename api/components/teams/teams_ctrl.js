@@ -3,7 +3,7 @@ var Mon      = require('mongoman');
 var Joi      = require('joi');
 var validate = require(process.cwd() + '/api/lib/validate');
 
-var Team = Mon.model('team');
+var Team   = Mon.model('team');
 
 module.exports = function accountController (api) {
   return {
@@ -43,37 +43,30 @@ module.exports = function accountController (api) {
         inputs.condition = { name : inputs.name };
 
         // perform the search
-        Team.search(inputs, function (error, teams) {
-          if (error) {
-            return next(error);
-
-          } else {
-            res.data = {
-              success : true,
-              teams   : teams || [],
-            };
-
-            return next();
-          }
-        });
+        Team.search(inputs, processTeams);
 
       // otherwise, get the latest players
       } else {
 
         // get the most recent
-        Team.recent(inputs, function (error, teams) {
-          if (error) {
-            return next(error);
+        Team.recent(inputs, processTeams);
+      }
 
-          } else {
-            res.data = {
-              success : true,
-              teams   : teams || []
-            };
+      // take the resulting array of teams and populate the linked documents
+      function processTeams (error, teams) {
+        if (error) { return next(error); }
 
-            return next();
-          }
+        Mon.helpers.populateArray(teams, {
+          model : 'player',
+          path  : 'players'
+        }, function (error) {
 
+          res.data = {
+            success : true,
+            teams   : teams || []
+          };
+
+          return next(error);
         });
       }
     },
