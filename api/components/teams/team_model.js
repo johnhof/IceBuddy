@@ -48,7 +48,7 @@ module.exports = Mon.register('team', {
         if ( error ) {
           return callback(error);
         }
-        return callback( players );
+        return callback(null, players);
       });
     }
   },
