@@ -5,7 +5,7 @@ var validate = require(process.cwd() + '/api/lib/validate');
 var Err      = require(process.cwd() + '/api/lib/error').errorGenerator;
 
 var Player = Mon.model('player');
-console.log(Mon().objectId().ref('player').fin())
+
 module.exports = Mon.register('team', {
   name : Mon('Team name').string().required().min(1).max(50).fin(),
   //(http://docs.mongodb.org/manual/tutorial/model-referenced-one-to-many-relationships-between-documents/)

@@ -81,7 +81,7 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
 
   ////////////////////////////////////////////////////////////////////////
   //
-  //  Action helpers
+  //  Event helpers
   //
   ////////////////////////////////////////////////////////////////////////
 
@@ -103,70 +103,133 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
       if ((teamType === 'home' || teamType === 'away')) {
         this.activeTeam.type = teamType;
         this.activeTeam.object = this.teams[teamType];
+        this.roleSelect = null;
       }
     }
 
     // set teh role selection to active and set teh role the play er is bound to
-    this.activeRoleSelect = function (role) {
-      this.roleSelect = role;
+    this.setActiveRole = function (role) {
 
-      // if a select was not passed in, assume it's a player select
-      if (!role.from) {
-        this.selectLis = this.activeTeam.object.players
+      // toggle the seleciton is already active
+      if (this.roleSelect && role && this.roleSelect.key == role.key) {
+        this.roleSelect = null;
       } else {
-        this.selectList = role.select;
+        this.roleSelect = role;
+      }
+
+      // if an options list was passed in, set it as the selection list
+      if (role.options) {
+        this.selectList = role.options;
+
+      // default to a player select
+      } else {
+        this.selectList = this.activeTeam.object.players
       }
     }
 
-    // set teh role selection to active and set teh role the play er is bound to
-    this.setRole = function (selection) {
-      this.roleSelect.selected = selection;
-      console.log(selection)
-      console.log(this.roleSelect.selected)
+    // set the role selection to active and set the role the player is bound to
+    this.setRoleSelection = function (selection) {
+      this.roleSelect.selection = selection;
+    }
+
+    // determin if item is selectable for the current role
+    this.selectable = function (modal) {
+      return function (selection) {
+
+        // if this role must be unique, make sure the selection isnt in use elsewhere
+        if (this.roleSelect && this.roleSelect.unique) {
+          return !_.find(this.roles, function (role) {
+            return selection === role.selection;
+          });
+        } else {
+          return selection !== this.roleSelect.selection
+        }
+      }.bind(modal); // somne funkiness with scope is forcing this to refer to window
     }
 
     this.open = function (type) {
       this.roleSelect = null;
       type = (type || '').toLowerCase();
 
+      // roles can have the following role objects
+      // {
+      //   title   : String, // display title
+      //   key     : String, // key for finding this rile nd later sor saving it
+      //   unique  : Boolean, // OPTIONAL - this selection must be unique form other role selecitons
+      //   options : Array // OPTIONAL - an array of objects to select from. defaults to players array
+      // }
+
       // Goal
       if (type === 'goal') {
         this.roles = [{
-            title    : 'Scorer',
-            selected : null,
+            title  : 'Scorer',
+            key    : 'scorer',
+            unique : true
           }, {
-            title    : 'Assist 1',
-            selected : null,
+            title  : 'Assist 1',
+            key    : 'assist1',
+            unique : true
           }, {
-            title    : 'Assist 2',
-            selected : null,
+            title  : 'Assist 2',
+            key    : 'assist2',
+            unique : true
           }
         ];
 
       // Penalty
       } else if (type === 'penalty') {
-        this.roles = [{
-          title    : 'Player',
-          selected : null,
-        }, {
-          title    : 'PIM',
-          selected : null,
-          select     : [{
-              name  : 'Major',
-            }, {
-              name  : 'Minor',
-            }, {
-              name  : 'Misconduct',
-            }
-          ]
-        }];
+        this.roles = [
+          {
+            title  : 'Player',
+            key    : 'player'
+          }, {
+            title   : 'Penalty',
+            key     : 'type',
+            options : [{
+                name : 'High Sticking',
+              }, {
+                name : 'Tripping',
+              }, {
+                name : 'Boaring',
+              }, {
+                name : 'Unsportsmanlike',
+              }, {
+                name : 'Boaring',
+              }, {
+                name : 'Charging',
+              }, {
+                name : 'Hooking',
+              }, {
+                name : 'Holding',
+              }, {
+                name : 'Elbowing',
+              }, , {
+                name : 'Slashing',
+              }, {
+                name : 'Misconduct',
+              }, {
+                name : 'Delay of Game',
+              }
+            ]
+          }, {
+            title   : 'Time',
+            key     : 'time',
+            options : [{
+                name : '5:00'
+              }, {
+                name : '2:00',
+              }
+            ]
+          }
+        ];
 
       // Shot
       } else if (type === 'shot') {
         this.roles = [{
-          title   : 'shooter',
-          shooter : null
-        }];
+            title  : 'Shooter',
+            key    : 'shooter'
+          }
+        ];
       }
 
       ngDialog.open({

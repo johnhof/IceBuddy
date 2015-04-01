@@ -199,6 +199,10 @@ span.action {
   color: $disabled-color;
 }
 
+.ellipsis {
+  @include ellipsis;
+}
+
 
 // Container must be relative!
 .select-slider {

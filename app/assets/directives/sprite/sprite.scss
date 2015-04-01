@@ -1,3 +1,5 @@
+@import 'variables';
+
 .sprite {
   font-size: 32;
   transition: 0.25s ease-in-out all;
@@ -11,4 +13,11 @@
   &.size-48 { font-size: 48px; }
   &.size-64 { font-size: 64px; }
   &.size-96 { font-size: 96px; }
+
+  &.ion-close {
+    float: right;
+    transition: none;
+    margin-right: $space;
+    opacity: 0.5;
+  }
 }

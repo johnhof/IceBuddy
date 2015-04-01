@@ -304,14 +304,6 @@
       &:not(.active):hover {
         background-color: $filter-color;
       }
-
-      h3 {
-        .sprite {
-          float: right;
-          transition: none;
-          margin-right: $space;
-        }
-      }
     }
   }
 
@@ -343,7 +335,6 @@
       &.active {
         color: $text-light-color;
         background-color: $primary-light;
-        cursor: initial;
 
         .placeholder {
           color: $secondary-text-light-color;

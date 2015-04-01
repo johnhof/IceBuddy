@@ -8,7 +8,10 @@
 
       <!-- Home -->
 
-      <div class="team home" ng-class="eventModal.activeTeam.type == 'home' ? 'active' : ''" ng-click="eventModal.setActiveTeam('home')">
+      <div class="team home"
+        ng-class="eventModal.activeTeam.type == 'home' ? 'active' : ''"
+        ng-click="eventModal.setActiveTeam('home')">
+
         <h3>Home</h3>
         <span ng-show="eventModal.teams.home.name">{{eventModal.teams.home.name}}</span>
         <span class="placeholder" ng-hide="eventModal.teams.home.name">Default</span>
@@ -16,7 +19,10 @@
 
       <!-- Away -->
 
-      <div class="team away" ng-class="eventModal.activeTeam.type == 'away' ? 'active' : ''" ng-click="eventModal.setActiveTeam('away')">
+      <div class="team away"
+        ng-class="eventModal.activeTeam.type == 'away' ? 'active' : ''"
+        ng-click="eventModal.setActiveTeam('away')">
+
         <h3>Away</h3>
         <span ng-show="eventModal.teams.away.name">{{eventModal.teams.away.name}}</span>
         <span class="placeholder" ng-hide="eventModal.teams.away.name">Default</span>
@@ -28,29 +34,40 @@
     </div>
   </div>
 
-  <!-- Plauer/Role Pairing -->
+  <!-- Player/Role Pairing -->
 
   <div class="role-wrap" ng-show="eventModal.activeTeam.object.players">
-    <div class="role" ng-repeat="role in eventModal.roles" ng-click="eventModal.activeRoleSelect(role.title)" ng-class="eventModal.roleSelect == role.title ? 'active' : ''">
-      <h3>{{role.title}}</h3>
-      <div class="player" ng-show="role.selected">
-        <span class="number">{{role.selected.player.number}}</span>
-        <span class="name">{{role.selected.player.name}}</span>
+    <div class="role"
+      ng-repeat="role in eventModal.roles"
+      ng-click="eventModal.setActiveRole(role)"
+      ng-class="{ active : (eventModal.roleSelect.key == role.key) }">
+
+      <h3>{{role.title}}<sprite name="ion-close" size="14" ng-show="role.selection" ng-click="role.selection = null"></sprite></h3>
+
+      <div class="ellipsis" ng-show="role.selection">
+        <span class="number" ng-show="role.selection.preferred_number">{{role.selection.preferred_number}}</span>
+        <span class="name" ng-show="!role.selection.preferred_number && role.selection.name.first">{{role.selection.name.first}} {{role.selection.name.last}}</span>
+        <span class="name" ng-show="!role.selection.preferred_number && !role.selection.name.first">{{role.selection.name}}</span>
       </div>
-      <div ng-hide="role.selected" class="placeholder">Select</div>
+      <div ng-hide="role.selection" class="placeholder">Select</div>
     </div>
   </div>
 
 
-  <!-- Search Players -->
+  <!-- Search Role Options -->
 
   <div ng-show="eventModal.roleSelect">
     <input type="text" placeholder="Search" ng-model="eventModal.searchTerm" class="role-search">
 
     <div class="vertical-list">
-      <div class="list-row ripple dark team" ng-repeat="player in eventModal.activeTeam.object.players | filter : eventModal.searchTerm | orderBy : '-preferred_number' : true" ng-click="eventModal.setRole(player)">
-        <span class="number">{{player.preferred_number}}</span>
-        <span class="name">{{player.name.first}} {{player.name.last}}</span>
+      <div class="list-row ripple dark team"
+        ng-repeat="item in eventModal.selectList | filter : eventModal.searchTerm | orderBy : '-preferred_number' : true | filter : eventModal.selectable(eventModal)"
+        ng-click="eventModal.setRoleSelection(item)">
+
+        <span class="number" ng-show="item.preferred_number">{{item.preferred_number}}</span>
+        <span class="name" ng-show="item.name.first">{{item.name.first}} {{item.name.last}}</span>
+
+        <span class="name" ng-show="!item.name.first">{{item.name}}</span>
       </div>
     </div>
   </div>
