@@ -93,6 +93,7 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
     this.selectList   = []; // is a player being selected
     this.roles        = []; // set of roles in this event
     this.roleSelect   = null;
+    this.type         = null;
     this.activeTeam   = {
       type   : $scope.activeTeam.type, // home || away
       object : this.teams[$scope.activeTeam.type] // currently active team
@@ -141,15 +142,24 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
           return !_.find(this.roles, function (role) {
             return selection === role.selection;
           });
-        } else {
+        } else if (this.roleSelect) {
           return selection !== this.roleSelect.selection
+        } else {
+          return true;
         }
       }.bind(modal); // somne funkiness with scope is forcing this to refer to window
     }
 
+    this.saveEvent = function () {
+      this.team = this.activeTeam.type;
+      $scope.game.event(this.type, this);
+      console.log($scope.game.periods)
+      return true;
+    }
+
     this.open = function (type) {
       this.roleSelect = null;
-      type = (type || '').toLowerCase();
+      this.type = type = (type || '').toLowerCase();
 
       // roles can have the following role objects
       // {
@@ -249,11 +259,6 @@ var trackerCtrl = simpleApp.controller('TrackerCtrl', ['$scope', 'Utils', 'Sessi
     $scope.eventModal.title = 'New ' + type;
     $scope.eventModal.open(type);
   }
-
-  $scope.saveEvent = function (team) {
-    $scope.eventModal.open();
-  }
-
 
   ////////////////////////////////////////////////////////////////////////
   //

@@ -106,6 +106,17 @@ simpleApp.service('Game', ['Timer', function (Timer) {
   // take the event and register it for the team
   // then add it to the priod summary
   // then return the event
+  //
+  // Expects
+  // {
+  //   type  : String // game, penalty, shot
+  //   event : {
+  //     team   : String, // home or away
+  //     period : Period, // OPTIONAL - defaults to current period
+  //     time   : Date, // OPTIONAL - defaults to current time
+  //     // ...  details specific to event
+  //   }
+  // }
   Game.prototype.event = function (type, event) {
 
     // validate inputs
@@ -113,7 +124,7 @@ simpleApp.service('Game', ['Timer', function (Timer) {
       return  false;
     }
 
-    event.team = evemt.team.toLowerCase();
+    event.team = event.team.toLowerCase();
     type = type.toLowerCase();
 
     if (!(event.team === 'home' || event.team === 'away')) {
@@ -130,9 +141,8 @@ simpleApp.service('Game', ['Timer', function (Timer) {
     var resultEvent = team[type](event);
 
     // track the resulting event in the game summary
-    if (this.periods[this.period]) {
-      this.periods[this.period].summary.push(resultEvent);
-    }
+    console.log(resultEvent)
+    this.period.summary.push(resultEvent);
 
     return resultEvent;
   }
@@ -172,7 +182,7 @@ simpleApp.service('Game', ['Timer', function (Timer) {
     // });
 
     return {
-      sumamry : [],
+      summary : [],
       timer   : new Timer({ minutes : 20 })
     }
   }
@@ -216,6 +226,66 @@ simpleApp.service('Game', ['Timer', function (Timer) {
   }
 
 
+  // Registers a new goal
+  //
+  // Expects:
+  // {
+  //   team    : String, // home or away
+  //   period  : Period, // period
+  //   time    : Date, // time
+  //   player  : Object, // player obj
+  //   assists : {
+  //     primary   : Object, // player obj
+  //     secondary : Object // player obj
+  //   }
+  // }
+  //
+  // Returns: Goal instance
+  Team.prototype.goal = function (goal) {
+    goal = new Goal(goal);
+    this.goals.push(goal);
+    return goal;
+  }
+
+
+  // Registers a new penalty
+  //
+  // Expects:
+  // {
+  //     team     : String, // home or away
+  //     period   : Period, // period
+  //     time     : Date, // time
+  //     player   : Object // player obj
+  //     type     : String // type of penalty
+  //     duration : String // length of penatly
+  // }
+  //
+  // Returns: Penalty instance
+  Team.prototype.penalty = function (penalty) {
+    penalty = new Penalty(penalty);
+    this.penalties.push(penalty);
+    return penalty;
+  }
+
+  // Registers a newshot
+  //
+  // Expects:
+  // {
+  //     team   : String, // home or away
+  //     period : Period, // period
+  //     time   : Date, // time
+  //     player : Object // player obj
+  // }
+  //
+  // Returns: Shot instance
+  Team.prototype.shot = function (shot) {
+    shot = new Shot(shot);
+    this.shots.push(shot);
+    return shot;
+  }
+
+
+
   ////////////////////////////////////////////////////////////////////////
   //
   //  Shot
@@ -225,7 +295,6 @@ simpleApp.service('Game', ['Timer', function (Timer) {
 
   function Shot (shot) {
     this.player = shot.player || null;
-    this.goal   = shot.goal || false;
     this.time   = shot.time || null;
     this.period = shot.period || null;
   }
@@ -240,17 +309,7 @@ simpleApp.service('Game', ['Timer', function (Timer) {
 
   function Goal (goal) {
     this.player = goal.player || null;
-
-    this.assists = {};
-
-    if (assists.length) {
-      this.assists.primary = assists[0];
-    }
-
-    if (assists.length > 1) {
-      this.assists.secondary = assists[1];
-    }
-
+    this.assists = goal.assists || {};
     this.time   = goal.time || null;
     this.period = goal.period || null;
   }
@@ -266,7 +325,7 @@ simpleApp.service('Game', ['Timer', function (Timer) {
  function Penalty (penalty) {
     this.player   = penalty.player || null;
     this.duration = penalty.duration || null;
-    this.type     = goal.type || null;
+    this.type     = penalty.type || null;
     this.severity = penalty.severity && penalty.severity.toLowerCase() === 'major' ? 'major' : 'minor';
     this.time     = penalty.time || null;
     this.period   = penalty.period || null;
